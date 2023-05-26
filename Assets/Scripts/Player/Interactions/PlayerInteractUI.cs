@@ -5,7 +5,7 @@ using TMPro;
 public class PlayerInteractUI : MonoBehaviour
 {
 
-    [SerializeField] private GameObject containerGameObject;
+    [SerializeField] private GameObject player;
     [SerializeField] private PlayerInteraction playerInteract;
     // [SerializeField] private TextMeshProUGUI interactTextMeshProUGUI;
 
@@ -23,13 +23,13 @@ public class PlayerInteractUI : MonoBehaviour
 
     private void Show(IInteractable interactable)
     {
-        containerGameObject.SetActive(true);
-        // interactTextMeshProUGUI.text = interactable.GetInteractIcon();
+        GetComponent<Renderer>().enabled = true;
+        gameObject.transform.position = player.transform.position + Vector3.up * 2;
     }
 
     private void Hide()
     {
-        containerGameObject.SetActive(false);
+        GetComponent<Renderer>().enabled = false;
     }
 
 }

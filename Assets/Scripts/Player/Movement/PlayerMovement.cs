@@ -24,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Reference")]
     [SerializeField] private Animator m_animator = null;
+    [SerializeField] private VariableSystem varSystem = null;
 
 
     private readonly float m_interpolation = 10;
@@ -55,6 +56,10 @@ public class PlayerMovement : MonoBehaviour
 
         m_animator.SetBool("Grounded", m_isGrounded);
         PlayerUpdate();
+        if (varSystem.debugMode)
+        {
+            debugPlayerMovement(playerId);
+        }
     }
 
     public void sendData(Coord coord)
@@ -82,8 +87,9 @@ public class PlayerMovement : MonoBehaviour
     {
         direction = Vector3.Lerp(direction, Vector3.zero, Time.deltaTime * m_interpolation);
         float magnitude = direction.magnitude * expo;
-        if (direction.magnitude > mouvementSensibility)
+        if (magnitude > mouvementSensibility) // direction.magnitude
         {
+            // Suite Position
             localPosition.x = Mathf.Lerp(localPosition.x, positionX, deltaTime * m_interpolation);
             localPosition.z = Mathf.Lerp(localPosition.z, positionZ, deltaTime * m_interpolation);
 
@@ -101,6 +107,18 @@ public class PlayerMovement : MonoBehaviour
         m_animator.SetFloat("MoveSpeed", velocity);
 
     }
+
+    private void debugPlayerMovement(PlayerId id)
+    {
+        float h = InputSystem.getHorizontalAxis(id);
+        float v = InputSystem.getVerticalAxis(id);
+        float newPositionZ = localPosition.z += v * 0.1f;
+        float newPositionX = localPosition.x += h * 0.1f;
+        direction = new Vector3(newPositionX, localPosition.y, newPositionZ) - localPosition;
+        positionX = newPositionX;
+        positionZ = newPositionZ;
+    }
+
     private float calcPosition(float max, float min, float percentage)
     {
         return (max - min) * percentage + min;

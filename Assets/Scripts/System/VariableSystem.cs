@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class VariableSystem
+public class VariableSystem : MonoBehaviour
 {
-    public static bool debugMode = true;
+    public bool debugMode = true;
 }

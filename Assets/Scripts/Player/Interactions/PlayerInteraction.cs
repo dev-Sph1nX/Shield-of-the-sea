@@ -31,13 +31,15 @@ public class PlayerInteraction : MonoBehaviour
             }
         }
     }
-
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, interactRange);
+    }
 
     public IInteractable GetInteractableObject()
     {
         List<IInteractable> interactableList = new List<IInteractable>();
         Collider[] colliderArray = Physics.OverlapSphere(transform.position, interactRange);
-        Debug.Log(colliderArray);
         foreach (Collider collider in colliderArray)
         {
             if (collider.TryGetComponent(out IInteractable interactable))

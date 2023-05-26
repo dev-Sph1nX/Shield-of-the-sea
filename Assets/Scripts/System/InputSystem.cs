@@ -12,8 +12,11 @@ public class InputSystem : MonoBehaviour
     // -----  Player 2
     static readonly string P2Interact = "P2-Interact";
     // -----  Debug
-    static readonly string P1MovDebug = "P1-MovementDebug";
-    static readonly string P2MovDebug = "P2-MovementDebug";
+    static readonly string DP1Horizontal = "DP1 - Horizontal";
+    static readonly string DP2Horizontal = "DP2 - Horizontal";
+
+    static readonly string DP1Vertical = "DP1 - Vertical";
+    static readonly string DP2Vertical = "DP2 - Vertical";
 
     public static bool Player1Interaction()
     {
@@ -30,18 +33,13 @@ public class InputSystem : MonoBehaviour
 
     //  ----- Debug
 
-    public static bool checkP1MovementDebug()
+    public static float getHorizontalAxis(PlayerId id)
     {
-        return Input.GetButtonDown(P1MovDebug);
+        return Input.GetAxis(id == PlayerId.Player1 ? DP1Horizontal : DP2Horizontal);
     }
-    public static bool checkP2MovementDebug()
+    public static float getVerticalAxis(PlayerId id)
     {
-        return Input.GetButtonDown(P2MovDebug);
-    }
-
-    public static Vector3 getMousePosition()
-    {
-        return Input.mousePosition;
+        return Input.GetAxis(id == PlayerId.Player1 ? DP1Vertical : DP2Vertical);
     }
 
 }

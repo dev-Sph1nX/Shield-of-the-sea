@@ -42,17 +42,26 @@ public class WS : MonoBehaviour
     string jsonString = "{\"type\":\"INIT\",\"data\":{\"name\":\"unity\"}}";
     [SerializeField] PlayerMovement player1;
     [SerializeField] PlayerMovement player2;
+    [SerializeField] VariableSystem gameManager;
     void Start()
     {
-        Debug.Log("start connection to the server");
-        // ws = new WebSocket("ws://192.168.43.109:3000");
-        ws = new WebSocket("ws://localhost:3000");
+        if (!gameManager.debugMode)
+        {
 
-        ws.OnMessage += OnMessage;
+            Debug.Log("Start connection to the server.");
+            // ws = new WebSocket("ws://192.168.43.109:3000");
+            ws = new WebSocket("ws://localhost:3000");
 
-        ws.Connect();
+            ws.OnMessage += OnMessage;
 
-        ws.Send(jsonString);
+            ws.Connect();
+
+            ws.Send(jsonString);
+        }
+        else
+        {
+            Debug.Log("Debug Mode activate.");
+        }
 
     }
 
