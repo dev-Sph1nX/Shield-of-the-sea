@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -272,7 +272,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4549428611729446, guid: 0e74cf81e6fd82546b4797f71ceffb81, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.5
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 4549428611729446, guid: 0e74cf81e6fd82546b4797f71ceffb81, type: 3}
       propertyPath: m_LocalPosition.y
@@ -347,13 +347,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 870feb42a0f59804f970176031bf26af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  positionX: -2.5
+  playerId: 1
+  positionX: -5
   positionY: 0
   positionZ: 0
   minX: 0
-  maxX: -5
-  minZ: -2.5
-  maxZ: 2.5
+  maxX: -10
+  minZ: -5
+  maxZ: 5
   expo: 5
   mouvementSensibility: 0.031
   m_animator: {fileID: 298189547}
@@ -409,7 +410,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 46
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -434,14 +435,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
-  m_LocalRotation: {x: 0, y: 0.9819752, z: -0.18900971, w: 0}
-  m_LocalPosition: {x: 0, y: 2.64, z: 6.33}
+  m_LocalRotation: {x: -0, y: 0.97664386, z: -0.21486464, w: 0}
+  m_LocalPosition: {x: 0, y: 7.171, z: 16.19}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 21.79, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 24.815, y: 180, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -730,8 +731,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1085260262}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.5, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 1, z: 0.5}
+  m_LocalPosition: {x: 5, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 257070110}
@@ -828,8 +829,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1409396558}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.5, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 1, z: 0.5}
+  m_LocalPosition: {x: -5, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 257070110}
@@ -868,7 +869,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   containerGameObject: {fileID: 1447858730}
-  playerInteract: {fileID: 1857947829}
+  playerInteract: {fileID: 0}
 --- !u!65 &1447858732
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1010,7 +1011,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4549428611729446, guid: 0e74cf81e6fd82546b4797f71ceffb81, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.5
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4549428611729446, guid: 0e74cf81e6fd82546b4797f71ceffb81, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1018,7 +1019,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4549428611729446, guid: 0e74cf81e6fd82546b4797f71ceffb81, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 4549428611729446, guid: 0e74cf81e6fd82546b4797f71ceffb81, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1085,30 +1086,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 870feb42a0f59804f970176031bf26af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  positionX: 2.5
+  playerId: 0
+  positionX: 5
   positionY: 0
   positionZ: 0
-  minX: 5
+  minX: 10
   maxX: 0
-  minZ: -2.5
-  maxZ: 2.5
+  minZ: -5
+  maxZ: 5
   expo: 5
   mouvementSensibility: 0.031
   m_animator: {fileID: 1857947824}
---- !u!114 &1857947829
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1857947822}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5161a08bfcdaf784c9d207c1a8455b72, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerId: 0
-  interactRange: 1
 --- !u!1 &1966394321
 GameObject:
   m_ObjectHideFlags: 0

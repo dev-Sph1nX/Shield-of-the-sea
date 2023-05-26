@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("PlayerId")]
+    [SerializeField] PlayerId playerId;
+
     [Header("Initial Position")]
     [SerializeField] float positionX;
     [SerializeField] float positionY;
@@ -71,21 +74,26 @@ public class PlayerMovement : MonoBehaviour
             // Position
             positionX = newPositionX;
             positionZ = newPositionZ;
+
+        }
+    }
+
+    private void PlayerUpdate()
+    {
+        direction = Vector3.Lerp(direction, Vector3.zero, Time.deltaTime * m_interpolation);
+        float magnitude = direction.magnitude * expo;
+        if (direction.magnitude > mouvementSensibility)
+        {
             localPosition.x = Mathf.Lerp(localPosition.x, positionX, deltaTime * m_interpolation);
             localPosition.z = Mathf.Lerp(localPosition.z, positionZ, deltaTime * m_interpolation);
 
             // Direction
             float angle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg - 90;
             Quaternion angleAxis = Quaternion.AngleAxis(angle, Vector3.down);
-            Quaternion newRotation = Quaternion.Slerp(localRotation, angleAxis, deltaTime * m_interpolation);
-            localRotation = Quaternion.Lerp(newRotation, localRotation, deltaTime * m_interpolation);
+            Quaternion newRotation = Quaternion.Slerp(localRotation, angleAxis, 1f);
+            localRotation = Quaternion.Lerp(newRotation, localRotation, 0f);
         }
-    }
-    private void PlayerUpdate()
-    {
-        direction = Vector3.Lerp(direction, Vector3.zero, Time.deltaTime * m_interpolation);
-        float magnitude = direction.magnitude * expo;
-        if (direction.magnitude < mouvementSensibility)
+        else
         {
             magnitude = 0;
         }

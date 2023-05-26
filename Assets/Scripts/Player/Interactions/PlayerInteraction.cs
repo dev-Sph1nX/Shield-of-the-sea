@@ -9,11 +9,11 @@ public class PlayerInteraction : MonoBehaviour
 
     private bool Interaction()
     {
-        if (playerId == PlayerId.Red)
+        if (playerId == PlayerId.Player1)
         {
             return InputSystem.Player1Interaction();
         }
-        else if (playerId == PlayerId.Blue)
+        else if (playerId == PlayerId.Player2)
         {
             return InputSystem.Player2Interaction();
         }

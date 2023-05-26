@@ -1,13 +1,7 @@
-public enum PlayerId
+public enum PlayerId : int
 {
-    /// <summary>
-    /// Up moves the character forward, left and right turn the character gradually and down moves the character backwards
-    /// </summary>
-    Red,
-    /// <summary>
-    /// Character freely moves in the chosen direction from the perspective of the camera
-    /// </summary>
-    Blue,
-    Yellow,
-    Green
+    Player1 = 0,
+    Player2 = 1,
+    Player3 = 2,
+    Player4 = 3
 }
