@@ -6,6 +6,7 @@ public class PlayerInteraction : MonoBehaviour
 {
     [SerializeField] PlayerId playerId;
     [SerializeField] float interactRange = 3f;
+    [SerializeField] VariableSystem variableSystem = null;
 
     private bool Interaction()
     {
@@ -33,7 +34,8 @@ public class PlayerInteraction : MonoBehaviour
     }
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(transform.position, interactRange);
+        if (variableSystem.debugMode)
+            Gizmos.DrawWireSphere(transform.position, interactRange);
     }
 
     public IInteractable GetInteractableObject()

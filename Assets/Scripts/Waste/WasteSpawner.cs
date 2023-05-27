@@ -11,14 +11,16 @@ public class MinMax
 public class WasteSpawner : MonoBehaviour
 {
     [Header("Spawn Params")]
-    [SerializeField] float intensity;
-    [SerializeField] float power;
+    [SerializeField] float fireRate = 0.1f;
+    [SerializeField] float minPower;
+    [SerializeField] float maxPower;
     [SerializeField] MinMax horizontalRange;
 
 
     [Header("Reference")]
     [SerializeField] GameObject cannette;
     [SerializeField] GameObject glassBottle;
+    private float nextFire = 0.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +31,12 @@ public class WasteSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (Time.time > nextFire)
+        {
+            nextFire = Time.time + fireRate;
+            float power = Random.Range(minPower, maxPower);
+            GameObject waste = Instantiate(cannette, transform.position, Quaternion.identity);
+            waste.GetComponent<Rigidbody>().AddForce(Vector3.up * power + Vector3.left * power / 2);
+        }
     }
 }
