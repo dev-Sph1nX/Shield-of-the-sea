@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("PlayerId")]
-    [SerializeField] PlayerId playerId;
+    [SerializeField] public PlayerId playerId;
 
     [Header("Initial Position")]
     [SerializeField] float positionX;
@@ -39,6 +39,11 @@ public class PlayerMovement : MonoBehaviour
         if (!m_animator) { gameObject.GetComponent<Animator>(); }
         localPosition = new Vector3(positionX, positionY, positionZ);
         localRotation = new Quaternion(0, 0, 0, 0);
+        if (varSystem.debugMode)
+        {
+            GetComponent<SimpleSampleCharacterControl>().enabled = true;
+            this.enabled = false;
+        }
     }
 
     private void Update()
@@ -56,10 +61,7 @@ public class PlayerMovement : MonoBehaviour
 
         m_animator.SetBool("Grounded", m_isGrounded);
         PlayerUpdate();
-        if (varSystem.debugMode)
-        {
-            debugPlayerMovement(playerId);
-        }
+
     }
 
     public void sendData(Coord coord)
@@ -108,16 +110,16 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    private void debugPlayerMovement(PlayerId id)
-    {
-        float h = InputSystem.getHorizontalAxis(id);
-        float v = InputSystem.getVerticalAxis(id);
-        float newPositionZ = localPosition.z += v * 0.1f;
-        float newPositionX = localPosition.x += h * 0.1f;
-        direction = new Vector3(newPositionX, localPosition.y, newPositionZ) - localPosition;
-        positionX = newPositionX;
-        positionZ = newPositionZ;
-    }
+    // private void debugPlayerMovement(PlayerId id)
+    // {
+    //     float h = InputSystem.getHorizontalAxis(id);
+    //     float v = InputSystem.getVerticalAxis(id);
+    //     float newPositionZ = localPosition.z += v * 0.1f;
+    //     float newPositionX = localPosition.x += h * 0.1f;
+    //     direction = new Vector3(newPositionX, localPosition.y, newPositionZ) - localPosition;
+    //     positionX = newPositionX;
+    //     positionZ = newPositionZ;
+    // }
 
     private float calcPosition(float max, float min, float percentage)
     {

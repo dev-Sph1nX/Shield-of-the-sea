@@ -42,11 +42,13 @@ public class SimpleSampleCharacterControl : MonoBehaviour
     private bool m_isGrounded;
 
     private List<Collider> m_collisions = new List<Collider>();
+    private PlayerId playerId;
 
     private void Awake()
     {
         if (!m_animator) { gameObject.GetComponent<Animator>(); }
         if (!m_rigidBody) { gameObject.GetComponent<Animator>(); }
+        playerId = gameObject.GetComponent<PlayerMovement>().playerId;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -137,8 +139,8 @@ public class SimpleSampleCharacterControl : MonoBehaviour
 
     private void TankUpdate()
     {
-        float v = Input.GetAxis("Vertical");
-        float h = Input.GetAxis("Horizontal");
+        float v = Input.GetAxis(playerId == PlayerId.Player1 ? "DP1 - Vertical" : "DP2 - Vertical");
+        float h = Input.GetAxis(playerId == PlayerId.Player1 ? "DP1 - Horizontal" : "DP2 - Horizontal");
 
         bool walk = Input.GetKey(KeyCode.LeftShift);
 
@@ -165,8 +167,10 @@ public class SimpleSampleCharacterControl : MonoBehaviour
 
     private void DirectUpdate()
     {
-        float v = Input.GetAxis("Vertical");
-        float h = Input.GetAxis("Horizontal");
+        float v = Input.GetAxis(playerId == PlayerId.Player1 ? "DP1 - Vertical" : "DP2 - Vertical");
+        v = -v;
+        float h = Input.GetAxis(playerId == PlayerId.Player1 ? "DP1 - Horizontal" : "DP2 - Horizontal");
+        h = -h;
 
         Transform camera = Camera.main.transform;
 
