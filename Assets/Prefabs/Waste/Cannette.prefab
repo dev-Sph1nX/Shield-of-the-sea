@@ -127,5 +127,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d645f6f331bd9844391c1c6dd072d012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gravity: 9.8
   height: 4
   timeToTravel: 3
+  minPower: 4
+  maxPower: 15.54
+  minAnglePower: -3
+  maxAnglePower: 3

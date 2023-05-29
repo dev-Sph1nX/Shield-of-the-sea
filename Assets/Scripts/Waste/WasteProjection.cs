@@ -4,24 +4,40 @@ using UnityEngine;
 
 public class WasteProjection : MonoBehaviour
 {
+    [SerializeField] public float gravity = 9.8f;
     [SerializeField] float height; //desired parabola height
     [SerializeField] float timeToTravel; //desired time to complete parabola
+    [SerializeField] float minPower, maxPower;
+    [SerializeField] float minAnglePower, maxAnglePower;
+
+
     float objectT = 0; //timer for that object
     Vector3 a, b; //Vector positions for start and end
     bool isMoving = false;
 
-    public void StartParabolicMovement(Vector3 start, Vector3 end, int id)
+    // public void LaunchObject(float rFactor)
+    // {
+    //     Rigidbody rb = GetComponent<Rigidbody>();
+
+    //     float calcMaxPower = maxPower * (1 - Mathf.Abs(rFactor)) + minPower * Mathf.Abs(rFactor);
+    //     float forwardPower = Random.Range(minPower, calcMaxPower);
+
+    //     float calcMinSidePower = minAnglePower * (1 - Mathf.Abs(rFactor));
+    //     float sidePower = Random.Range(calcMinSidePower, maxAnglePower);
+
+    //     Debug.Log("r : " + rFactor + " / fpower : " + forwardPower + " / spower :" + sidePower);
+
+    //     Vector3 launchForce = Vector3.up * forwardPower + Vector3.left * forwardPower + Vector3.forward * sidePower;
+    //     rb.AddForce(launchForce, ForceMode.VelocityChange);
+    // }
+
+    public void LaunchObject(Vector3 start, Vector3 end)
     {
-        gameObject.name = "cannette" + id;
         a = start;
         b = end;
         isMoving = true;
-        Debug.Log(gameObject.name + " start : " + start.ToString() + " // end : " + end.ToString());
-        Debug.Log(gameObject.name + " is at " + transform.position);
     }
 
-
-    // Update is called once per frame
     void Update()
     {
         if (isMoving)
@@ -29,10 +45,6 @@ public class WasteProjection : MonoBehaviour
             //Shows how to animate something following a parabola
             objectT = Time.time % timeToTravel;
             transform.position = SampleParabola(a, b, height, objectT);
-            // if (objectT > 1)
-            // {
-            //     isMoving = false;
-            // }
         }
     }
 
@@ -85,5 +97,8 @@ public class WasteProjection : MonoBehaviour
             return result;
         }
     }
+
+
+
 
 }

@@ -1114,11 +1114,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3232036681062a847894d6b151b58eda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireRate: 5
-  minX: -9
-  maxX: 9
-  minZ: -4
-  maxZ: 4
+  fireRate: 0.61
+  minX: -10
+  maxX: 10
+  minZ: -5
+  maxZ: 5
+  rotationFactor: 0.52
   wastes:
   - {fileID: 7564768509523965418, guid: 05212e9b0f36bed4f97acff4520a1551, type: 3}
   - {fileID: 4162699608376857439, guid: c7cb6e6da5e2fb849a4c680e3a477a63, type: 3}

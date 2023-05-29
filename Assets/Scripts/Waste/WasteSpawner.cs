@@ -7,16 +7,14 @@ public class WasteSpawner : MonoBehaviour
 {
     [Header("Spawn Params")]
     [SerializeField] float fireRate = 0.1f;
-    [SerializeField] int minX;
-    [SerializeField] int maxX;
-    [SerializeField] int minZ;
-    [SerializeField] int maxZ;
-
+    [SerializeField] float minX, maxX;
+    [SerializeField] float minZ, maxZ;
 
     [Header("Reference")]
     [SerializeField] GameObject[] wastes;
+
     private float nextFire = 0.0f;
-    private int count = 0;
+
 
     void Update()
     {
@@ -25,8 +23,9 @@ public class WasteSpawner : MonoBehaviour
             nextFire = Time.time + fireRate;
             GameObject waste = Instantiate(wastes[Random.Range(0, wastes.Length - 1)], transform.position, Quaternion.identity);
             Vector3 end = new Vector3(Random.Range(minX, maxX), 0, Random.Range(minZ, maxZ));
-            waste.GetComponent<WasteProjection>().StartParabolicMovement(transform.position, end, count);
-            count++;
+            waste.GetComponent<WasteProjection>().LaunchObject(transform.position, end);
+
         }
     }
+
 }
