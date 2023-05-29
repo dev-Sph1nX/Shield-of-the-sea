@@ -2,41 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MinMax
-{
-    public float min;
-    public float max;
-}
 
 public class WasteSpawner : MonoBehaviour
 {
     [Header("Spawn Params")]
     [SerializeField] float fireRate = 0.1f;
-    [SerializeField] float minPower;
-    [SerializeField] float maxPower;
-    [SerializeField] MinMax horizontalRange;
+    [SerializeField] int minX;
+    [SerializeField] int maxX;
+    [SerializeField] int minZ;
+    [SerializeField] int maxZ;
 
 
     [Header("Reference")]
-    [SerializeField] GameObject cannette;
-    [SerializeField] GameObject glassBottle;
+    [SerializeField] GameObject[] wastes;
     private float nextFire = 0.0f;
+    private int count = 0;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
     void Update()
     {
         if (Time.time > nextFire)
         {
             nextFire = Time.time + fireRate;
-            float power = Random.Range(minPower, maxPower);
-            GameObject waste = Instantiate(cannette, transform.position, Quaternion.identity);
-            waste.GetComponent<Rigidbody>().AddForce(Vector3.up * power + Vector3.left * power / 2);
+            GameObject waste = Instantiate(wastes[Random.Range(0, wastes.Length - 1)], transform.position, Quaternion.identity);
+            Vector3 end = new Vector3(Random.Range(minX, maxX), 0, Random.Range(minZ, maxZ));
+            waste.GetComponent<WasteProjection>().StartParabolicMovement(transform.position, end, count);
+            count++;
         }
     }
 }
