@@ -42,10 +42,9 @@ public class WS : MonoBehaviour
     string jsonString = "{\"type\":\"INIT\",\"data\":{\"name\":\"unity\"}}";
     [SerializeField] PlayerMovement player1;
     [SerializeField] PlayerMovement player2;
-    [SerializeField] VariableSystem gameManager;
     void Start()
     {
-        if (!gameManager.debugMode)
+        if (!GameManager.Instance.debugMode)
         {
 
             Debug.Log("Start connection to the server.");

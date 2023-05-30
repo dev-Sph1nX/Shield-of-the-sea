@@ -7,27 +7,22 @@ public class PlayerMovement : MonoBehaviour
     [Header("PlayerId")]
     [SerializeField] public PlayerId playerId;
 
-    [Header("Initial Position")]
-    [SerializeField] float positionX;
-    [SerializeField] float positionY;
-    [SerializeField] float positionZ;
-
-
     [Header("Movement Area")]
     [SerializeField] float minX;
     [SerializeField] float maxX;
     [SerializeField] float minZ;
     [SerializeField] float maxZ;
+
     [Header("Movement settings")]
-    [SerializeField][Range(1, 20)] float expo = 10;
+    [SerializeField][Range(1, 20)] float interpolation = 10;
     [SerializeField][Range(0, 0.2f)] float mouvementSensibility;
+    [SerializeField] bool inverseZ;
 
     [Header("Reference")]
     [SerializeField] private Animator m_animator = null;
-    [SerializeField] private VariableSystem varSystem = null;
 
 
-    private readonly float m_interpolation = 10;
+    private float positionX, positionY, positionZ;
     private Vector3 localPosition, direction;
     private Quaternion localRotation, tempRotation;
     private float deltaTime, velocity;
@@ -37,9 +32,9 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         if (!m_animator) { gameObject.GetComponent<Animator>(); }
-        localPosition = new Vector3(positionX, positionY, positionZ);
+        localPosition = transform.position;
         localRotation = new Quaternion(0, 0, 0, 0);
-        if (varSystem.debugMode)
+        if (GameManager.Instance.debugMode)
         {
             GetComponent<SimpleSampleCharacterControl>().enabled = true;
             this.enabled = false;
@@ -61,7 +56,6 @@ public class PlayerMovement : MonoBehaviour
 
         m_animator.SetBool("Grounded", m_isGrounded);
         PlayerUpdate();
-
     }
 
     public void sendData(Coord coord)
@@ -71,7 +65,7 @@ public class PlayerMovement : MonoBehaviour
 
         // Calcul des positions à partir de pourcentage
         float newPositionX = calcPosition(maxX, minX, percentage.x);
-        float newPositionZ = calcPosition(maxZ, minZ, percentage.y);
+        float newPositionZ = calcPosition(maxZ, minZ, inverseZ ? -percentage.y : percentage.y);
 
         direction = new Vector3(newPositionX, localPosition.y, newPositionZ) - localPosition;
         Debug.DrawRay(localPosition, direction, Color.green, 1);
@@ -87,13 +81,13 @@ public class PlayerMovement : MonoBehaviour
 
     private void PlayerUpdate()
     {
-        direction = Vector3.Lerp(direction, Vector3.zero, Time.deltaTime * m_interpolation);
-        float magnitude = direction.magnitude * expo;
+        direction = Vector3.Lerp(direction, Vector3.zero, Time.deltaTime * interpolation);
+        float magnitude = direction.magnitude * 5;
         if (magnitude > mouvementSensibility) // direction.magnitude
         {
             // Suite Position
-            localPosition.x = Mathf.Lerp(localPosition.x, positionX, deltaTime * m_interpolation);
-            localPosition.z = Mathf.Lerp(localPosition.z, positionZ, deltaTime * m_interpolation);
+            localPosition.x = Mathf.Lerp(localPosition.x, positionX, deltaTime * interpolation);
+            localPosition.z = Mathf.Lerp(localPosition.z, positionZ, deltaTime * interpolation);
 
             // Direction
             float angle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg - 90;
@@ -105,7 +99,7 @@ public class PlayerMovement : MonoBehaviour
         {
             magnitude = 0;
         }
-        velocity = Mathf.Lerp(velocity, magnitude, Time.deltaTime * m_interpolation);
+        velocity = Mathf.Lerp(velocity, magnitude, Time.deltaTime * interpolation);
         m_animator.SetFloat("MoveSpeed", velocity);
 
     }
