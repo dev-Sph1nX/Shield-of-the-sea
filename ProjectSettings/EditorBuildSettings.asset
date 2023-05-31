@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/1-Beach.unity
+    path: Assets/Scenes/0-Lobby.unity
+    guid: 6b83ade43f7b63d429e7b25ab09e3736
+  - enabled: 1
+    path: Assets/Scenes/1-Video.unity
+    guid: 40a0e1a0e92e7d54a8ec6fc9187a1b32
+  - enabled: 1
+    path: Assets/Scenes/2-Beach.unity
     guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects: {}

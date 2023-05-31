@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using MyBox;
 
+
+
 public class GameManager : MonoBehaviour
 {
     [Header("Debug Mode")]
@@ -36,7 +38,7 @@ public class GameManager : MonoBehaviour
         {
             startAnimationMethod();
             isTransitioning = true;
-            StartCoroutine(LoadSceneAfterDelay((debugMode && overrideSceneName != null) ? overrideSceneName : newSceneName));
+            StartCoroutine(LoadSceneAfterDelay((debugMode && overrideSceneName != null && overrideSceneName != "") ? overrideSceneName : newSceneName));
         }
     }
 
@@ -44,5 +46,6 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
         SceneManager.LoadScene(newSceneName);
+        isTransitioning = false;
     }
 }
