@@ -48,4 +48,5 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(newSceneName);
         isTransitioning = false;
     }
+
 }

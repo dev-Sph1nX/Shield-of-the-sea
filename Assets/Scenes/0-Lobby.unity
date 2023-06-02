@@ -1203,7 +1203,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugMode: 1
-  overrideSceneName: 
+  overrideSceneName: 2-Beach
 --- !u!1 &1472854935
 GameObject:
   m_ObjectHideFlags: 0

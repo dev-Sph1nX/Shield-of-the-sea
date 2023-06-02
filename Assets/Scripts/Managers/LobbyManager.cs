@@ -24,18 +24,12 @@ public class LobbyManager : MonoBehaviour
             P1IsReady = true;
             P2IsReady = true;
         }
-
         if (InputSystem.Player1Interaction())
         {
             P1IsReady = !P1IsReady;
             if (P1IsReady)
             {
-                Debug.Log("P1 ready !");
                 p1Animator.SetTrigger(animationName);
-            }
-            else
-            {
-                Debug.Log("P1 not ready !");
             }
         }
 
@@ -44,12 +38,7 @@ public class LobbyManager : MonoBehaviour
             P2IsReady = !P2IsReady;
             if (P2IsReady)
             {
-                Debug.Log("P2 ready !");
                 p2Animator.SetTrigger(animationName);
-            }
-            else
-            {
-                Debug.Log("P2 not ready !");
             }
         }
 

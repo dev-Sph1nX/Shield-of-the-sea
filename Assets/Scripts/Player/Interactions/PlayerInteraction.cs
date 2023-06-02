@@ -4,8 +4,18 @@ using UnityEngine;
 
 public class PlayerInteraction : MonoBehaviour
 {
+    [Header("Player")]
     [SerializeField] PlayerId playerId;
     [SerializeField] float interactRange = 3f;
+    [Header("Animation")]
+    [SerializeField] string pickupTriggerName = "Pickup";
+    Animator animator = null;
+    public string objectId = null;
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
 
     private bool Interaction()
     {
@@ -25,9 +35,20 @@ public class PlayerInteraction : MonoBehaviour
         if (Interaction())
         {
             IInteractable interactable = GetInteractableObject();
-            if (interactable != null)
+            Debug.Log("objectId : " + objectId);
+            Debug.Log("interactable?.GetId() : " + interactable?.GetId());
+            if (interactable != null && (objectId == null || objectId == interactable?.GetId()))
             {
-                interactable.Interact(transform);
+                if (objectId == null)
+                {
+                    objectId = interactable.GetId();
+                }
+                else
+                {
+                    objectId = null;
+                }
+                animator.SetTrigger(pickupTriggerName);
+                interactable.Interact(playerId);
             }
         }
     }
@@ -38,6 +59,15 @@ public class PlayerInteraction : MonoBehaviour
 
     public IInteractable GetInteractableObject()
     {
+        if (objectId != null)
+        {
+            NPCInteractable[] allWastes = FindObjectsOfType<NPCInteractable>();
+            foreach (NPCInteractable w in allWastes)
+            {
+                if (w.GetId() == objectId) return w;
+            }
+        }
+
         List<IInteractable> interactableList = new List<IInteractable>();
         Collider[] colliderArray = Physics.OverlapSphere(transform.position, interactRange);
         foreach (Collider collider in colliderArray)

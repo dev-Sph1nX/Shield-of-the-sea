@@ -6,26 +6,39 @@ using UnityEngine;
 public class WasteSpawner : MonoBehaviour
 {
     [Header("Spawn Params")]
-    [SerializeField] float fireRate = 0.1f;
-    [SerializeField] float minX, maxX;
-    [SerializeField] float minZ, maxZ;
+    [SerializeField] float timeBetweenFire = 0.1f;
+    [SerializeField][Range(250, 500)] float minLaunchVelocity = 250f;
+    [SerializeField][Range(250, 500)] float maxLaunchVelocity = 500f;
+
+    [Header("Spawn Area")]
+    [SerializeField] float minZ;
+    [SerializeField] float maxZ;
+    [SerializeField] float securityMargin = 0.5f;
 
     [Header("Reference")]
     [SerializeField] GameObject[] wastes;
 
+    private bool isPlaying = false;
     private float nextFire = 0.0f;
-
 
     void Update()
     {
-        if (Time.time > nextFire)
+        if (Time.time > nextFire && isPlaying)
         {
-            nextFire = Time.time + fireRate;
-            GameObject waste = Instantiate(wastes[Random.Range(0, wastes.Length - 1)], transform.position, Quaternion.identity);
-            Vector3 end = new Vector3(Random.Range(minX, maxX), 0, Random.Range(minZ, maxZ));
-            waste.GetComponent<WasteProjection>().LaunchObject(transform.position, end);
+            nextFire = Time.time + timeBetweenFire;
 
+            GameObject model = wastes[Random.Range(0, wastes.Length - 1)];
+            Vector3 spawnPosition = transform.position + Vector3.forward * Random.Range(minZ + securityMargin, maxZ - securityMargin);
+            float launchVelocity = Random.Range(minLaunchVelocity, maxLaunchVelocity);
+
+            GameObject waste = Instantiate(model, spawnPosition, transform.rotation);
+            waste.GetComponent<Rigidbody>().AddRelativeForce(new Vector3(-launchVelocity, launchVelocity, 0));
         }
+    }
+
+    public void StartGame()
+    {
+        isPlaying = true;
     }
 
 }

@@ -24,7 +24,7 @@ public class PlayerInteractUI : MonoBehaviour
     private void Show(IInteractable interactable)
     {
         GetComponent<Renderer>().enabled = true;
-        gameObject.transform.position = player.transform.position + Vector3.up * 2;
+        gameObject.transform.position = player.transform.position + Vector3.up * 3;
     }
 
     private void Hide()

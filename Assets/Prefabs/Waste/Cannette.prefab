@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 9202975096667698849}
   - component: {fileID: 3877377703507057748}
   - component: {fileID: 2247661456307727246}
-  - component: {fileID: -8375775478935624318}
   - component: {fileID: 155069695236081520}
+  - component: {fileID: 8090472998255203464}
   m_Layer: 6
   m_Name: Cannette
   m_TagString: Untagged
@@ -65,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 8edfd5581eb1521468e795678b1bceaa, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -116,25 +116,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &-8375775478935624318
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7564768509523965418}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d645f6f331bd9844391c1c6dd072d012, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gravity: 9.8
-  height: 4
-  timeToTravel: 3
-  minPower: 4
-  maxPower: 15.54
-  minAnglePower: -3
-  maxAnglePower: 3
 --- !u!114 &155069695236081520
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,3 +128,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a5ca50c268cbe544b9ffd0ffa7a199e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8090472998255203464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7564768509523965418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a71849f2935b9b4458c1fb2f1fa68f1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mass: 0.0000001
+  drag: 40
+  colliderObj: {fileID: 3877377703507057748}

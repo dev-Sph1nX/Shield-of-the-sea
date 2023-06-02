@@ -5,14 +5,14 @@ using UnityEngine;
 public class WasteProjection : MonoBehaviour
 {
     [SerializeField] public float gravity = 9.8f;
-    [SerializeField] float height; //desired parabola height
-    [SerializeField] float timeToTravel; //desired time to complete parabola
+    [SerializeField] float height;
+    [SerializeField] float timeToTravel;
     [SerializeField] float minPower, maxPower;
     [SerializeField] float minAnglePower, maxAnglePower;
 
 
-    float objectT = 0; //timer for that object
-    Vector3 a, b; //Vector positions for start and end
+    float objectT = 0;
+    Vector3 a, b;
     bool isMoving = false;
 
     // public void LaunchObject(float rFactor)
@@ -42,7 +42,6 @@ public class WasteProjection : MonoBehaviour
     {
         if (isMoving)
         {
-            //Shows how to animate something following a parabola
             objectT = Time.time % timeToTravel;
             transform.position = SampleParabola(a, b, height, objectT);
         }
@@ -54,24 +53,18 @@ public class WasteProjection : MonoBehaviour
     }
     void OnDrawGizmos()
     {
-        //Draw the height in the viewport, so i can make a better gif :]
-        // Handles.BeginGUI();
-        // GUI.skin.box.fontSize = 16;
-        // GUI.Box(new Rect(10, 10, 100, 25), h + "");
-        // Handles.EndGUI();
-
-        //Draw the parabola by sample a few times
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(a, b);
-        float count = 20;
-        Vector3 lastP = a;
-        for (float i = 0; i < count + 1; i++)
-        {
-            Vector3 p = SampleParabola(a, b, height, i / count);
-            Gizmos.color = i % 2 == 0 ? Color.blue : Color.green;
-            Gizmos.DrawLine(lastP, p);
-            lastP = p;
-        }
+        // Gizmos.color = Color.red;
+        // Gizmos.DrawLine(a, b);
+        // float count = 20;
+        // Vector3 lastP = a;
+        // for (float i = 0; i < count + 1; i++)
+        // {
+        //     Vector3 p = SampleParabola(a, b, height, i / count);
+        //     Gizmos.color = i % 2 == 0 ? Color.blue : Color.green;
+        //     Gizmos.DrawLine(lastP, p);
+        //     lastP = p;
+        // }
+        Gizmos.DrawWireSphere(transform.position, 1f);
     }
 
     Vector3 SampleParabola(Vector3 start, Vector3 end, float height, float t)

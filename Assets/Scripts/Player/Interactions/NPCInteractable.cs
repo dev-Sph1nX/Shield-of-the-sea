@@ -1,25 +1,48 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MyBox;
 
 public class NPCInteractable : MonoBehaviour, IInteractable
 {
-
-    private Animator animator;
-    private bool isTaken;
+    [SerializeField][ReadOnly] string _id;
+    private PlayerId? ownerId = null;
+    private WasteSinking wasteSinking;
 
     private void Awake()
     {
-        animator = GetComponent<Animator>();
-        // npcHeadLookAt = GetComponent<NPCHeadLookAt>();
+        _id = Helpers.generateId();
+        wasteSinking = GetComponent<WasteSinking>();
     }
 
-    public void Interact(Transform interactorTransform)
+    private void Update()
     {
-        // ChatBubble3D.Create(transform.transform, new Vector3(-.3f, 1.7f, 0f), ChatBubble3D.IconType.Happy, "Hello there!");
+        if (ownerId != null)
+        {
+            PlayerMovement[] players = FindObjectsOfType<PlayerMovement>();
+            foreach (PlayerMovement p in players)
+            {
+                if (p.playerId == ownerId)
+                {
+                    transform.position = p.transform.position + Vector3.up * 2;
+                }
+            }
+        }
+    }
 
-        Debug.Log("on interact");
-
+    public void Interact(PlayerId id)
+    {
+        if (ownerId == null)
+        {
+            Debug.Log("Pick up !");
+            ownerId = id;
+        }
+        else
+        {
+            Debug.Log("Release !");
+            ownerId = null;
+            wasteSinking.gotRelease();
+        }
     }
 
     void DestroyObject()
@@ -33,7 +56,12 @@ public class NPCInteractable : MonoBehaviour, IInteractable
     }
     public IconType GetInteractIcon()
     {
-        return isTaken ? IconType.Release : IconType.Take;
+        return ownerId != null ? IconType.Release : IconType.Take;
+    }
+
+    public string GetId()
+    {
+        return _id;
     }
 
 }
