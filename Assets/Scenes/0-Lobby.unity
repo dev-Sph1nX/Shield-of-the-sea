@@ -387,6 +387,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerId: 1
   interactRange: 1.43
+  pickupTriggerName: Pickup
+  objectId: null
 --- !u!114 &46228846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1745,6 +1747,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerId: 0
   interactRange: 1.43
+  pickupTriggerName: Pickup
+  objectId: null
 --- !u!114 &2145797500
 MonoBehaviour:
   m_ObjectHideFlags: 0

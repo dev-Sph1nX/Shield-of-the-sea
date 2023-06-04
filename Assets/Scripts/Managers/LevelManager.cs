@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+
 public class LevelManager : MonoBehaviour
 {
 
@@ -11,11 +12,13 @@ public class LevelManager : MonoBehaviour
     [SerializeField][Range(0, 2)] public float countDownInterval = 1.25f;
 
     [Header("Game Time")]
-    [SerializeField][Range(60, 120)] public float gameTime = 90f; // in seconds
+    [SerializeField][Range(0, 120)] public float gameTime = 90f; // in seconds
 
     [Header("Points")]
     [SerializeField] private float percentage = 100;
     [SerializeField] public int percentageLostOnWasteLost = 2;
+    [Header("Next Scene")]
+    [SerializeField] private string nextSceneName = "0-Lobby";
 
     [Header("Reference")]
     [SerializeField] public GameObject canvas = null;
@@ -23,12 +26,16 @@ public class LevelManager : MonoBehaviour
     [SerializeField] public TextMeshProUGUI timeLeftText;
     [SerializeField] public WasteSpawner wasteSpawner;
     [SerializeField] public TextMeshProUGUI percentageText;
-
-
+    [Header("Final modal ref")]
+    [SerializeField] public GameObject finalModal;
+    [SerializeField] public TextMeshProUGUI finalPercentageText;
+    [SerializeField] public TextMeshProUGUI p1isReadyText;
+    [SerializeField] public TextMeshProUGUI p2isReadyText;
 
     private Image mask = null;
     private Animator sceneAnimator = null;
-    private bool isCountingDown = false, isPlaying = false;
+    private bool isCountingDown = false, isPlaying = false, endCanvasIsShow = false;
+    private bool p1haveInteract = false, p2haveInteract = false;
     private float startTime;
 
     void Awake()
@@ -49,11 +56,14 @@ public class LevelManager : MonoBehaviour
         Invoke("HideMask", 1f);
         startTime = Time.timeSinceLevelLoad;
 
-        if (GameManager.Instance.debugMode)
-        {
-            timeToPlay = 4f;
-            countDownInterval = 0.2f;
-        }
+        // if (GameManager.Instance.debugMode)
+        // {
+        //     timeToPlay = 4f;
+        //     countDownInterval = 0.2f;
+        // }
+
+
+        gameTime += timeToPlay + countDownInterval * 4 + 1;
     }
 
     private void HideMask()
@@ -74,7 +84,40 @@ public class LevelManager : MonoBehaviour
             StartCoroutine(CountDownCoroutine());
         }
 
-        if (isPlaying) DisplayTime(gameTime);
+        if (isPlaying)
+        {
+            DisplayTime(gameTime);
+        }
+
+        if (gameTime <= 0.0f && !endCanvasIsShow)
+        {
+            endCanvasIsShow = true;
+            GameEnded();
+        }
+
+        if (endCanvasIsShow)
+        {
+            if (InputSystem.Player1Interaction())
+            {
+                p1haveInteract = !p1haveInteract;
+                p1isReadyText.enabled = p1haveInteract;
+            }
+
+            if (InputSystem.Player2Interaction())
+            {
+                p2haveInteract = !p2haveInteract;
+                p2isReadyText.enabled = p2haveInteract;
+            }
+
+            if (p1haveInteract && p2haveInteract)
+            {
+                GameManager.Instance.ChangeScene(nextSceneName, StartAnimation);
+            }
+        }
+    }
+    public void StartAnimation()
+    {
+        sceneAnimator.SetTrigger("Exit");
     }
 
     private System.Collections.IEnumerator CountDownCoroutine()
@@ -123,5 +166,17 @@ public class LevelManager : MonoBehaviour
     public void UpdatePercentageDisplay()
     {
         percentageText.text = percentage.ToString();
+    }
+
+    public void GameEnded()
+    {
+        PlayerMovement[] players = FindObjectsOfType<PlayerMovement>();
+        foreach (PlayerMovement p in players)
+        {
+            p.gameObject.GetComponent<SimpleSampleCharacterControl>().GetStop();
+        }
+
+        finalPercentageText.text = percentage + " %";
+        finalModal.transform.localScale = Vector3.one;
     }
 }

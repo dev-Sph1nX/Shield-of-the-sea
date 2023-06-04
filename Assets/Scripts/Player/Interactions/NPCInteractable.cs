@@ -5,8 +5,12 @@ using MyBox;
 
 public class NPCInteractable : MonoBehaviour, IInteractable
 {
+    [Header("Type")]
+    [SerializeField] public SystemId typeId;
+
+    [Header("Id")]
     [SerializeField][ReadOnly] string _id;
-    private PlayerId? ownerId = null;
+    private SystemId? ownerId = null;
     private WasteSinking wasteSinking;
 
     private void Awake()
@@ -30,18 +34,23 @@ public class NPCInteractable : MonoBehaviour, IInteractable
         }
     }
 
-    public void Interact(PlayerId id)
+    public void Interact(SystemId id)
     {
         if (ownerId == null)
         {
-            Debug.Log("Pick up !");
             ownerId = id;
         }
         else
         {
-            Debug.Log("Release !");
             ownerId = null;
-            wasteSinking.gotRelease();
+            if (id == SystemId.Player1)
+            {
+                wasteSinking.gotThrown();
+            }
+            else
+            {
+                wasteSinking.gotRelease();
+            }
         }
     }
 
@@ -62,6 +71,12 @@ public class NPCInteractable : MonoBehaviour, IInteractable
     public string GetId()
     {
         return _id;
+    }
+
+    public void GotSorted()
+    {
+        Debug.Log(gameObject.name + " just got rightly sorted !");
+        Destroy(gameObject);
     }
 
 }

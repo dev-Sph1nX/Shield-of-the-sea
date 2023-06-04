@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum PlayerId : int
+public enum SystemId : int
 {
     Player1 = 0,
-    Player2 = 1
+    Player2 = 1,
+    Cannette = 2,
+    Glass = 3
 }

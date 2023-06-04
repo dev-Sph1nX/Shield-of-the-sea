@@ -1,16 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MyBox;
+
 
 public class PlayerInteraction : MonoBehaviour
 {
     [Header("Player")]
-    [SerializeField] PlayerId playerId;
+    [SerializeField] public SystemId playerId;
     [SerializeField] float interactRange = 3f;
     [Header("Animation")]
     [SerializeField] string pickupTriggerName = "Pickup";
     Animator animator = null;
-    public string objectId = null;
+    public string objectId = NULL;
+    const string NULL = "null";
 
     private void Awake()
     {
@@ -19,11 +22,11 @@ public class PlayerInteraction : MonoBehaviour
 
     private bool Interaction()
     {
-        if (playerId == PlayerId.Player1)
+        if (playerId == SystemId.Player1)
         {
             return InputSystem.Player1Interaction();
         }
-        else if (playerId == PlayerId.Player2)
+        else if (playerId == SystemId.Player2)
         {
             return InputSystem.Player2Interaction();
         }
@@ -35,20 +38,33 @@ public class PlayerInteraction : MonoBehaviour
         if (Interaction())
         {
             IInteractable interactable = GetInteractableObject();
-            Debug.Log("objectId : " + objectId);
-            Debug.Log("interactable?.GetId() : " + interactable?.GetId());
-            if (interactable != null && (objectId == null || objectId == interactable?.GetId()))
+            if (interactable != null)
             {
-                if (objectId == null)
+                // grab or release an object
+                if (objectId == NULL || objectId == interactable?.GetId())
                 {
-                    objectId = interactable.GetId();
+                    if (objectId == NULL)
+                    {
+                        objectId = interactable.GetId();
+                    }
+                    else
+                    {
+                        objectId = NULL;
+                    }
+                    animator.SetTrigger(pickupTriggerName);
+                    interactable.Interact(playerId);
                 }
-                else
+
+                // on bin interaction
+                if (objectId != NULL)
                 {
-                    objectId = null;
+                    NPCInteractable obj = getObject();
+                    if (obj.typeId.ToString() == interactable.GetId())
+                    {
+                        objectId = NULL;
+                        obj.GotSorted();
+                    }
                 }
-                animator.SetTrigger(pickupTriggerName);
-                interactable.Interact(playerId);
             }
         }
     }
@@ -59,14 +75,6 @@ public class PlayerInteraction : MonoBehaviour
 
     public IInteractable GetInteractableObject()
     {
-        if (objectId != null)
-        {
-            NPCInteractable[] allWastes = FindObjectsOfType<NPCInteractable>();
-            foreach (NPCInteractable w in allWastes)
-            {
-                if (w.GetId() == objectId) return w;
-            }
-        }
 
         List<IInteractable> interactableList = new List<IInteractable>();
         Collider[] colliderArray = Physics.OverlapSphere(transform.position, interactRange);
@@ -96,6 +104,32 @@ public class PlayerInteraction : MonoBehaviour
             }
         }
 
+        // Prio 1 - La poubelle
+        if (closestInteractable.Is<BinInteractable>())
+        {
+            return closestInteractable;
+        }
+
+        // Prio 2 - Object que l'on porte
+        if (objectId != NULL)
+        {
+            return getObject();
+        }
+
+        // Else - Les objects par terre
         return closestInteractable;
+    }
+
+    public NPCInteractable getObject()
+    {
+        if (objectId != NULL)
+        {
+            NPCInteractable[] allWastes = FindObjectsOfType<NPCInteractable>();
+            foreach (NPCInteractable w in allWastes)
+            {
+                if (w.GetId() == objectId) return w;
+            }
+        }
+        return null;
     }
 }

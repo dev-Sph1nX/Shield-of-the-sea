@@ -27,7 +27,7 @@ public class WasteSpawner : MonoBehaviour
         {
             nextFire = Time.time + timeBetweenFire;
 
-            GameObject model = wastes[Random.Range(0, wastes.Length - 1)];
+            GameObject model = wastes[Random.Range(0, wastes.Length)];
             Vector3 spawnPosition = transform.position + Vector3.forward * Random.Range(minZ + securityMargin, maxZ - securityMargin);
             float launchVelocity = Random.Range(minLaunchVelocity, maxLaunchVelocity);
 

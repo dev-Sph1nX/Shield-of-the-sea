@@ -129,6 +129,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a5ca50c268cbe544b9ffd0ffa7a199e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  typeId: 3
+  _id: 
 --- !u!114 &4263974198401149937
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,5 +144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mass: 0.0000001
-  drag: 40
+  drag: 45
+  yLimitBeforeLoseIt: -0.1554092
+  throwPower: 200
   colliderObj: {fileID: 1785959318296437174}

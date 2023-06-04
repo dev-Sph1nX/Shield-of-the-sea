@@ -5,7 +5,7 @@ using UnityEngine;
 public interface IInteractable
 {
 
-    void Interact(PlayerId playerId); // Transform interactorTransform
+    void Interact(SystemId id); // Transform interactorTransform
     IconType GetInteractIcon();
     Transform GetTransform();
     string GetId();

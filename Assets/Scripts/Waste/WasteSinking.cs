@@ -10,11 +10,13 @@ public class WasteSinking : MonoBehaviour
 
     [Header("Under ground")]
     [SerializeField] float yLimitBeforeLoseIt = -0.1554092f;
-
+    [Header("Throw")]
+    [SerializeField] float throwPower = 100f;
 
     [Header("Reference")]
     [SerializeField] Collider colliderObj;
-    [SerializeField] LevelManager lvlManager;
+
+    private LevelManager lvlManager;
 
     private bool isLost = false;
     private float baseMass, baseDrag;
@@ -29,6 +31,13 @@ public class WasteSinking : MonoBehaviour
         baseDrag = rb.drag;
     }
 
+    public void gotThrown()
+    {
+        colliderObj.isTrigger = false;
+        rb.mass = baseMass;
+        rb.drag = baseDrag;
+        rb.AddRelativeForce(new Vector3(-throwPower, throwPower, 0));
+    }
     public void gotRelease()
     {
         colliderObj.isTrigger = false;
@@ -54,7 +63,6 @@ public class WasteSinking : MonoBehaviour
             isLost = true;
             Destroy(gameObject);
             lvlManager.OnWasteLost();
-            Debug.Log(gameObject.name + " is lost forever...");
         }
     }
 }

@@ -33,13 +33,13 @@ public class InputSystem : MonoBehaviour
 
     //  ----- Debug
 
-    public static float getHorizontalAxis(PlayerId id)
+    public static float getHorizontalAxis(SystemId id)
     {
-        return Input.GetAxis(id == PlayerId.Player1 ? DP1Horizontal : DP2Horizontal);
+        return Input.GetAxis(id == SystemId.Player1 ? DP1Horizontal : DP2Horizontal);
     }
-    public static float getVerticalAxis(PlayerId id)
+    public static float getVerticalAxis(SystemId id)
     {
-        return Input.GetAxis(id == PlayerId.Player1 ? DP1Vertical : DP2Vertical);
+        return Input.GetAxis(id == SystemId.Player1 ? DP1Vertical : DP2Vertical);
     }
 
 }

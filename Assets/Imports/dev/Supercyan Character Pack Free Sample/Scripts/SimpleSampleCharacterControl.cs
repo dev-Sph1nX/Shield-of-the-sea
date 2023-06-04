@@ -42,7 +42,7 @@ public class SimpleSampleCharacterControl : MonoBehaviour
     private bool m_isGrounded;
 
     private List<Collider> m_collisions = new List<Collider>();
-    private PlayerId playerId;
+    private SystemId playerId;
 
     private void Awake()
     {
@@ -139,8 +139,8 @@ public class SimpleSampleCharacterControl : MonoBehaviour
 
     private void TankUpdate()
     {
-        float v = Input.GetAxis(playerId == PlayerId.Player1 ? "DP1 - Vertical" : "DP2 - Vertical");
-        float h = Input.GetAxis(playerId == PlayerId.Player1 ? "DP1 - Horizontal" : "DP2 - Horizontal");
+        float v = Input.GetAxis(playerId == SystemId.Player1 ? "DP1 - Vertical" : "DP2 - Vertical");
+        float h = Input.GetAxis(playerId == SystemId.Player1 ? "DP1 - Horizontal" : "DP2 - Horizontal");
 
         bool walk = Input.GetKey(KeyCode.LeftShift);
 
@@ -167,9 +167,9 @@ public class SimpleSampleCharacterControl : MonoBehaviour
 
     private void DirectUpdate()
     {
-        float v = Input.GetAxis(playerId == PlayerId.Player1 ? "DP1 - Vertical" : "DP2 - Vertical");
+        float v = Input.GetAxis(playerId == SystemId.Player1 ? "DP1 - Vertical" : "DP2 - Vertical");
         v = -v;
-        float h = Input.GetAxis(playerId == PlayerId.Player1 ? "DP1 - Horizontal" : "DP2 - Horizontal");
+        float h = Input.GetAxis(playerId == SystemId.Player1 ? "DP1 - Horizontal" : "DP2 - Horizontal");
         h = -h;
 
         Transform camera = Camera.main.transform;
@@ -221,5 +221,11 @@ public class SimpleSampleCharacterControl : MonoBehaviour
         {
             m_animator.SetTrigger("Jump");
         }
+    }
+
+    public void GetStop()
+    {
+        m_animator.SetFloat("MoveSpeed", 0);
+        this.enabled = false;
     }
 }

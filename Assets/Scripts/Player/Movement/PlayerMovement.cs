@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("PlayerId")]
-    [SerializeField] public PlayerId playerId;
+    [SerializeField] public SystemId playerId;
 
     [Header("Movement Area")]
     [SerializeField] float minX;

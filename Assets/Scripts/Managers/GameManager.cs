@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
         {
             startAnimationMethod();
             isTransitioning = true;
-            StartCoroutine(LoadSceneAfterDelay((debugMode && overrideSceneName != null && overrideSceneName != "") ? overrideSceneName : newSceneName));
+            StartCoroutine(LoadSceneAfterDelay(newSceneName)); // (debugMode && overrideSceneName != null && overrideSceneName != "") ? overrideSceneName : 
         }
     }
 
