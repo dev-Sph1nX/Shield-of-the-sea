@@ -37,37 +37,46 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (Interaction())
         {
-            IInteractable interactable = GetInteractableObject();
-            if (interactable != null)
-            {
-                // grab or release an object
-                if (objectId == NULL || objectId == interactable?.GetId())
-                {
-                    if (objectId == NULL)
-                    {
-                        objectId = interactable.GetId();
-                    }
-                    else
-                    {
-                        objectId = NULL;
-                    }
-                    animator.SetTrigger(pickupTriggerName);
-                    interactable.Interact(playerId);
-                }
-
-                // on bin interaction
-                if (objectId != NULL)
-                {
-                    NPCInteractable obj = getObject();
-                    if (obj.typeId.ToString() == interactable.GetId())
-                    {
-                        objectId = NULL;
-                        obj.GotSorted();
-                    }
-                }
-            }
+            OnUserInteract();
         }
     }
+
+    public void OnUserInteract()
+    {
+        IInteractable interactable = GetInteractableObject();
+        if (interactable != null)
+        {
+            // grab or release an object
+            // if (objectId == NULL || objectId == interactable?.GetId())
+            // {
+            //     if (objectId == NULL)
+            //     {
+            //         objectId = interactable.GetId();
+            //     }
+            //     else
+            //     {
+            //         objectId = NULL;
+            //     }
+            //     animator.SetTrigger(pickupTriggerName);
+            //     interactable.Interact(playerId);
+            // }
+
+            // // on bin interaction
+            // if (objectId != NULL)
+            // {
+            //     NPCInteractable obj = getObject();
+            //     if (obj.typeId.ToString() == interactable?.GetId())
+            //     {
+            //         objectId = NULL;
+            //         obj.GotSorted();
+            //     }
+            // }
+            animator.SetTrigger(pickupTriggerName);
+            interactable.Interact(playerId);
+        }
+
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(transform.position, interactRange);

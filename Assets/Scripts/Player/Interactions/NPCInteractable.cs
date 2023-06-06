@@ -36,26 +36,22 @@ public class NPCInteractable : MonoBehaviour, IInteractable
 
     public void Interact(SystemId id)
     {
-        if (ownerId == null)
-        {
-            ownerId = id;
-        }
-        else
-        {
-            ownerId = null;
-            if (id == SystemId.Player1)
-            {
-                wasteSinking.gotThrown();
-            }
-            else
-            {
-                wasteSinking.gotRelease();
-            }
-        }
-    }
-
-    void DestroyObject()
-    {
+        // if (ownerId == null)
+        // {
+        //     ownerId = id;
+        // }
+        // else
+        // {
+        //     ownerId = null;
+        //     if (id == SystemId.Player1)
+        //     {
+        //         wasteSinking.gotThrown();
+        //     }
+        //     else
+        //     {
+        //         wasteSinking.gotRelease();
+        //     }
+        // }
         Destroy(gameObject);
     }
 

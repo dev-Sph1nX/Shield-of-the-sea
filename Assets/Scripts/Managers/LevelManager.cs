@@ -35,7 +35,7 @@ public class LevelManager : MonoBehaviour
     private Image mask = null;
     private Animator sceneAnimator = null;
     private bool isCountingDown = false, isPlaying = false, endCanvasIsShow = false;
-    private bool p1haveInteract = false, p2haveInteract = false;
+    private bool p1haveInteract = false, p2haveInteract = false, isTransitioning = false;
     private float startTime;
 
     void Awake()
@@ -47,27 +47,36 @@ public class LevelManager : MonoBehaviour
             if (child.gameObject.tag == "TransitionImage")
                 mask = child.gameObject.GetComponent<Image>();
         }
+        if (StaticClass.CrossSceneGameTime > 0)
+        {
+            gameTime = StaticClass.CrossSceneGameTime;
+            Debug.Log(gameTime);
+        }
 
     }
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("Settrigger Enter");
         sceneAnimator.SetTrigger("Enter");
         Invoke("HideMask", 1f);
+        // HideMask();
         startTime = Time.timeSinceLevelLoad;
 
-        // if (GameManager.Instance.debugMode)
-        // {
-        //     timeToPlay = 4f;
-        //     countDownInterval = 0.2f;
-        // }
+        if (GameManager.Instance.debugMode)
+        {
+            timeToPlay = 4f;
+            countDownInterval = 0.2f;
+        }
 
 
-        gameTime += timeToPlay + countDownInterval * 4 + 1;
+        gameTime += timeToPlay + countDownInterval * 2;
     }
 
     private void HideMask()
     {
+        Debug.Log("HideMask");
+
         mask.color = new Color(mask.color.r, mask.color.g, mask.color.b, 0f);
     }
 
@@ -91,11 +100,12 @@ public class LevelManager : MonoBehaviour
 
         if (gameTime <= 0.0f && !endCanvasIsShow)
         {
+            isPlaying = false;
             endCanvasIsShow = true;
             GameEnded();
         }
 
-        if (endCanvasIsShow)
+        if (endCanvasIsShow && !isTransitioning)
         {
             if (InputSystem.Player1Interaction())
             {
@@ -111,12 +121,15 @@ public class LevelManager : MonoBehaviour
 
             if (p1haveInteract && p2haveInteract)
             {
+                isTransitioning = true;
+                Debug.Log("chnage scene");
                 GameManager.Instance.ChangeScene(nextSceneName, StartAnimation);
             }
         }
     }
     public void StartAnimation()
     {
+        Debug.Log("set trigger on " + sceneAnimator.ToString());
         sceneAnimator.SetTrigger("Exit");
     }
 
@@ -159,8 +172,11 @@ public class LevelManager : MonoBehaviour
 
     public void OnWasteLost()
     {
-        percentage -= percentageLostOnWasteLost;
-        UpdatePercentageDisplay();
+        if (isPlaying && percentage - percentageLostOnWasteLost >= 0)
+        {
+            percentage -= percentageLostOnWasteLost;
+            UpdatePercentageDisplay();
+        }
     }
 
     public void UpdatePercentageDisplay()
@@ -170,10 +186,14 @@ public class LevelManager : MonoBehaviour
 
     public void GameEnded()
     {
-        PlayerMovement[] players = FindObjectsOfType<PlayerMovement>();
-        foreach (PlayerMovement p in players)
+        percentageText.text = "";
+        timeLeftText.text = "";
+        PlayerInteraction[] players = FindObjectsOfType<PlayerInteraction>();
+        foreach (PlayerInteraction p in players)
         {
+            p.enabled = false;
             p.gameObject.GetComponent<SimpleSampleCharacterControl>().GetStop();
+            wasteSpawner.StopGame();
         }
 
         finalPercentageText.text = percentage + " %";

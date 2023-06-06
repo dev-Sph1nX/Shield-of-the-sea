@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField][Range(1, 20)] float interpolation = 10;
     [SerializeField][Range(0, 0.2f)] float mouvementSensibility;
     [SerializeField] bool inverseZ;
+    [SerializeField] bool inverseX;
 
     [Header("Reference")]
     [SerializeField] private Animator m_animator = null;
@@ -39,6 +40,8 @@ public class PlayerMovement : MonoBehaviour
             GetComponent<SimpleSampleCharacterControl>().enabled = true;
             this.enabled = false;
         }
+        inverseX = StaticClass.CrossSceneInverseX;
+        inverseZ = StaticClass.CrossSceneInverseZ;
     }
 
     private void Update()
@@ -64,8 +67,8 @@ public class PlayerMovement : MonoBehaviour
         Vector2 percentage = new Vector2((coord.x / 100), (coord.y / 100));
 
         // Calcul des positions à partir de pourcentage
-        float newPositionX = calcPosition(maxX, minX, percentage.x);
-        float newPositionZ = calcPosition(maxZ, minZ, inverseZ ? -percentage.y : percentage.y);
+        float newPositionX = calcPosition(maxX, minX, percentage.x, inverseX);
+        float newPositionZ = calcPosition(maxZ, minZ, percentage.y, inverseZ);
 
         direction = new Vector3(newPositionX, localPosition.y, newPositionZ) - localPosition;
         Debug.DrawRay(localPosition, direction, Color.green, 1);
@@ -75,7 +78,6 @@ public class PlayerMovement : MonoBehaviour
             // Position
             positionX = newPositionX;
             positionZ = newPositionZ;
-
         }
     }
 
@@ -115,8 +117,14 @@ public class PlayerMovement : MonoBehaviour
     //     positionZ = newPositionZ;
     // }
 
-    private float calcPosition(float max, float min, float percentage)
+    private float calcPosition(float max, float min, float percentage, bool isInversed)
     {
+        if (isInversed)
+        {
+            float temp = max;
+            max = min;
+            min = temp;
+        }
         return (max - min) * percentage + min;
     }
 

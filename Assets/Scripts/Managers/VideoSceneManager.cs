@@ -20,7 +20,6 @@ public class VideoSceneManager : MonoBehaviour
     {
         if (InputSystem.Player1Interaction() && !isTransitioningOut) // GameManager.Instance.debugMode && 
         {
-            Debug.Log("Forced call nextScene()");
             NextScene();
             isTransitioningOut = true;
         }
@@ -33,7 +32,6 @@ public class VideoSceneManager : MonoBehaviour
 
     public void StartAnimation()
     {
-        Debug.Log("SetTrigger");
         sceneAnimator.SetTrigger(triggerName);
     }
 }

@@ -40,16 +40,16 @@ public class WS : MonoBehaviour
     WebSocket ws;
 
     string jsonString = "{\"type\":\"INIT\",\"data\":{\"name\":\"unity\"}}";
-    [SerializeField] PlayerMovement player1;
-    [SerializeField] PlayerMovement player2;
+    [SerializeField] public PlayerMovement player1;
+    [SerializeField] public PlayerMovement player2;
     void Start()
     {
         if (!GameManager.Instance.debugMode)
         {
 
             Debug.Log("Start connection to the server.");
-            // ws = new WebSocket("ws://192.168.43.109:3000");
-            ws = new WebSocket("ws://localhost:3000");
+            ws = new WebSocket("ws://192.168.43.109:3000");
+            // ws = new WebSocket("ws://localhost:3000");
 
             ws.OnMessage += OnMessage;
 
@@ -76,6 +76,22 @@ public class WS : MonoBehaviour
     void OnMessage(object sender, MessageEventArgs e)
     {
         ServerMessage serverMessage = JsonUtility.FromJson<ServerMessage>(e.Data);
+        if (serverMessage.type == "BLUE")
+        {
+            Debug.Log("Interact");
+        }
+        else
+        {
+            onUserPositionData(e);
+
+        }
+
+
+    }
+
+    private void onUserPositionData(MessageEventArgs e)
+    {
+        ServerMessage serverMessage = JsonUtility.FromJson<ServerMessage>(e.Data);
         if (serverMessage.data.p1 != null && serverMessage.data.p1.x != 0 && serverMessage.data.p1.y != 0)
         {
             player1.sendData(serverMessage.data.p1);
@@ -84,7 +100,6 @@ public class WS : MonoBehaviour
         {
             player2.sendData(serverMessage.data.p2);
         }
-
     }
 
 

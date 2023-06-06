@@ -8,7 +8,6 @@ public class VideoScript : MonoBehaviour
     [SerializeField] public VideoPlayer videoPlayer;
     [SerializeField] public VideoSceneManager sceneManager;
     [SerializeField] public Animator sceneAnimator;
-    [SerializeField] public Transform mask;
 
     private void Start()
     {

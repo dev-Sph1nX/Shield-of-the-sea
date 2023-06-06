@@ -30,6 +30,10 @@ public class GameManager : MonoBehaviour
             instance = this;
         }
         DontDestroyOnLoad(this.gameObject);
+        if (StaticClass.CrossSceneDebugMode)
+        {
+            debugMode = StaticClass.CrossSceneDebugMode;
+        }
     }
 
     public void ChangeScene(string newSceneName, Action startAnimationMethod)
@@ -38,7 +42,7 @@ public class GameManager : MonoBehaviour
         {
             startAnimationMethod();
             isTransitioning = true;
-            StartCoroutine(LoadSceneAfterDelay(newSceneName)); // (debugMode && overrideSceneName != null && overrideSceneName != "") ? overrideSceneName : 
+            StartCoroutine(LoadSceneAfterDelay((debugMode && overrideSceneName != null && overrideSceneName != "") ? overrideSceneName : newSceneName)); // 
         }
     }
 
@@ -49,4 +53,21 @@ public class GameManager : MonoBehaviour
         isTransitioning = false;
     }
 
+    public void FindNewPlayers()
+    {
+        PlayerMovement[] players = FindObjectsOfType<PlayerMovement>();
+        foreach (PlayerMovement p in players)
+        {
+            if (p.playerId == SystemId.Player1)
+            {
+                WS ws = GetComponent<WS>();
+                ws.player1 = p;
+            }
+            if (p.playerId == SystemId.Player2)
+            {
+                WS ws = GetComponent<WS>();
+                ws.player2 = p;
+            }
+        }
+    }
 }

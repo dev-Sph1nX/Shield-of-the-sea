@@ -7,8 +7,9 @@ public class WasteSpawner : MonoBehaviour
 {
     [Header("Spawn Params")]
     [SerializeField] float timeBetweenFire = 0.1f;
-    [SerializeField][Range(250, 500)] float minLaunchVelocity = 250f;
-    [SerializeField][Range(250, 500)] float maxLaunchVelocity = 500f;
+    [SerializeField][Range(0, 500)] float minLaunchVelocity = 250f;
+    [SerializeField][Range(0, 500)] float maxLaunchVelocity = 500f;
+    [SerializeField][Range(0, 100)] float torquePower = 50f;
 
     [Header("Spawn Area")]
     [SerializeField] float minZ;
@@ -20,6 +21,8 @@ public class WasteSpawner : MonoBehaviour
 
     private bool isPlaying = false;
     private float nextFire = 0.0f;
+    private Vector3 torque;
+
 
     void Update()
     {
@@ -31,14 +34,24 @@ public class WasteSpawner : MonoBehaviour
             Vector3 spawnPosition = transform.position + Vector3.forward * Random.Range(minZ + securityMargin, maxZ - securityMargin);
             float launchVelocity = Random.Range(minLaunchVelocity, maxLaunchVelocity);
 
-            GameObject waste = Instantiate(model, spawnPosition, transform.rotation);
-            waste.GetComponent<Rigidbody>().AddRelativeForce(new Vector3(-launchVelocity, launchVelocity, 0));
+            GameObject waste = Instantiate(model, spawnPosition, Quaternion.identity);
+
+            torque.x = Random.Range(-torquePower, torquePower);
+            torque.y = Random.Range(-torquePower, torquePower);
+            torque.z = Random.Range(-torquePower, torquePower);
+            waste.GetComponent<Rigidbody>().AddRelativeTorque(torque);
+            waste.GetComponent<Rigidbody>().AddRelativeForce(new Vector3(-launchVelocity, launchVelocity * 2, 0));
         }
     }
 
     public void StartGame()
     {
         isPlaying = true;
+    }
+
+    public void StopGame()
+    {
+        isPlaying = false;
     }
 
 }
