@@ -17,6 +17,7 @@ public class WasteShadow : MonoBehaviour
     private Vector3 position;
     private float actualSize;
     // Start is called before the first frame update
+    private bool isDestroy = false;
     void Start()
     {
         actualSize = maxSize;
@@ -27,32 +28,32 @@ public class WasteShadow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float newSize = CalculateShadowScale();
-        UpdateSize(newSize);
-
-        // position = Vector3.Lerp(position, new Vector3(transform.position.x, y, transform.position.z), Time.deltaTime);
-        shadow.transform.position = new Vector3(transform.position.x, y, transform.position.z);
+        if (!isDestroy)
+        {
+            float newSize = CalculateShadowScale();
+            UpdateSize(newSize);
+            shadow.transform.position = new Vector3(transform.position.x, y, transform.position.z);
+        }
     }
 
     float CalculateShadowScale()
     {
-        // Ray ray = new Ray(transform.position, transform.forward);
-        // Debug.DrawRay(transform.position, Vector3.down * 30);
-        // RaycastHit hitData;
-        // if (Physics.Raycast(ray, out hitData, 30, groundLayerMask))
-        // {
-        //     // Debug.Log(hitData.distance);
-        //     // have to link hitData.distance and size
-
-        // }
-
         float percentage = transform.position.y / topHeight;
-        return maxSize * percentage;
+        return maxSize * OutExpo(percentage);
     }
 
     void UpdateSize(float size)
     {
         // actualSize = Mathf.Lerp(size, actualSize, Time.deltaTime);
         shadow.transform.localScale = new Vector3(size, 0.01f, size);
+    }
+
+    public static float InExpo(float t) => (float)Mathf.Pow(2, 10 * (t - 1));
+    public static float OutExpo(float t) => 1 - InExpo(1 - t);
+
+    public void DestroyShadow()
+    {
+        isDestroy = true;
+        Destroy(shadow);
     }
 }

@@ -39,8 +39,8 @@ public class WasteSpawner : MonoBehaviour
             torque.x = Random.Range(-torquePower, torquePower);
             torque.y = Random.Range(-torquePower, torquePower);
             torque.z = Random.Range(-torquePower, torquePower);
-            waste.GetComponent<Rigidbody>().AddRelativeTorque(torque);
-            waste.GetComponent<Rigidbody>().AddRelativeForce(new Vector3(-launchVelocity, launchVelocity * 2, 0));
+            waste.GetComponentInChildren<Rigidbody>().AddRelativeTorque(torque);
+            waste.GetComponentInChildren<Rigidbody>().AddRelativeForce(new Vector3(-launchVelocity, launchVelocity * 2, 0));
         }
     }
 

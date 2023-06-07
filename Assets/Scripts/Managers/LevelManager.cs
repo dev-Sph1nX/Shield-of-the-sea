@@ -184,8 +184,13 @@ public class LevelManager : MonoBehaviour
         {
             p.enabled = false;
             p.gameObject.GetComponent<SimpleSampleCharacterControl>().GetStop();
-            wasteSpawner.StopGame();
         }
+        NPCInteractable[] wastes = FindObjectsOfType<NPCInteractable>();
+        foreach (NPCInteractable w in wastes)
+        {
+            Destroy(w.gameObject);
+        }
+        wasteSpawner.StopGame();
 
         finalPercentageText.text = percentage + " %";
         finalModal.transform.localScale = Vector3.one;

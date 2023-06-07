@@ -67,7 +67,10 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (collider.TryGetComponent(out IInteractable interactable))
             {
-                interactableList.Add(interactable);
+                if (interactable.isInteractable())
+                {
+                    interactableList.Add(interactable);
+                }
             }
         }
 
@@ -87,18 +90,6 @@ public class PlayerInteraction : MonoBehaviour
                     closestInteractable = interactable;
                 }
             }
-        }
-
-        // Prio 1 - La poubelle
-        if (closestInteractable.Is<BinInteractable>())
-        {
-            return closestInteractable;
-        }
-
-        // Prio 2 - Object que l'on porte
-        if (objectId != NULL)
-        {
-            return getObject();
         }
 
         // Else - Les objects par terre

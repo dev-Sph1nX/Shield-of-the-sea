@@ -21,11 +21,14 @@ public class WasteSinking : MonoBehaviour
     private bool isLost = false;
     private float baseMass, baseDrag;
     private Rigidbody rb;
+    private WasteShadow shadowManager;
+
 
     void Awake()
     {
         lvlManager = FindAnyObjectByType<LevelManager>();
-        rb = GetComponent<Rigidbody>();
+        rb = GetComponentInChildren<Rigidbody>();
+        shadowManager = GetComponent<WasteShadow>();
 
         baseMass = rb.mass;
         baseDrag = rb.drag;
@@ -35,6 +38,7 @@ public class WasteSinking : MonoBehaviour
     {
         if (collision.collider.tag == "SinkingGround")
         {
+            shadowManager.DestroyShadow();
             colliderObj.isTrigger = true;
             rb.mass = mass;
             rb.drag = drag;

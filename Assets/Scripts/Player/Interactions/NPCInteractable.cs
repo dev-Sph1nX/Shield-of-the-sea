@@ -13,12 +13,15 @@ public class NPCInteractable : MonoBehaviour, IInteractable
     private SystemId? ownerId = null;
     private WasteSinking wasteSinking;
     private ParticleSystem particle;
+    private MeshRenderer child;
+    private bool isInteracted = false;
 
     private void Awake()
     {
         _id = Helpers.generateId();
         wasteSinking = GetComponent<WasteSinking>();
-        particle = GetComponent<ParticleSystem>();
+        particle = GetComponentInChildren<ParticleSystem>();
+        child = GetComponentInChildren<MeshRenderer>();
     }
 
     private void Update()
@@ -38,23 +41,17 @@ public class NPCInteractable : MonoBehaviour, IInteractable
 
     public void Interact(SystemId id)
     {
-        // if (ownerId == null)
-        // {
-        //     ownerId = id;
-        // }
-        // else
-        // {
-        //     ownerId = null;
-        //     if (id == SystemId.Player1)
-        //     {
-        //         wasteSinking.gotThrown();
-        //     }
-        //     else
-        //     {
-        //         wasteSinking.gotRelease();
-        //     }
-        // }
-        particle.Play();
+        if (!isInteracted)
+        {
+            isInteracted = true;
+            particle.Play();
+            Destroy(child.gameObject);
+            Invoke("Destroy", .5f);
+        }
+    }
+
+    void Destroy()
+    {
         Destroy(gameObject);
     }
 
@@ -72,4 +69,8 @@ public class NPCInteractable : MonoBehaviour, IInteractable
         return _id;
     }
 
+    public bool isInteractable()
+    {
+        return !isInteracted;
+    }
 }

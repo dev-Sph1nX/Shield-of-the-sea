@@ -9,6 +9,7 @@ public interface IInteractable
     IconType GetInteractIcon();
     Transform GetTransform();
     string GetId();
+    bool isInteractable();
 
 }
 

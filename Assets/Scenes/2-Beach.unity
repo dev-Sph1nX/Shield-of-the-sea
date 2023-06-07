@@ -1914,8 +1914,8 @@ MonoBehaviour:
   maxZ: 5
   securityMargin: 0.5
   wastes:
-  - {fileID: 9003624063895916570, guid: e8b04363b7cfb4a47b91bd898c8c8e16, type: 3}
   - {fileID: 3204239122110668497, guid: e70f06df4c5db194db721fbda9546b7f, type: 3}
+  - {fileID: 9003624063895916570, guid: e8b04363b7cfb4a47b91bd898c8c8e16, type: 3}
 --- !u!1 &1330625914
 GameObject:
   m_ObjectHideFlags: 0
