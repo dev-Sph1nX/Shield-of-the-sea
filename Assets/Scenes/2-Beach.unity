@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -374,7 +374,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   m_LocalRotation: {x: 0, y: 0.91855, z: -0.39530495, w: 0}
-  m_LocalPosition: {x: -0.57, y: 11.12, z: 11.99}
+  m_LocalPosition: {x: 1.01, y: 11.12, z: 11.99}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -773,6 +773,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Sand_Landscape
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 75fa06721204f154d9f8553081cc5d53,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 75fa06721204f154d9f8553081cc5d53,
         type: 3}
@@ -2108,10 +2113,45 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6207548881613072893, guid: 42490bfa017aa1f46b71b168dd05097c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -5946032446456949233, guid: 42490bfa017aa1f46b71b168dd05097c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -3611822516076060298, guid: 42490bfa017aa1f46b71b168dd05097c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -3420116496617818993, guid: 42490bfa017aa1f46b71b168dd05097c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 42490bfa017aa1f46b71b168dd05097c,
         type: 3}
       propertyPath: m_Name
       value: cliffs
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 42490bfa017aa1f46b71b168dd05097c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1143322346531559350, guid: 42490bfa017aa1f46b71b168dd05097c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7188292791859852611, guid: 42490bfa017aa1f46b71b168dd05097c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 42490bfa017aa1f46b71b168dd05097c, type: 3}
@@ -2879,16 +2919,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player1
       objectReference: {fileID: 0}
-    - target: {fileID: 1247105819774806628, guid: 3a5ee8bc6c5baa946916233b2f66efe9,
-        type: 3}
-      propertyPath: maxX
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 1247105819774806628, guid: 3a5ee8bc6c5baa946916233b2f66efe9,
-        type: 3}
-      propertyPath: minX
-      value: -7
-      objectReference: {fileID: 0}
     - target: {fileID: 1251637363014553807, guid: 3a5ee8bc6c5baa946916233b2f66efe9,
         type: 3}
       propertyPath: m_RootOrder
@@ -2957,16 +2987,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2661471316967860760, guid: aafb1cc51fae12745930d4dfb93463ef,
-        type: 3}
-      propertyPath: maxX
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 2661471316967860760, guid: aafb1cc51fae12745930d4dfb93463ef,
-        type: 3}
-      propertyPath: minX
-      value: -7
       objectReference: {fileID: 0}
     - target: {fileID: 2665950254420451899, guid: aafb1cc51fae12745930d4dfb93463ef,
         type: 3}

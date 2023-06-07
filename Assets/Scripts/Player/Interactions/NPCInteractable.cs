@@ -12,11 +12,13 @@ public class NPCInteractable : MonoBehaviour, IInteractable
     [SerializeField][ReadOnly] string _id;
     private SystemId? ownerId = null;
     private WasteSinking wasteSinking;
+    private ParticleSystem particle;
 
     private void Awake()
     {
         _id = Helpers.generateId();
         wasteSinking = GetComponent<WasteSinking>();
+        particle = GetComponent<ParticleSystem>();
     }
 
     private void Update()
@@ -52,6 +54,7 @@ public class NPCInteractable : MonoBehaviour, IInteractable
         //         wasteSinking.gotRelease();
         //     }
         // }
+        particle.Play();
         Destroy(gameObject);
     }
 
@@ -67,12 +70,6 @@ public class NPCInteractable : MonoBehaviour, IInteractable
     public string GetId()
     {
         return _id;
-    }
-
-    public void GotSorted()
-    {
-        Debug.Log(gameObject.name + " just got rightly sorted !");
-        Destroy(gameObject);
     }
 
 }

@@ -31,20 +31,6 @@ public class WasteSinking : MonoBehaviour
         baseDrag = rb.drag;
     }
 
-    public void gotThrown()
-    {
-        colliderObj.isTrigger = false;
-        rb.mass = baseMass;
-        rb.drag = baseDrag;
-        rb.AddRelativeForce(new Vector3(-throwPower, throwPower, 0));
-    }
-    public void gotRelease()
-    {
-        colliderObj.isTrigger = false;
-        rb.mass = baseMass;
-        rb.drag = baseDrag;
-    }
-
     void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.tag == "SinkingGround")

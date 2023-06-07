@@ -52,7 +52,6 @@ public class LevelManager : MonoBehaviour
         if (StaticClass.CrossSceneGameTime > 0)
         {
             gameTime = StaticClass.CrossSceneGameTime;
-            Debug.Log(gameTime);
         }
 
         GameManager.Instance.FindNewPlayers();

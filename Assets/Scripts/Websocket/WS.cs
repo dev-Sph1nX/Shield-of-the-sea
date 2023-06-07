@@ -86,12 +86,10 @@ public class WS : MonoBehaviour
 
         if (InputSystem.Player1Interaction())
         {
-            Debug.Log(player1.gameObject.GetComponent<PlayerInteraction>().ToString());
             player1.gameObject.GetComponent<PlayerInteraction>().OnUserInteract();
         }
         if (InputSystem.Player2Interaction())
         {
-            Debug.Log(player2.gameObject.GetComponent<PlayerInteraction>().ToString());
             player2.gameObject.GetComponent<PlayerInteraction>().OnUserInteract();
         }
 

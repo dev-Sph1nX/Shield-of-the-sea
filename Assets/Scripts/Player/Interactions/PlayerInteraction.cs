@@ -11,6 +11,7 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] float interactRange = 3f;
     [Header("Animation")]
     [SerializeField] string pickupTriggerName = "Pickup";
+    [Header("Reference")]
     Animator animator = null;
     public string objectId = NULL;
     const string NULL = "null";
@@ -43,7 +44,6 @@ public class PlayerInteraction : MonoBehaviour
 
     public void OnUserInteract()
     {
-        Debug.Log("OnUserInteract of " + playerId);
         IInteractable interactable = GetInteractableObject();
         if (interactable != null)
         {
