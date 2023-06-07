@@ -15,7 +15,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField][Range(0, 120)] public float gameTime = 90f; // in seconds
 
     [Header("Points")]
-    [SerializeField] private float percentage = 100;
+    [SerializeField] public float percentage = 100;
     [SerializeField] public int percentageLostOnWasteLost = 2;
     [Header("Next Scene")]
     [SerializeField] private string nextSceneName = "0-Lobby";
@@ -26,6 +26,8 @@ public class LevelManager : MonoBehaviour
     [SerializeField] public TextMeshProUGUI timeLeftText;
     [SerializeField] public WasteSpawner wasteSpawner;
     [SerializeField] public TextMeshProUGUI percentageText;
+    [SerializeField] public HealthBar healthBar;
+
     [Header("Final modal ref")]
     [SerializeField] public GameObject finalModal;
     [SerializeField] public TextMeshProUGUI finalPercentageText;
@@ -53,14 +55,13 @@ public class LevelManager : MonoBehaviour
             Debug.Log(gameTime);
         }
 
+        GameManager.Instance.FindNewPlayers();
     }
-    // Start is called before the first frame update
+
     void Start()
     {
-        Debug.Log("Settrigger Enter");
         sceneAnimator.SetTrigger("Enter");
         Invoke("HideMask", 1f);
-        // HideMask();
         startTime = Time.timeSinceLevelLoad;
 
         if (GameManager.Instance.debugMode)
@@ -75,8 +76,6 @@ public class LevelManager : MonoBehaviour
 
     private void HideMask()
     {
-        Debug.Log("HideMask");
-
         mask.color = new Color(mask.color.r, mask.color.g, mask.color.b, 0f);
     }
 
@@ -122,14 +121,12 @@ public class LevelManager : MonoBehaviour
             if (p1haveInteract && p2haveInteract)
             {
                 isTransitioning = true;
-                Debug.Log("chnage scene");
                 GameManager.Instance.ChangeScene(nextSceneName, StartAnimation);
             }
         }
     }
     public void StartAnimation()
     {
-        Debug.Log("set trigger on " + sceneAnimator.ToString());
         sceneAnimator.SetTrigger("Exit");
     }
 
@@ -159,7 +156,7 @@ public class LevelManager : MonoBehaviour
     void StartGame()
     {
         wasteSpawner.StartGame();
-        UpdatePercentageDisplay();
+        healthBar.UpdateHealthBar(percentage);
         isPlaying = true;
     }
 
@@ -175,13 +172,8 @@ public class LevelManager : MonoBehaviour
         if (isPlaying && percentage - percentageLostOnWasteLost >= 0)
         {
             percentage -= percentageLostOnWasteLost;
-            UpdatePercentageDisplay();
+            healthBar.UpdateHealthBar(percentage);
         }
-    }
-
-    public void UpdatePercentageDisplay()
-    {
-        percentageText.text = percentage.ToString();
     }
 
     public void GameEnded()

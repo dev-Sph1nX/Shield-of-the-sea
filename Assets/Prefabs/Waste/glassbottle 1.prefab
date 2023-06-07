@@ -109,7 +109,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9003624063895916570}
   serializedVersion: 2
-  m_Mass: 0.66
+  m_Mass: 0.5
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -145,6 +145,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mass: 0.0000001
   drag: 40
-  yLimitBeforeLoseIt: -0.25
+  yLimitBeforeLoseIt: -0.4
   throwPower: 100
   colliderObj: {fileID: -1054981793193885187}

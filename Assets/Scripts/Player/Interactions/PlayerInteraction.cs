@@ -33,44 +33,20 @@ public class PlayerInteraction : MonoBehaviour
         return false;
     }
 
-    private void Update()
-    {
-        if (Interaction())
-        {
-            OnUserInteract();
-        }
-    }
+    // private void Update()
+    // {
+    //     if (Interaction())
+    //     {
+    //         OnUserInteract();
+    //     }
+    // }
 
     public void OnUserInteract()
     {
+        Debug.Log("OnUserInteract of " + playerId);
         IInteractable interactable = GetInteractableObject();
         if (interactable != null)
         {
-            // grab or release an object
-            // if (objectId == NULL || objectId == interactable?.GetId())
-            // {
-            //     if (objectId == NULL)
-            //     {
-            //         objectId = interactable.GetId();
-            //     }
-            //     else
-            //     {
-            //         objectId = NULL;
-            //     }
-            //     animator.SetTrigger(pickupTriggerName);
-            //     interactable.Interact(playerId);
-            // }
-
-            // // on bin interaction
-            // if (objectId != NULL)
-            // {
-            //     NPCInteractable obj = getObject();
-            //     if (obj.typeId.ToString() == interactable?.GetId())
-            //     {
-            //         objectId = NULL;
-            //         obj.GotSorted();
-            //     }
-            // }
             animator.SetTrigger(pickupTriggerName);
             interactable.Interact(playerId);
         }

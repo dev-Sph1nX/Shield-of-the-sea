@@ -6,6 +6,7 @@ TagManager:
   tags:
   - TransitionImage
   - SinkingGround
+  - LimitPlane
   layers:
   - Default
   - TransparentFX
