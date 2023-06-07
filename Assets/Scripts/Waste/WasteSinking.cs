@@ -10,11 +10,10 @@ public class WasteSinking : MonoBehaviour
 
     [Header("Under ground")]
     [SerializeField] float yLimitBeforeLoseIt = -0.1554092f;
-    [Header("Throw")]
-    [SerializeField] float throwPower = 100f;
 
     [Header("Reference")]
     [SerializeField] Collider colliderObj;
+    [SerializeField] private ParticleSystem deathPs;
 
     private LevelManager lvlManager;
 
@@ -50,9 +49,19 @@ public class WasteSinking : MonoBehaviour
     {
         if (transform.position.y < yLimitBeforeLoseIt && !isLost)
         {
+            transform.rotation = new Quaternion(0, 0, 0, 0);
+            transform.position = new Vector3(transform.position.x, -0.4f, transform.position.z);
+
             isLost = true;
-            Destroy(gameObject);
+            deathPs.Play();
             lvlManager.OnWasteLost();
+            Invoke("Destroy", 1f);
         }
+    }
+
+    void Destroy()
+    {
+        Destroy(gameObject);
+
     }
 }

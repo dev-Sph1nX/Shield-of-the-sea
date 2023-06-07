@@ -10,9 +10,12 @@ public class NPCInteractable : MonoBehaviour, IInteractable
 
     [Header("Id")]
     [SerializeField][ReadOnly] string _id;
+    [Header("References")]
+
+    [SerializeField] private ParticleSystem hitPs;
+
     private SystemId? ownerId = null;
     private WasteSinking wasteSinking;
-    private ParticleSystem particle;
     private MeshRenderer child;
     private bool isInteracted = false;
 
@@ -20,7 +23,6 @@ public class NPCInteractable : MonoBehaviour, IInteractable
     {
         _id = Helpers.generateId();
         wasteSinking = GetComponent<WasteSinking>();
-        particle = GetComponentInChildren<ParticleSystem>();
         child = GetComponentInChildren<MeshRenderer>();
     }
 
@@ -44,7 +46,7 @@ public class NPCInteractable : MonoBehaviour, IInteractable
         if (!isInteracted)
         {
             isInteracted = true;
-            particle.Play();
+            hitPs.Play();
             Destroy(child.gameObject);
             Invoke("Destroy", .5f);
         }

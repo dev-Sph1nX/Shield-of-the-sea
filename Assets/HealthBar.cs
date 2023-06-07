@@ -6,7 +6,6 @@ using DG.Tweening;
 public class HealthBar : MonoBehaviour
 {
     private Image healthBarImage;
-    private float localPercentage = 100;
     public void UpdateHealthBar(float percentage)
     {
         float duration = 0.75f * (percentage / 100);

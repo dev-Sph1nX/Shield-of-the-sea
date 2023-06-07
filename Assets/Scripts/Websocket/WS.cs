@@ -64,9 +64,9 @@ public class WS : MonoBehaviour
         if (!GameManager.Instance.debugMode)
         {
 
-            Debug.Log("Start connection to the server.");
-            ws = new WebSocket("ws://192.168.43.109:3000");
-            // ws = new WebSocket("ws://localhost:3000");
+            Debug.Log("Connected to the server.");
+            // ws = new WebSocket("ws://192.168.43.109:3000");
+            ws = new WebSocket("ws://localhost:3000");
 
             ws.OnMessage += OnMessage;
 
@@ -84,14 +84,17 @@ public class WS : MonoBehaviour
     void Update()
     {
 
-        if (InputSystem.Player1Interaction())
-        {
-            player1.gameObject.GetComponent<PlayerInteraction>().OnUserInteract();
-        }
-        if (InputSystem.Player2Interaction())
-        {
-            player2.gameObject.GetComponent<PlayerInteraction>().OnUserInteract();
-        }
+        // if (InputSystem.Player1Interaction())
+        // {
+        //     OnDebugMessage("{\"type\":\"ARUCO\",\"data\":{\"p1\":{\"x\":33.3,\"y\":19.8},\"p2\":\"null\",\"e1\":\"null\",\"e2\":\"null\"}}");
+        //     // OnDebugMessage("{\"type\":\"BLUE\",\"data\":{\"player\":\"p1\"}}");
+        //     // player1.gameObject.GetComponent<PlayerInteraction>().OnUserInteract();
+        // }
+        // if (InputSystem.Player2Interaction())
+        // {
+        //     OnDebugMessage("{\"type\":\"BLUE\",\"data\":{\"player\":\"p2\"}}");
+        //     // player2.gameObject.GetComponent<PlayerInteraction>().OnUserInteract();
+        // }
 
         if (ws == null)
         {
@@ -104,17 +107,29 @@ public class WS : MonoBehaviour
         ServerPositionMessage serverMessage = JsonUtility.FromJson<ServerPositionMessage>(e.Data);
         if (serverMessage.type == "BLUE")
         {
-            onUserInteractionData(e);
+            onUserInteractionData(e.Data);
         }
         else
         {
-            onUserPositionData(e);
+            onUserPositionData(serverMessage);
         }
     }
 
-    private void onUserPositionData(MessageEventArgs e)
+    // private void OnDebugMessage(string data)
+    // {
+    //     ServerPositionMessage serverMessage = JsonUtility.FromJson<ServerPositionMessage>(data);
+    //     if (serverMessage.type == "BLUE")
+    //     {
+    //         onUserInteractionData(data);
+    //     }
+    //     else
+    //     {
+    //         onUserPositionData(serverMessage);
+    //     }
+    // }
+
+    private void onUserPositionData(ServerPositionMessage serverMessage)
     {
-        ServerPositionMessage serverMessage = JsonUtility.FromJson<ServerPositionMessage>(e.Data);
         if (serverMessage.data.p1 != null && serverMessage.data.p1.x != 0 && serverMessage.data.p1.y != 0)
         {
             player1.sendData(serverMessage.data.p1);
@@ -125,9 +140,9 @@ public class WS : MonoBehaviour
         }
     }
 
-    private void onUserInteractionData(MessageEventArgs e)
+    private void onUserInteractionData(string data)
     {
-        ServerInteractionMessage serverMessage = JsonUtility.FromJson<ServerInteractionMessage>(e.Data);
+        ServerInteractionMessage serverMessage = JsonUtility.FromJson<ServerInteractionMessage>(data);
         if (serverMessage.data.player == "p1")
         {
             Debug.Log("Player 1 Interact");
@@ -139,8 +154,6 @@ public class WS : MonoBehaviour
             player2.gameObject.GetComponent<PlayerInteraction>().OnUserInteract();
         }
     }
-
-
 
     private void OnDestroy()
     {
