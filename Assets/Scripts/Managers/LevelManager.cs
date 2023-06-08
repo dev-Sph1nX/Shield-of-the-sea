@@ -25,7 +25,6 @@ public class LevelManager : MonoBehaviour
     [SerializeField] public TextMeshProUGUI startText;
     [SerializeField] public TextMeshProUGUI timeLeftText;
     [SerializeField] public WasteSpawner wasteSpawner;
-    [SerializeField] public TextMeshProUGUI percentageText;
     [SerializeField] public HealthBar healthBar;
 
     [Header("Final modal ref")]
@@ -38,6 +37,7 @@ public class LevelManager : MonoBehaviour
     private Animator sceneAnimator = null;
     private bool isCountingDown = false, isPlaying = false, endCanvasIsShow = false;
     private bool p1haveInteract = false, p2haveInteract = false, isTransitioning = false;
+    private bool p1interact = false, p2interact = false;
     private float startTime;
 
     void Awake()
@@ -55,6 +55,7 @@ public class LevelManager : MonoBehaviour
         }
 
         GameManager.Instance.FindNewPlayers();
+        GameManager.Instance.FindLevelManager();
     }
 
     void Start()
@@ -105,14 +106,16 @@ public class LevelManager : MonoBehaviour
 
         if (endCanvasIsShow && !isTransitioning)
         {
-            if (InputSystem.Player1Interaction())
+            if (p1interact)
             {
+                p1interact = false;
                 p1haveInteract = !p1haveInteract;
                 p1isReadyText.enabled = p1haveInteract;
             }
 
-            if (InputSystem.Player2Interaction())
+            if (p2interact)
             {
+                p2interact = false;
                 p2haveInteract = !p2haveInteract;
                 p2isReadyText.enabled = p2haveInteract;
             }
@@ -177,7 +180,6 @@ public class LevelManager : MonoBehaviour
 
     public void GameEnded()
     {
-        percentageText.text = "";
         timeLeftText.text = "";
         PlayerInteraction[] players = FindObjectsOfType<PlayerInteraction>();
         foreach (PlayerInteraction p in players)
@@ -194,5 +196,15 @@ public class LevelManager : MonoBehaviour
 
         finalPercentageText.text = percentage + " %";
         finalModal.transform.localScale = Vector3.one;
+    }
+
+    public void OnPlayer1Interaction()
+    {
+        p1interact = true;
+    }
+    public void OnPlayer2Interaction()
+    {
+        p2interact = true;
+
     }
 }

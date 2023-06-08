@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using MyBox;
 
 
@@ -15,10 +16,16 @@ public class PlayerInteraction : MonoBehaviour
     Animator animator = null;
     public string objectId = NULL;
     const string NULL = "null";
-
+    private string sceneName;
+    private LobbyManager lobbyManager;
+    public LevelManager levelManager;
+    private bool interact = false;
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        lobbyManager = FindObjectOfType<LobbyManager>();
+        levelManager = FindObjectOfType<LevelManager>();
+        sceneName = SceneManager.GetActiveScene().name;
     }
 
     private bool Interaction()
@@ -34,23 +41,52 @@ public class PlayerInteraction : MonoBehaviour
         return false;
     }
 
-    // private void Update()
-    // {
-    //     if (Interaction())
-    //     {
-    //         OnUserInteract();
-    //     }
-    // }
+    private void Update()
+    {
+        if (interact)
+        {
+            interact = false;
+            OnUserInteract();
+        }
+    }
 
     public void OnUserInteract()
     {
+        Debug.Log(gameObject.name + " interact");
+        if (sceneName == "0-Lobby")
+        {
+            if (playerId == SystemId.Player1)
+            {
+
+                lobbyManager.OnPlayer1Interaction();
+            }
+            if (playerId == SystemId.Player2)
+            {
+                lobbyManager.OnPlayer2Interaction();
+            }
+        }
+        if (sceneName == "2-Beach")
+        {
+            if (playerId == SystemId.Player1)
+            {
+                levelManager.OnPlayer1Interaction();
+            }
+            if (playerId == SystemId.Player2)
+            {
+                levelManager.OnPlayer2Interaction();
+            }
+        }
         IInteractable interactable = GetInteractableObject();
         if (interactable != null)
         {
             animator.SetTrigger(pickupTriggerName);
             interactable.Interact(playerId);
         }
+    }
 
+    public void GetInteractionFromWS()
+    {
+        interact = true;
     }
 
     private void OnDrawGizmos()
@@ -67,7 +103,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (collider.TryGetComponent(out IInteractable interactable))
             {
-                if (interactable.isInteractable())
+                if (interactable.isInteractable() && isAllowedToInteract(interactable))
                 {
                     interactableList.Add(interactable);
                 }
@@ -107,5 +143,19 @@ public class PlayerInteraction : MonoBehaviour
             }
         }
         return null;
+    }
+
+    public bool isAllowedToInteract(IInteractable interactable)
+    {
+        SystemId wasteId = interactable.GetTransform().gameObject.GetComponent<NPCInteractable>().typeId;
+        if (playerId == SystemId.Player1 && wasteId == SystemId.Cannette)
+        {
+            return true;
+        }
+        if (playerId == SystemId.Player2 && wasteId == SystemId.Glass)
+        {
+            return true;
+        }
+        return false;
     }
 }

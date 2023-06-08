@@ -1,8 +1,11 @@
 using WebSocketSharp;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Text;
 using System.Collections.Generic;
+using System;
+using TMPro;
 
 [System.Serializable]
 public class ServerPositionMessage
@@ -59,25 +62,42 @@ public class WS : MonoBehaviour
     string jsonString = "{\"type\":\"INIT\",\"data\":{\"name\":\"unity\"}}";
     [SerializeField] public PlayerMovement player1;
     [SerializeField] public PlayerMovement player2;
+    [SerializeField] public TextMeshProUGUI stateText;
+    private PlayerInteraction player1Interaction;
+    private PlayerInteraction player2Interaction;
+    private string sceneName;
+
     void Start()
     {
         if (!GameManager.Instance.debugMode)
         {
 
             Debug.Log("Connected to the server.");
-            // ws = new WebSocket("ws://192.168.43.109:3000");
-            ws = new WebSocket("ws://localhost:3000");
+            try
+            {
+                ws = new WebSocket("ws://192.168.43.109:3000");
+                // ws = new WebSocket("ws://localhost:3000");
+                stateText.text = "Connected";
 
-            ws.OnMessage += OnMessage;
+                // ws = new WebSocket("ws://localhost:3000");
 
-            ws.Connect();
+                ws.OnMessage += OnMessage;
 
-            ws.Send(jsonString);
+                ws.Connect();
+
+                ws.Send(jsonString);
+            }
+            catch
+            {
+                stateText.text = "Not connected";
+            }
         }
         else
         {
             Debug.Log("Debug Mode activate.");
         }
+        UpdateInteraction();
+        sceneName = SceneManager.GetActiveScene().name;
 
     }
 
@@ -105,6 +125,7 @@ public class WS : MonoBehaviour
     void OnMessage(object sender, MessageEventArgs e)
     {
         ServerPositionMessage serverMessage = JsonUtility.FromJson<ServerPositionMessage>(e.Data);
+
         if (serverMessage.type == "BLUE")
         {
             onUserInteractionData(e.Data);
@@ -145,13 +166,11 @@ public class WS : MonoBehaviour
         ServerInteractionMessage serverMessage = JsonUtility.FromJson<ServerInteractionMessage>(data);
         if (serverMessage.data.player == "p1")
         {
-            Debug.Log("Player 1 Interact");
-            player1.gameObject.GetComponent<PlayerInteraction>().OnUserInteract();
+            player1Interaction.GetInteractionFromWS();
         }
         if (serverMessage.data.player == "p2")
         {
-            Debug.Log("Player 2 Interact");
-            player2.gameObject.GetComponent<PlayerInteraction>().OnUserInteract();
+            player2Interaction.GetInteractionFromWS();
         }
     }
 
@@ -161,6 +180,12 @@ public class WS : MonoBehaviour
         {
             ws.Close();
         }
+    }
+
+    public void UpdateInteraction()
+    {
+        player1Interaction = player1.gameObject.GetComponent<PlayerInteraction>();
+        player2Interaction = player2.gameObject.GetComponent<PlayerInteraction>();
     }
 
 

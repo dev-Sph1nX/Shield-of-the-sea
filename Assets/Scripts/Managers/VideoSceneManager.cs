@@ -10,15 +10,13 @@ public class VideoSceneManager : MonoBehaviour
     [Header("Scene Transition")]
     [SerializeField] private Animator sceneAnimator = null;
     [SerializeField] private string triggerName;
+
     private bool isTransitioningOut = false;
-
-
-
 
     // Update is called once per frame
     void Update()
     {
-        if (InputSystem.Player1Interaction() && !isTransitioningOut) // GameManager.Instance.debugMode && 
+        if (!isTransitioningOut && InputSystem.Player1Interaction())
         {
             NextScene();
             isTransitioningOut = true;
@@ -34,4 +32,5 @@ public class VideoSceneManager : MonoBehaviour
     {
         sceneAnimator.SetTrigger(triggerName);
     }
+
 }

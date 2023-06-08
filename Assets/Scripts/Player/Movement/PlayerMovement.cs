@@ -40,8 +40,6 @@ public class PlayerMovement : MonoBehaviour
             GetComponent<SimpleSampleCharacterControl>().enabled = true;
             this.enabled = false;
         }
-        inverseX = StaticClass.CrossSceneInverseX;
-        inverseZ = StaticClass.CrossSceneInverseZ;
     }
 
     private void Update()

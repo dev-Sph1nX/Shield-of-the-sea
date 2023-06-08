@@ -56,18 +56,32 @@ public class GameManager : MonoBehaviour
     public void FindNewPlayers()
     {
         PlayerMovement[] players = FindObjectsOfType<PlayerMovement>();
+        WS ws = GetComponent<WS>();
+
         foreach (PlayerMovement p in players)
         {
             if (p.playerId == SystemId.Player1)
             {
-                WS ws = GetComponent<WS>();
                 ws.player1 = p;
             }
             if (p.playerId == SystemId.Player2)
             {
-                WS ws = GetComponent<WS>();
                 ws.player2 = p;
             }
+        }
+        ws.UpdateInteraction();
+    }
+
+    public void FindLevelManager()
+    {
+        LevelManager level = FindObjectOfType<LevelManager>();
+        Debug.Log("level " + level.name);
+        PlayerInteraction[] players = FindObjectsOfType<PlayerInteraction>();
+        WS ws = GetComponent<WS>();
+
+        foreach (PlayerInteraction p in players)
+        {
+            p.levelManager = level;
         }
     }
 }

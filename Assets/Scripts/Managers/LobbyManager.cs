@@ -16,6 +16,9 @@ public class LobbyManager : MonoBehaviour
     bool P1IsReady = false;
     bool P2IsReady = false;
 
+    bool P1trigger = false;
+    bool P2trigger = false;
+
     // Update is called once per frame
     void Update()
     {
@@ -24,8 +27,20 @@ public class LobbyManager : MonoBehaviour
         //     P1IsReady = true;
         //     P2IsReady = true;
         // }
-        if (InputSystem.Player1Interaction())
+
+        if (GameManager.Instance.debugMode && InputSystem.Player1Interaction())
         {
+            P1trigger = true;
+        }
+
+        if (GameManager.Instance.debugMode && InputSystem.Player2Interaction())
+        {
+            P2trigger = true;
+        }
+
+        if (P1trigger || InputSystem.Player1Interaction())
+        {
+            P1trigger = false;
             P1IsReady = !P1IsReady;
             if (P1IsReady)
             {
@@ -33,8 +48,9 @@ public class LobbyManager : MonoBehaviour
             }
         }
 
-        if (InputSystem.Player2Interaction())
+        if (P2trigger || InputSystem.Player1Interaction())
         {
+            P2trigger = false;
             P2IsReady = !P2IsReady;
             if (P2IsReady)
             {
@@ -51,5 +67,15 @@ public class LobbyManager : MonoBehaviour
     public void StartAnimation()
     {
         sceneAnimator.SetTrigger(triggerName);
+    }
+
+    public void OnPlayer1Interaction()
+    {
+        P1trigger = true;
+    }
+
+    public void OnPlayer2Interaction()
+    {
+        P2trigger = true;
     }
 }
