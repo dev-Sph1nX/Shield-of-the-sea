@@ -12,7 +12,7 @@ Material:
     type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
-  m_LightmapFlags: 4
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -88,32 +88,32 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _DistortAmp: 2
-    - _DistortNoisePeriod: 3.6
+    - _DistortAmp: 2.55
+    - _DistortNoisePeriod: 5
     - _DstBlend: 0
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _GrainColorBlend: 0.47
-    - _GrainPeriod: 474.05
+    - _GrainColorBlend: 0.4
+    - _GrainPeriod: 236.65
     - _Metallic: 0
     - _NormalStrenght: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
-    - _PolygonSides: 3
+    - _PolygonSides: 3.96
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _SineAmp: 0.23
-    - _SineFrequency: 6.35
-    - _SineRotation: 10.17
+    - _SineAmp: 0
+    - _SineFrequency: 5
+    - _SineRotation: 10
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
-    - _UVScale: 1.64
+    - _UVScale: 1
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
@@ -125,7 +125,7 @@ Material:
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _UVTiling: {r: 2, g: 2, b: 0, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &7809246890470140261
+--- !u!114 &441784079894760778
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

@@ -52,7 +52,6 @@ public class PlayerInteraction : MonoBehaviour
 
     public void OnUserInteract()
     {
-        Debug.Log(gameObject.name + " interact");
         if (sceneName == "0-Lobby")
         {
             if (playerId == SystemId.Player1)

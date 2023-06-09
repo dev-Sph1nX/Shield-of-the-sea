@@ -307,8 +307,8 @@ Transform:
   m_GameObject: {fileID: 1245499391093077067}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.4999999, y: 1.4999999, z: 1.4999999}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1251513886302987115}
   - {fileID: 1243037964722708997}
@@ -412,13 +412,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerId: 0
-  minX: -7
-  maxX: 7
-  minZ: -5
-  maxZ: 5
+  minX: -8
+  maxX: 6
+  minZ: -3
+  maxZ: 7
   interpolation: 3
   mouvementSensibility: 0.031
-  inverseZ: 0
+  inverseZ: 1
   inverseX: 0
   m_animator: {fileID: 1161157920509035931}
 --- !u!114 &1247105819774806632
@@ -437,6 +437,7 @@ MonoBehaviour:
   interactRange: 1.43
   pickupTriggerName: Pickup
   objectId: null
+  levelManager: {fileID: 0}
 --- !u!199 &4494502999506297275
 ParticleSystemRenderer:
   serializedVersion: 6

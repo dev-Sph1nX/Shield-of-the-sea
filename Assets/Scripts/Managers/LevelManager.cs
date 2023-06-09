@@ -123,10 +123,16 @@ public class LevelManager : MonoBehaviour
             if (p1haveInteract && p2haveInteract)
             {
                 isTransitioning = true;
-                GameManager.Instance.ChangeScene(nextSceneName, StartAnimation);
+                Invoke("ChangeScene", 15f);
             }
         }
     }
+
+    public void ChangeScene()
+    {
+        GameManager.Instance.ChangeScene(nextSceneName, StartAnimation);
+    }
+
     public void StartAnimation()
     {
         sceneAnimator.SetTrigger("Exit");

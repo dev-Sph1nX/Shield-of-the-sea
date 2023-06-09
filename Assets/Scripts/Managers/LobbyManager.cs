@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class LobbyManager : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class LobbyManager : MonoBehaviour
     [Header("References")]
     [SerializeField] Animator p1Animator = null;
     [SerializeField] Animator p2Animator = null;
+    [SerializeField] TextMeshProUGUI p1Text = null;
+    [SerializeField] TextMeshProUGUI p2Text = null;
     bool P1IsReady = false;
     bool P2IsReady = false;
 
@@ -44,17 +47,28 @@ public class LobbyManager : MonoBehaviour
             P1IsReady = !P1IsReady;
             if (P1IsReady)
             {
+                p1Text.text = "Red Player is ready !";
                 p1Animator.SetTrigger(animationName);
+            }
+            else
+            {
+                p1Text.text = "";
             }
         }
 
-        if (P2trigger || InputSystem.Player1Interaction())
+        if (P2trigger || InputSystem.Player2Interaction())
         {
             P2trigger = false;
             P2IsReady = !P2IsReady;
+            p1Text.enabled = !p2Text.enabled;
             if (P2IsReady)
             {
+                p2Text.text = "Blue Player is ready !";
                 p2Animator.SetTrigger(animationName);
+            }
+            else
+            {
+                p2Text.text = "";
             }
         }
 

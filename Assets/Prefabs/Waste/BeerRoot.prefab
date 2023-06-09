@@ -4810,7 +4810,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 01c8b75699121434b8b78c77ff279803, type: 2}
+  - {fileID: 2100000, guid: 15389e640afd5844e845d500feeb80a1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9773,8 +9773,8 @@ Transform:
   m_GameObject: {fileID: 3204239122110668497}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7401706480178636196}
   - {fileID: 9028311269601591841}
@@ -9832,7 +9832,9 @@ MonoBehaviour:
   y: 0.01
   maxSize: 2
   topHeight: 15
-  shadowPrefab: {fileID: 136257561472214612, guid: 1da4c8ce46991ae4a991081791cc66a5,
+  blueShadow: {fileID: 136257561472214612, guid: 1da4c8ce46991ae4a991081791cc66a5,
+    type: 3}
+  redShadow: {fileID: 136257561472214612, guid: 06c7411acc169144794de3f2aa5aacde,
     type: 3}
 --- !u!54 &3849668662272642567
 Rigidbody:
@@ -9922,7 +9924,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0762aad6c86c7184482fd5c0cdea3b0e, type: 2}
+  - {fileID: 2100000, guid: 15389e640afd5844e845d500feeb80a1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -19655,7 +19657,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 1108147716743453759, guid: d3968089085c2b641b20c284164f67d6, type: 3}
+  - {fileID: 2100000, guid: 8edfd5581eb1521468e795678b1bceaa, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -96,8 +96,8 @@ Transform:
   m_GameObject: {fileID: 2659667180652611263}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -5, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.4999999, y: 1.4999999, z: 1.4999999}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2666037601530532255}
   - {fileID: 2657623354036326641}
@@ -188,13 +188,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerId: 1
-  minX: -7
-  maxX: 7
-  minZ: -5
-  maxZ: 5
+  minX: -8
+  maxX: 6
+  minZ: -3
+  maxZ: 7
   interpolation: 3
   mouvementSensibility: 0.031
-  inverseZ: 0
+  inverseZ: 1
   inverseX: 0
   m_animator: {fileID: 2719238316348389231}
 --- !u!114 &2661471316967860740
@@ -213,6 +213,7 @@ MonoBehaviour:
   interactRange: 1.43
   pickupTriggerName: Pickup
   objectId: null
+  levelManager: {fileID: 0}
 --- !u!199 &5660709224333603920
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -5068,8 +5069,8 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 15389e640afd5844e845d500feeb80a1, type: 2}
-  - {fileID: 2100000, guid: 15389e640afd5844e845d500feeb80a1, type: 2}
+  - {fileID: 2100000, guid: daddd82db7bc0c946ac9fff44c56d5e2, type: 2}
+  - {fileID: 2100000, guid: daddd82db7bc0c946ac9fff44c56d5e2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6156,7 +6157,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 15389e640afd5844e845d500feeb80a1, type: 2}
+  - {fileID: 2100000, guid: daddd82db7bc0c946ac9fff44c56d5e2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

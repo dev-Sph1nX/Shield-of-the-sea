@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Water
-  m_Shader: {fileID: -6465566751694194690, guid: bbd1bb25f0c96d84a95815653b1f4fdb,
+  m_Shader: {fileID: -6465566751694194690, guid: b53f3fbde4925234da83dc9975f28d17,
     type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -88,8 +88,13 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
+    - _Distance: 8.82
     - _DstBlend: 0
     - _EnvironmentReflections: 1
+    - _FoamAmount: 0.19
+    - _FoamCutoff: 0.96
+    - _FoamDistance: 7.54
+    - _FoamSpeed: 0.025
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
@@ -99,26 +104,32 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _RippleDencity: 15
-    - _RippleSlimness: 5
+    - _RippleDencity: 50
+    - _RippleSlimness: 10
     - _RippleSpeed: 1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
+    - _Speed: 1
     - _SrcBlend: 1
     - _Surface: 0
-    - _WaterHeight: 0.18
-    - _WaterOpacity: 0.755
-    - _WaveSpeed: 0.05
+    - _WaterHeight: 0.055
+    - _WaterOpacity: 0.75
+    - _WaveSpeed: 0.025
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseWaterColor: {r: 0.046012796, g: 0.61437964, b: 0.8867924, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _DeepColor: {r: 0.106666066, g: 0.15648806, b: 0.44339618, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _RippleColor: {r: 0.5411765, g: 1.458824, b: 2, a: 0}
+    - _FoamColor: {r: 1, g: 1, b: 1, a: 1}
+    - _FoamScale: {r: 10, g: 10, b: 0, a: 0}
+    - _RippleColor: {r: 0.7490196, g: 0.7490196, b: 0.7490196, a: 0.2901961}
+    - _Scale: {r: 1, g: 1, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _SurfaceColor: {r: 0.18244925, g: 0.7805185, b: 0.9433962, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &698199922734255135
 MonoBehaviour:
