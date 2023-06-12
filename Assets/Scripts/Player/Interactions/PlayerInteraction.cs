@@ -43,7 +43,7 @@ public class PlayerInteraction : MonoBehaviour
 
     private void Update()
     {
-        if (interact)
+        if (interact || (GameManager.Instance.debugMode && Interaction()))
         {
             interact = false;
             OnUserInteract();
@@ -52,6 +52,7 @@ public class PlayerInteraction : MonoBehaviour
 
     public void OnUserInteract()
     {
+        IInteractable interactable = GetInteractableObject();
         if (sceneName == "0-Lobby")
         {
             if (playerId == SystemId.Player1)
@@ -68,14 +69,13 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (playerId == SystemId.Player1)
             {
-                levelManager.OnPlayer1Interaction();
+                levelManager.OnPlayer1Interaction(interactable != null);
             }
             if (playerId == SystemId.Player2)
             {
-                levelManager.OnPlayer2Interaction();
+                levelManager.OnPlayer2Interaction(interactable != null);
             }
         }
-        IInteractable interactable = GetInteractableObject();
         if (interactable != null)
         {
             animator.SetTrigger(pickupTriggerName);
@@ -131,18 +131,6 @@ public class PlayerInteraction : MonoBehaviour
         return closestInteractable;
     }
 
-    public NPCInteractable getObject()
-    {
-        if (objectId != NULL)
-        {
-            NPCInteractable[] allWastes = FindObjectsOfType<NPCInteractable>();
-            foreach (NPCInteractable w in allWastes)
-            {
-                if (w.GetId() == objectId) return w;
-            }
-        }
-        return null;
-    }
 
     public bool isAllowedToInteract(IInteractable interactable)
     {
@@ -155,6 +143,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             return true;
         }
+        if (wasteId == SystemId.Pneu) return true;
         return false;
     }
 }

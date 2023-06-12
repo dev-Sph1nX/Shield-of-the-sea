@@ -8,37 +8,21 @@ public class NPCInteractable : MonoBehaviour, IInteractable
     [Header("Type")]
     [SerializeField] public SystemId typeId;
 
-    [Header("Id")]
-    [SerializeField][ReadOnly] string _id;
     [Header("References")]
 
     [SerializeField] private ParticleSystem hitPs;
 
     private SystemId? ownerId = null;
-    private WasteSinking wasteSinking;
     private MeshRenderer child;
     private bool isInteracted = false;
 
     private void Awake()
     {
-        _id = Helpers.generateId();
-        wasteSinking = GetComponent<WasteSinking>();
         child = GetComponentInChildren<MeshRenderer>();
     }
 
     private void Update()
     {
-        if (ownerId != null)
-        {
-            PlayerMovement[] players = FindObjectsOfType<PlayerMovement>();
-            foreach (PlayerMovement p in players)
-            {
-                if (p.playerId == ownerId)
-                {
-                    transform.position = p.transform.position + Vector3.up * 2;
-                }
-            }
-        }
     }
 
     public void Interact(SystemId id)
@@ -64,11 +48,6 @@ public class NPCInteractable : MonoBehaviour, IInteractable
     public IconType GetInteractIcon()
     {
         return ownerId != null ? IconType.Release : IconType.Take;
-    }
-
-    public string GetId()
-    {
-        return _id;
     }
 
     public bool isInteractable()

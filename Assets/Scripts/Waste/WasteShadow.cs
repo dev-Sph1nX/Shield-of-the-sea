@@ -11,10 +11,8 @@ public class WasteShadow : MonoBehaviour
     [SerializeField] float topHeight = 15f;
 
     [Header("Reference")]
-    [SerializeField] GameObject blueShadow;
-    [SerializeField] GameObject redShadow;
+    [SerializeField] GameObject shadow;
 
-    private GameObject shadow;
     private Vector3 position;
     private float actualSize;
     // Start is called before the first frame update
@@ -24,8 +22,7 @@ public class WasteShadow : MonoBehaviour
         actualSize = maxSize;
         position = new Vector3(transform.position.x, y, transform.position.z);
         NPCInteractable interactable = GetComponent<NPCInteractable>();
-        GameObject model = interactable.typeId == SystemId.Cannette ? redShadow : blueShadow;
-        shadow = Instantiate(model, position, Quaternion.identity);
+        shadow = Instantiate(shadow, position, Quaternion.identity);
     }
 
     // Update is called once per frame

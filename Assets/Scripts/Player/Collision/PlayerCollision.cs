@@ -9,20 +9,21 @@ public class PlayerCollision : MonoBehaviour
     [SerializeField] public string stunTriggerName = "Wave";
 
     [Header("Reference")]
-    [SerializeField] public GameObject indicator;
+    [SerializeField] public ParticleSystem stunParticle;
 
     private bool isStun = false;
     private Animator animator = null;
-    private Renderer indicatorRenderer = null;
-    private Color initialColor;
     private PlayerMovement playerMovement;
+    private SimpleSampleCharacterControl simpleSampleCharacter;
+    private PlayerInteraction playerInteraction;
+
 
     private void Awake()
     {
         animator = gameObject.transform.parent.gameObject.GetComponent<Animator>();
-        indicatorRenderer = indicator.GetComponent<Renderer>();
-        initialColor = indicatorRenderer.material.color;
         playerMovement = gameObject.transform.parent.gameObject.GetComponent<PlayerMovement>();
+        simpleSampleCharacter = gameObject.transform.parent.gameObject.GetComponent<SimpleSampleCharacterControl>();
+        playerInteraction = gameObject.transform.parent.gameObject.GetComponent<PlayerInteraction>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -39,17 +40,25 @@ public class PlayerCollision : MonoBehaviour
         isStun = true;
         animator.SetTrigger(stunTriggerName);
 
-        playerMovement.enabled = false;
-        indicatorRenderer.enabled = true;
-        indicatorRenderer.material.color = new Color(0, 0, 0);
-        print(gameObject.name + "is stun");
+        if (GameManager.Instance.debugMode)
+            simpleSampleCharacter.enabled = false;
+        else
+            playerMovement.enabled = false;
+        playerInteraction.enabled = false;
+
+        stunParticle.Play();
+
 
         yield return new WaitForSeconds(stunTime);
 
-        print(gameObject.name + "is not more stun");
+        stunParticle.Stop();
         isStun = false;
-        playerMovement.enabled = true;
-        indicatorRenderer.enabled = false;
-        indicatorRenderer.material.color = initialColor;
+
+        if (GameManager.Instance.debugMode)
+            simpleSampleCharacter.enabled = true;
+        else
+            playerMovement.enabled = true;
+        playerInteraction.enabled = true;
+
     }
 }

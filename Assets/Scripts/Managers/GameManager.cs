@@ -75,7 +75,6 @@ public class GameManager : MonoBehaviour
     public void FindLevelManager()
     {
         LevelManager level = FindObjectOfType<LevelManager>();
-        Debug.Log("level " + level.name);
         PlayerInteraction[] players = FindObjectsOfType<PlayerInteraction>();
         WS ws = GetComponent<WS>();
 

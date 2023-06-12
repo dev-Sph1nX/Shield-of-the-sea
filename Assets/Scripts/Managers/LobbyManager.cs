@@ -41,7 +41,7 @@ public class LobbyManager : MonoBehaviour
             P2trigger = true;
         }
 
-        if (P1trigger || InputSystem.Player1Interaction())
+        if (P1trigger)
         {
             P1trigger = false;
             P1IsReady = !P1IsReady;
@@ -56,11 +56,10 @@ public class LobbyManager : MonoBehaviour
             }
         }
 
-        if (P2trigger || InputSystem.Player2Interaction())
+        if (P2trigger)
         {
             P2trigger = false;
             P2IsReady = !P2IsReady;
-            p1Text.enabled = !p2Text.enabled;
             if (P2IsReady)
             {
                 p2Text.text = "Blue Player is ready !";

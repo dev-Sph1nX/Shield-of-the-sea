@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using MyBox;
 
 public class LevelManager : MonoBehaviour
 {
@@ -32,6 +33,10 @@ public class LevelManager : MonoBehaviour
     [SerializeField] public TextMeshProUGUI finalPercentageText;
     [SerializeField] public TextMeshProUGUI p1isReadyText;
     [SerializeField] public TextMeshProUGUI p2isReadyText;
+    [Header("Player Stat")]
+    [SerializeField][ReadOnly] public int p1Score = 0;
+    [SerializeField][ReadOnly] public int p2Score = 0;
+
 
     private Image mask = null;
     private Animator sceneAnimator = null;
@@ -106,14 +111,14 @@ public class LevelManager : MonoBehaviour
 
         if (endCanvasIsShow && !isTransitioning)
         {
-            if (p1interact)
+            if (p1interact || InputSystem.Player1Interaction())
             {
                 p1interact = false;
                 p1haveInteract = !p1haveInteract;
                 p1isReadyText.enabled = p1haveInteract;
             }
 
-            if (p2interact)
+            if (p2interact || InputSystem.Player2Interaction())
             {
                 p2interact = false;
                 p2haveInteract = !p2haveInteract;
@@ -123,7 +128,7 @@ public class LevelManager : MonoBehaviour
             if (p1haveInteract && p2haveInteract)
             {
                 isTransitioning = true;
-                Invoke("ChangeScene", 15f);
+                ChangeScene();
             }
         }
     }
@@ -163,7 +168,7 @@ public class LevelManager : MonoBehaviour
 
     void StartGame()
     {
-        wasteSpawner.StartGame();
+        wasteSpawner.StartGame(gameTime);
         healthBar.UpdateHealthBar(percentage);
         isPlaying = true;
     }
@@ -196,6 +201,11 @@ public class LevelManager : MonoBehaviour
         NPCInteractable[] wastes = FindObjectsOfType<NPCInteractable>();
         foreach (NPCInteractable w in wastes)
         {
+            WasteShadow shadowManager = w.GetComponent<WasteShadow>();
+            if (shadowManager)
+            {
+                shadowManager.DestroyShadow();
+            }
             Destroy(w.gameObject);
         }
         wasteSpawner.StopGame();
@@ -204,13 +214,28 @@ public class LevelManager : MonoBehaviour
         finalModal.transform.localScale = Vector3.one;
     }
 
-    public void OnPlayer1Interaction()
+    public void OnPlayer1Interaction(bool scoring)
     {
-        p1interact = true;
+        if (scoring)
+        {
+            p1Score++;
+        }
+
+        if (endCanvasIsShow && !isTransitioning) // for the final modal
+        {
+            p1interact = true;
+        }
     }
-    public void OnPlayer2Interaction()
+    public void OnPlayer2Interaction(bool scoring)
     {
-        p2interact = true;
+        if (scoring)
+        {
+            p2Score++;
+        }
+        if (endCanvasIsShow && !isTransitioning)
+        {
+            p2interact = true;
+        }
 
     }
 }

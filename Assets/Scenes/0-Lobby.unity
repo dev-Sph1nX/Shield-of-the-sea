@@ -135,11 +135,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player1
       objectReference: {fileID: 0}
-    - target: {fileID: 1247105819774806628, guid: 3a5ee8bc6c5baa946916233b2f66efe9,
-        type: 3}
-      propertyPath: inverseZ
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1251637363014553807, guid: 3a5ee8bc6c5baa946916233b2f66efe9,
         type: 3}
       propertyPath: m_RootOrder
@@ -983,8 +978,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1152487335}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.5}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.00000023841858, y: 0, z: 0.5}
   m_LocalScale: {x: 8.9335, y: 8.9335, z: 8.9335}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1103,7 +1098,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47d2f12c34a492341905abb29885af60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugMode: 0
+  debugMode: 1
   overrideSceneName: 2-Beach
 --- !u!1 &1472854935
 GameObject:
@@ -1437,11 +1432,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2661471316967860760, guid: aafb1cc51fae12745930d4dfb93463ef,
-        type: 3}
-      propertyPath: inverseZ
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2665950254420451899, guid: aafb1cc51fae12745930d4dfb93463ef,
         type: 3}
