@@ -28,6 +28,9 @@ public class LevelManager : MonoBehaviour
     [SerializeField] public WasteSpawner wasteSpawner;
     [SerializeField] public HealthBar healthBar;
 
+    [Header("Inital modal ref")]
+    [SerializeField] public CustomModal initialModal;
+
     [Header("Final modal ref")]
     [SerializeField] public GameObject finalModal;
     [SerializeField] public TextMeshProUGUI finalPercentageText;
@@ -40,9 +43,9 @@ public class LevelManager : MonoBehaviour
 
     private Image mask = null;
     private Animator sceneAnimator = null;
-    private bool isCountingDown = false, isPlaying = false, endCanvasIsShow = false;
+    private bool isPlaying = false, endCanvasIsShow = false;
     private bool p1haveInteract = false, p2haveInteract = false, isTransitioning = false;
-    private bool p1interact = false, p2interact = false;
+    private bool p1interact = false, p2interact = false, startGameTrigger = false;
     private float startTime;
 
     void Awake()
@@ -67,6 +70,7 @@ public class LevelManager : MonoBehaviour
     {
         sceneAnimator.SetTrigger("Enter");
         Invoke("HideMask", 1f);
+        Invoke("OpenInitialModal", 1f);
         startTime = Time.timeSinceLevelLoad;
 
         if (GameManager.Instance.debugMode)
@@ -75,13 +79,16 @@ public class LevelManager : MonoBehaviour
             countDownInterval = 0.2f;
         }
 
-
         gameTime += timeToPlay + countDownInterval * 2;
     }
 
     private void HideMask()
     {
         mask.color = new Color(mask.color.r, mask.color.g, mask.color.b, 0f);
+    }
+    private void OpenInitialModal()
+    {
+        initialModal.ShowModal();
     }
 
     // Update is called once per frame
@@ -91,17 +98,21 @@ public class LevelManager : MonoBehaviour
         gameTime -= Time.timeSinceLevelLoad - startTime;
         startTime = Time.timeSinceLevelLoad;
 
-        if (timeToPlay < countDownInterval * 4 && !isCountingDown)
+
+        // is trigger on close of opening level modal 
+        if (startGameTrigger)
         {
-            isCountingDown = true;
+            startGameTrigger = false;
             StartCoroutine(CountDownCoroutine());
         }
 
+        // in game 
         if (isPlaying)
         {
             DisplayTime(gameTime);
         }
 
+        // end game 
         if (gameTime <= 0.0f && !endCanvasIsShow)
         {
             isPlaying = false;
@@ -109,6 +120,7 @@ public class LevelManager : MonoBehaviour
             GameEnded();
         }
 
+        // after end game 
         if (endCanvasIsShow && !isTransitioning)
         {
             if (p1interact || InputSystem.Player1Interaction())
@@ -166,11 +178,16 @@ public class LevelManager : MonoBehaviour
         Invoke("StartGame", 1f);
     }
 
-    void StartGame()
+    public void StartGame()
     {
         wasteSpawner.StartGame(gameTime);
         healthBar.UpdateHealthBar(percentage);
         isPlaying = true;
+    }
+
+    public void onOpeningModalClose()
+    {
+        startGameTrigger = true;
     }
 
     void DisplayTime(float timeToDisplay)
@@ -216,6 +233,13 @@ public class LevelManager : MonoBehaviour
 
     public void OnPlayer1Interaction(bool scoring)
     {
+        Debug.Log("onInteract - " + isPlaying);
+
+        if (!isPlaying)
+        {
+            initialModal.Player1Interact();
+        }
+
         if (scoring)
         {
             p1Score++;
@@ -228,6 +252,12 @@ public class LevelManager : MonoBehaviour
     }
     public void OnPlayer2Interaction(bool scoring)
     {
+        Debug.Log("onInteract - " + isPlaying);
+
+        if (!isPlaying)
+        {
+            initialModal.Player2Interact();
+        }
         if (scoring)
         {
             p2Score++;
