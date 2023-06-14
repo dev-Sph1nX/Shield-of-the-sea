@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     [Header("Debug Mode")]
     [SerializeField] public bool debugMode = true;
     [ConditionalField("debugMode")] public string overrideSceneName = null;
+    [ConditionalField("debugMode")] public bool passTutorial = false;
 
 
     private static GameManager instance = null;

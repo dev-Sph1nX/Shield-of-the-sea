@@ -25,20 +25,10 @@ public class LobbyManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // if (GameManager.Instance.debugMode)
-        // {
-        //     P1IsReady = true;
-        //     P2IsReady = true;
-        // }
-
-        if (GameManager.Instance.debugMode && InputSystem.Player1Interaction())
+        if (GameManager.Instance.passTutorial)
         {
-            P1trigger = true;
-        }
-
-        if (GameManager.Instance.debugMode && InputSystem.Player2Interaction())
-        {
-            P2trigger = true;
+            P1IsReady = true;
+            P2IsReady = true;
         }
 
         if (P1trigger)

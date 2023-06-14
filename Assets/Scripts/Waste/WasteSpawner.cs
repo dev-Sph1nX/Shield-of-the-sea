@@ -7,8 +7,8 @@ public class WasteSpawner : MonoBehaviour
 {
     [Header("Spawn Params")]
     [SerializeField] float timeBetweenFire = 0.1f;
-    [SerializeField][Range(90, 155)] float minLaunchVelocity = 90f;
-    [SerializeField][Range(90, 155)] float maxLaunchVelocity = 155f;
+    [SerializeField][Range(110, 165)] float minLaunchVelocity = 110f;
+    [SerializeField][Range(110, 165)] float maxLaunchVelocity = 165f;
     [SerializeField][Range(0, 10)] float torquePower = 50f;
 
     [Header("Spawn Area")]

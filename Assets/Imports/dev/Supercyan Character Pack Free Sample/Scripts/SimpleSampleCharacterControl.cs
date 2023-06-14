@@ -43,6 +43,7 @@ public class SimpleSampleCharacterControl : MonoBehaviour
 
     private List<Collider> m_collisions = new List<Collider>();
     private SystemId playerId;
+    private bool isLock = false;
 
     private void Awake()
     {
@@ -172,6 +173,12 @@ public class SimpleSampleCharacterControl : MonoBehaviour
         float h = Input.GetAxis(playerId == SystemId.Player1 ? "DP1 - Horizontal" : "DP2 - Horizontal");
         h = -h;
 
+        if (isLock)
+        {
+            v = 0;
+            h = 0;
+        }
+
         Transform camera = Camera.main.transform;
 
         if (Input.GetKey(KeyCode.LeftShift))
@@ -227,5 +234,10 @@ public class SimpleSampleCharacterControl : MonoBehaviour
     {
         m_animator.SetFloat("MoveSpeed", 0);
         this.enabled = false;
+    }
+
+    public void setIsLock(bool pIsLock)
+    {
+        isLock = pIsLock;
     }
 }
