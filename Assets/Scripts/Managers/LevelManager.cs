@@ -9,7 +9,7 @@ public class LevelManager : MonoBehaviour
 {
 
     [Header("Before Game")]
-    [SerializeField][Range(3, 10)] public float timeToPlay = 3;
+    // [SerializeField][Range(3, 10)] public float timeToPlay = 3;
     [SerializeField][Range(0, 2)] public float countDownInterval = 1.25f;
 
     [Header("Game Time")]
@@ -46,7 +46,7 @@ public class LevelManager : MonoBehaviour
     private bool isPlaying = false, endCanvasIsShow = false;
     private bool p1haveInteract = false, p2haveInteract = false, isTransitioning = false;
     private bool p1interact = false, p2interact = false, startGameTrigger = false;
-    private float startTime;
+    private float startTime = 0f;
 
     void Awake()
     {
@@ -71,15 +71,12 @@ public class LevelManager : MonoBehaviour
         sceneAnimator.SetTrigger("Enter");
         Invoke("HideMask", 1f);
         Invoke("OpenInitialModal", 1f);
-        startTime = Time.timeSinceLevelLoad;
 
-        if (GameManager.Instance.debugMode)
-        {
-            timeToPlay = 4f;
-            countDownInterval = 0.2f;
-        }
-
-        gameTime += timeToPlay + countDownInterval * 2;
+        // if (GameManager.Instance.debugMode)
+        // {
+        //     timeToPlay = 4f;
+        //     countDownInterval = 0.2f;
+        // }
     }
 
     private void HideMask()
@@ -94,9 +91,6 @@ public class LevelManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timeToPlay -= Time.timeSinceLevelLoad - startTime;
-        gameTime -= Time.timeSinceLevelLoad - startTime;
-        startTime = Time.timeSinceLevelLoad;
 
 
         // is trigger on close of opening level modal 
@@ -104,20 +98,6 @@ public class LevelManager : MonoBehaviour
         {
             startGameTrigger = false;
             StartCoroutine(CountDownCoroutine());
-        }
-
-        // in game 
-        if (isPlaying)
-        {
-            DisplayTime(gameTime);
-        }
-
-        // end game 
-        if (gameTime <= 0.0f && !endCanvasIsShow)
-        {
-            isPlaying = false;
-            endCanvasIsShow = true;
-            GameEnded();
         }
 
         // after end game 
@@ -145,14 +125,10 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    public void ChangeScene()
-    {
-        GameManager.Instance.ChangeScene(nextSceneName, StartAnimation);
-    }
 
-    public void StartAnimation()
+    public void onOpeningModalClose()
     {
-        sceneAnimator.SetTrigger("Exit");
+        startGameTrigger = true;
     }
 
     private System.Collections.IEnumerator CountDownCoroutine()
@@ -172,6 +148,7 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+
     void HideText()
     {
         startText.gameObject.SetActive(false);
@@ -183,12 +160,24 @@ public class LevelManager : MonoBehaviour
         wasteSpawner.StartGame(gameTime);
         healthBar.UpdateHealthBar(percentage);
         isPlaying = true;
+        startTime = Time.timeSinceLevelLoad;
+        StartCoroutine("GameTimerCoroutine");
+    }
+    private System.Collections.IEnumerator GameTimerCoroutine()
+    {
+        while (gameTime > 0)
+        {
+            yield return new WaitForSeconds(1.0f);
+            gameTime--;
+            DisplayTime(gameTime);
+        }
+        StopCoroutine("GameTimerCoroutine");
+        GameEnded();
+        isPlaying = false;
+        endCanvasIsShow = true;
     }
 
-    public void onOpeningModalClose()
-    {
-        startGameTrigger = true;
-    }
+
 
     void DisplayTime(float timeToDisplay)
     {
@@ -231,10 +220,18 @@ public class LevelManager : MonoBehaviour
         finalModal.transform.localScale = Vector3.one;
     }
 
+    public void ChangeScene()
+    {
+        GameManager.Instance.ChangeScene(nextSceneName, StartAnimation);
+    }
+
+    public void StartAnimation()
+    {
+        sceneAnimator.SetTrigger("Exit");
+    }
+
     public void OnPlayer1Interaction(bool scoring)
     {
-        Debug.Log("onInteract - " + isPlaying);
-
         if (!isPlaying)
         {
             initialModal.Player1Interact();
@@ -252,8 +249,6 @@ public class LevelManager : MonoBehaviour
     }
     public void OnPlayer2Interaction(bool scoring)
     {
-        Debug.Log("onInteract - " + isPlaying);
-
         if (!isPlaying)
         {
             initialModal.Player2Interact();

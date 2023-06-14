@@ -20,6 +20,11 @@ public class VideoScript : MonoBehaviour
     private void OnVideoPrepared(VideoPlayer source)
     {
         sceneAnimator.SetTrigger("Enter");
+        Invoke("PlayVideo", 1f);
+    }
+    private void PlayVideo()
+    {
+        videoPlayer.Play();
     }
 
     void VideoEnded(VideoPlayer vp)
