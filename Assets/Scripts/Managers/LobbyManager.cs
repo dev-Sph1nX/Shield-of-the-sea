@@ -16,6 +16,8 @@ public class LobbyManager : MonoBehaviour
     [SerializeField] Animator p2Animator = null;
     [SerializeField] TextMeshProUGUI p1Text = null;
     [SerializeField] TextMeshProUGUI p2Text = null;
+    [SerializeField] DialogManager dialogManager;
+
     bool P1IsReady = false;
     bool P2IsReady = false;
 
@@ -74,11 +76,13 @@ public class LobbyManager : MonoBehaviour
 
     public void OnPlayer1Interaction()
     {
-        P1trigger = true;
+        if (dialogManager.hasFinish)
+            P1trigger = true;
     }
 
     public void OnPlayer2Interaction()
     {
-        P2trigger = true;
+        if (dialogManager.hasFinish)
+            P2trigger = true;
     }
 }

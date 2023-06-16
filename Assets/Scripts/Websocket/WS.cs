@@ -66,6 +66,7 @@ public class WS : MonoBehaviour
     private PlayerInteraction player1Interaction;
     private PlayerInteraction player2Interaction;
     private string sceneName;
+    public bool firstSend = false;
 
     void Start()
     {
@@ -124,6 +125,7 @@ public class WS : MonoBehaviour
 
     void OnMessage(object sender, MessageEventArgs e)
     {
+        if (!firstSend) firstSend = true;
         ServerPositionMessage serverMessage = JsonUtility.FromJson<ServerPositionMessage>(e.Data);
 
         if (serverMessage.type == "BLUE")

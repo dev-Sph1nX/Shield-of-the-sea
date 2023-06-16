@@ -13,17 +13,20 @@ public class PlayerInteraction : MonoBehaviour
     [Header("Animation")]
     [SerializeField] string pickupTriggerName = "Pickup";
     [Header("Reference")]
+
     Animator animator = null;
     public string objectId = NULL;
     const string NULL = "null";
     private string sceneName;
     private LobbyManager lobbyManager;
+    private TutoLearnInteraction tutoLearnInteraction;
     public LevelManager levelManager;
     private bool interact = false;
     private void Awake()
     {
         animator = GetComponent<Animator>();
         lobbyManager = FindObjectOfType<LobbyManager>();
+        tutoLearnInteraction = FindObjectOfType<TutoLearnInteraction>();
         levelManager = FindObjectOfType<LevelManager>();
         sceneName = SceneManager.GetActiveScene().name;
     }
@@ -57,11 +60,12 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (playerId == SystemId.Player1)
             {
-
                 lobbyManager.OnPlayer1Interaction();
+                tutoLearnInteraction.P1Interact();
             }
             if (playerId == SystemId.Player2)
             {
+                tutoLearnInteraction.P2Interact();
                 lobbyManager.OnPlayer2Interaction();
             }
         }
