@@ -122,5 +122,7 @@ public class TutoLearnMovement : MonoBehaviour
         topRightTarget.gameObject.SetActive(false);
         bottomRightTarget.gameObject.SetActive(false);
         bottomLeftTarget.gameObject.SetActive(false);
+        middleLeftTarget.gameObject.SetActive(false);
+        middleRightTarget.gameObject.SetActive(false);
     }
 }
