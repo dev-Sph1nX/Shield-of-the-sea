@@ -6,7 +6,7 @@ public class WasteSinking : MonoBehaviour
 {
     [Header("After ground collision")]
     [SerializeField] float mass = 1e-07f;
-    [SerializeField] float drag = 40;
+    [SerializeField] public float drag = 40;
 
     [Header("Under ground")]
     [SerializeField] float yLimitBeforeLoseIt = -0.1554092f;
@@ -16,6 +16,7 @@ public class WasteSinking : MonoBehaviour
     [SerializeField] private ParticleSystem deathPs;
 
     private LevelManager lvlManager;
+    private TutoLearnWasteInteraction tutoLearnWasteInteraction;
 
     private bool isLost = false;
     private float baseMass, baseDrag;
@@ -26,6 +27,7 @@ public class WasteSinking : MonoBehaviour
     void Awake()
     {
         lvlManager = FindAnyObjectByType<LevelManager>();
+        tutoLearnWasteInteraction = FindAnyObjectByType<TutoLearnWasteInteraction>();
         rb = GetComponentInChildren<Rigidbody>();
         shadowManager = GetComponent<WasteShadow>();
 
@@ -54,7 +56,8 @@ public class WasteSinking : MonoBehaviour
 
             isLost = true;
             deathPs.Play();
-            lvlManager.OnWasteLost();
+            if (lvlManager) lvlManager.OnWasteLost();
+            if (tutoLearnWasteInteraction) tutoLearnWasteInteraction.onWasteLost();
             Invoke("Destroy", 1f);
         }
     }

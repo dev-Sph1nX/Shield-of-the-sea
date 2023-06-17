@@ -15,10 +15,12 @@ public class NPCInteractable : MonoBehaviour, IInteractable
     private SystemId? ownerId = null;
     private MeshRenderer child;
     private bool isInteracted = false;
+    private TutoLearnWasteInteraction tutoLearnWasteInteraction;
 
     private void Awake()
     {
         child = GetComponentInChildren<MeshRenderer>();
+        tutoLearnWasteInteraction = FindAnyObjectByType<TutoLearnWasteInteraction>();
     }
 
     private void Update()
@@ -33,6 +35,7 @@ public class NPCInteractable : MonoBehaviour, IInteractable
             hitPs.Play();
             Destroy(child.gameObject);
             Invoke("Destroy", .5f);
+            if (tutoLearnWasteInteraction) tutoLearnWasteInteraction.onWasteDestroyByPlayer(typeId);
         }
     }
 
