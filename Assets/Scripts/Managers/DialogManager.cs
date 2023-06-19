@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
-using System.Collections.Generic;
 public class TutorialStep
 {
     public string text;
@@ -70,12 +69,14 @@ public class DialogManager : MonoBehaviour
         {
             UpdatePlayerInteraction(false);
         }
+        else
+            hasFinish = true;
     }
     void Update()
     {
         if (waitStart)
         {
-            if (websocket.firstSend || (GameManager.Instance.debugMode && InputSystem.Player1Interaction()))
+            if (websocket.firstSend || (GameManager.Instance.debugMode && !GameManager.Instance.passTutorial && InputSystem.Player1Interaction()))
             {
                 Debug.Log("websocket.firstSend => Start tuto");
                 waitStart = false;

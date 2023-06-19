@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class OpenningLevelModal : MonoBehaviour, InnerModalScript
+public class FinalLevelModal : MonoBehaviour, InnerModalScript
 {
     [SerializeField] TextMeshProUGUI p1text;
     [SerializeField] TextMeshProUGUI p2text;
+    [SerializeField] public TextMeshProUGUI finalPercentageText;
+    [SerializeField] LevelManager levelManager;
 
     private bool _isDone = false, _isShow = true, p1interact = false, p2interact = false;
 
@@ -37,6 +39,7 @@ public class OpenningLevelModal : MonoBehaviour, InnerModalScript
     public void isShow()
     {
         _isShow = true;
+        finalPercentageText.text = levelManager.getFinalPercentage();
     }
 
 
