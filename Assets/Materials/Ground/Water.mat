@@ -122,14 +122,14 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseWaterColor: {r: 0.046012796, g: 0.61437964, b: 0.8867924, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _DeepColor: {r: 0.106666066, g: 0.15648806, b: 0.44339618, a: 0}
+    - _DeepColor: {r: 0.106666036, g: 0.15648803, b: 0.44339615, a: 0.48235294}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FoamColor: {r: 1, g: 1, b: 1, a: 1}
     - _FoamScale: {r: 10, g: 10, b: 0, a: 0}
     - _RippleColor: {r: 0.7490196, g: 0.7490196, b: 0.7490196, a: 0.2901961}
     - _Scale: {r: 1, g: 1, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _SurfaceColor: {r: 0.18244925, g: 0.7805185, b: 0.9433962, a: 0}
+    - _SurfaceColor: {r: 0.18244922, g: 0.7805185, b: 0.9433962, a: 0.54509807}
   m_BuildTextureStacks: []
 --- !u!114 &698199922734255135
 MonoBehaviour:
