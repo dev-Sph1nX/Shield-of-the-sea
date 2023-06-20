@@ -125,7 +125,6 @@ public class WS : MonoBehaviour
 
     void OnMessage(object sender, MessageEventArgs e)
     {
-        if (!firstSend) firstSend = true;
         ServerPositionMessage serverMessage = JsonUtility.FromJson<ServerPositionMessage>(e.Data);
 
         if (serverMessage.type == "BLUE")
@@ -134,6 +133,7 @@ public class WS : MonoBehaviour
         }
         else
         {
+            if (!firstSend) firstSend = true;
             onUserPositionData(serverMessage);
         }
     }

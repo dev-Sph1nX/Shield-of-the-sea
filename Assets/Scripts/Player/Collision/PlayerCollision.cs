@@ -11,7 +11,6 @@ public class PlayerCollision : MonoBehaviour
     [Header("Reference")]
     [SerializeField] public ParticleSystem stunParticle;
 
-    private bool isStun = false;
     private Animator animator = null;
     private PlayerMovement playerMovement;
     private SimpleSampleCharacterControl simpleSampleCharacter;
@@ -37,7 +36,7 @@ public class PlayerCollision : MonoBehaviour
 
     IEnumerator Stun()
     {
-        isStun = true;
+        bool interactionBasedState = playerInteraction.enabled; // disable interaction in tuto 
         animator.SetTrigger(stunTriggerName);
 
         if (GameManager.Instance.debugMode)
@@ -52,13 +51,12 @@ public class PlayerCollision : MonoBehaviour
         yield return new WaitForSeconds(stunTime);
 
         stunParticle.Stop();
-        isStun = false;
 
         if (GameManager.Instance.debugMode)
             simpleSampleCharacter.enabled = true;
         else
             playerMovement.enabled = true;
-        playerInteraction.enabled = true;
+        playerInteraction.enabled = interactionBasedState;
 
     }
 }

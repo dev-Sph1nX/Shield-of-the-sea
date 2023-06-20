@@ -5,9 +5,12 @@ using UnityEngine.Events;
 
 public class TutorialTarget : MonoBehaviour
 {
-    [SerializeField] public UnityEvent onP1Collider;
-    [SerializeField] public UnityEvent onP2Collider;
+    private TutoLearnWasteInteraction tutoLearnWasteInteraction;
     private CapsuleCollider capsuleCollider;
+    private void Start()
+    {
+        tutoLearnWasteInteraction = FindAnyObjectByType<TutoLearnWasteInteraction>();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -22,11 +25,11 @@ public class TutorialTarget : MonoBehaviour
     {
         if (other.tag == "Player1")
         {
-            onP1Collider.Invoke();
+            tutoLearnWasteInteraction.onP1Collide();
         }
         if (other.tag == "Player2")
         {
-            onP2Collider.Invoke();
+            tutoLearnWasteInteraction.onP2Collide();
         }
     }
 }

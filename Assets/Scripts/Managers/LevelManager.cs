@@ -32,10 +32,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] public CustomModal initialModal;
 
     [Header("Final modal ref")]
-    [SerializeField] public GameObject finalModal;
-    [SerializeField] public TextMeshProUGUI finalPercentageText;
-    [SerializeField] public TextMeshProUGUI p1isReadyText;
-    [SerializeField] public TextMeshProUGUI p2isReadyText;
+    [SerializeField] public CustomModal finalModal;
     [Header("Player Stat")]
     [SerializeField][ReadOnly] public int p1Score = 0;
     [SerializeField][ReadOnly] public int p2Score = 0;
@@ -44,8 +41,7 @@ public class LevelManager : MonoBehaviour
     private Image mask = null;
     private Animator sceneAnimator = null;
     private bool isPlaying = false, endCanvasIsShow = false;
-    private bool p1haveInteract = false, p2haveInteract = false, isTransitioning = false;
-    private bool p1interact = false, p2interact = false, startGameTrigger = false;
+    private bool startGameTrigger = false;
     private float startTime = 0f;
 
     void Awake()
@@ -91,37 +87,11 @@ public class LevelManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-
         // is trigger on close of opening level modal 
         if (startGameTrigger)
         {
             startGameTrigger = false;
             StartCoroutine(CountDownCoroutine());
-        }
-
-        // after end game 
-        if (endCanvasIsShow && !isTransitioning)
-        {
-            if (p1interact || InputSystem.Player1Interaction())
-            {
-                p1interact = false;
-                p1haveInteract = !p1haveInteract;
-                p1isReadyText.enabled = p1haveInteract;
-            }
-
-            if (p2interact || InputSystem.Player2Interaction())
-            {
-                p2interact = false;
-                p2haveInteract = !p2haveInteract;
-                p2isReadyText.enabled = p2haveInteract;
-            }
-
-            if (p1haveInteract && p2haveInteract)
-            {
-                isTransitioning = true;
-                ChangeScene();
-            }
         }
     }
 
@@ -201,7 +171,6 @@ public class LevelManager : MonoBehaviour
         PlayerInteraction[] players = FindObjectsOfType<PlayerInteraction>();
         foreach (PlayerInteraction p in players)
         {
-            p.enabled = false;
             p.gameObject.GetComponent<SimpleSampleCharacterControl>().GetStop();
         }
         NPCInteractable[] wastes = FindObjectsOfType<NPCInteractable>();
@@ -215,9 +184,11 @@ public class LevelManager : MonoBehaviour
             Destroy(w.gameObject);
         }
         wasteSpawner.StopGame();
-
-        finalPercentageText.text = percentage + " %";
-        finalModal.transform.localScale = Vector3.one;
+        finalModal.ShowModal();
+    }
+    public string getFinalPercentage()
+    {
+        return percentage + " %";
     }
 
     public void ChangeScene()
@@ -232,7 +203,7 @@ public class LevelManager : MonoBehaviour
 
     public void OnPlayer1Interaction(bool scoring)
     {
-        if (!isPlaying)
+        if (!isPlaying && !endCanvasIsShow)
         {
             initialModal.Player1Interact();
         }
@@ -242,14 +213,14 @@ public class LevelManager : MonoBehaviour
             p1Score++;
         }
 
-        if (endCanvasIsShow && !isTransitioning) // for the final modal
+        if (!isPlaying && endCanvasIsShow)
         {
-            p1interact = true;
+            finalModal.Player1Interact();
         }
     }
     public void OnPlayer2Interaction(bool scoring)
     {
-        if (!isPlaying)
+        if (!isPlaying && !endCanvasIsShow)
         {
             initialModal.Player2Interact();
         }
@@ -257,9 +228,9 @@ public class LevelManager : MonoBehaviour
         {
             p2Score++;
         }
-        if (endCanvasIsShow && !isTransitioning)
+        if (!isPlaying && endCanvasIsShow)
         {
-            p2interact = true;
+            finalModal.Player2Interact();
         }
 
     }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class PneuMovement : MonoBehaviour
 {
     [Header("Forward force")]
-    [SerializeField] float applyXVelocity = 1f;
+    [SerializeField] public float applyXVelocity = 1f;
 
     [Header("X Rotation")]
     [Range(1, 6)][SerializeField] float amplitude = 1f;
