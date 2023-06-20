@@ -7,10 +7,9 @@ public class TimeIndicator : MonoBehaviour
 {
     [SerializeField] int timeBetweenText = 5;
     [SerializeField] Image image;
-    [SerializeField] DialogManager dialogManager;
+    [SerializeField] DialogContentManager dialogContentManager;
     // Start is called before the first frame update
 
-    private int nbFrame = 100;
     private float currentTime;
     private bool updateTime;
 
@@ -24,7 +23,8 @@ public class TimeIndicator : MonoBehaviour
                 // Stop the countdown timer              
                 updateTime = false;
                 currentTime = 0.0f;
-                dialogManager.OnNextStep();
+                if (dialogContentManager)
+                    dialogContentManager.OnLocalNextStep();
             }
             float normalizedValue = Mathf.Clamp(currentTime / timeBetweenText, 0.0f, 1.0f);
             image.fillAmount = normalizedValue;
@@ -44,15 +44,5 @@ public class TimeIndicator : MonoBehaviour
         else
             image.fillAmount = 0;
     }
-
-    // private IEnumerator CountDown()
-    // {
-    //     for (float i = nbFrame; i >= 0; i--)
-    //     {
-    //         yield return new WaitForSeconds(timeBetweenText / nbFrame);
-    //         image.fillAmount = i / 100;
-    //     }
-
-    //     dialogManager.OnNextStep();
-    // }
 }
+

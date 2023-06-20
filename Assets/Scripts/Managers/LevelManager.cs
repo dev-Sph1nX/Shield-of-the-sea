@@ -41,8 +41,7 @@ public class LevelManager : MonoBehaviour
     private Image mask = null;
     private Animator sceneAnimator = null;
     private bool isPlaying = false, endCanvasIsShow = false;
-    private bool p1haveInteract = false, p2haveInteract = false;
-    private bool p1interact = false, p2interact = false, startGameTrigger = false;
+    private bool startGameTrigger = false;
     private float startTime = 0f;
 
     void Awake()
@@ -204,7 +203,6 @@ public class LevelManager : MonoBehaviour
 
     public void OnPlayer1Interaction(bool scoring)
     {
-        Debug.Log("Player 1 - isPlaying && endCanvasIsShow : " + isPlaying + " && " + endCanvasIsShow);
         if (!isPlaying && !endCanvasIsShow)
         {
             initialModal.Player1Interact();
@@ -222,7 +220,6 @@ public class LevelManager : MonoBehaviour
     }
     public void OnPlayer2Interaction(bool scoring)
     {
-        Debug.Log("Player 2 - isPlaying && endCanvasIsShow : " + isPlaying + " && " + endCanvasIsShow);
         if (!isPlaying && !endCanvasIsShow)
         {
             initialModal.Player2Interact();

@@ -12,7 +12,7 @@ public class CustomModal : MonoBehaviour
     [SerializeField] public UnityEvent onDone;
 
     private Animator animator;
-    private bool isOpen = false, localIsDone = false;
+    private bool localIsDone = false;
     private void Start()
     {
         animator = gameObject.GetComponent<Animator>();
@@ -34,7 +34,6 @@ public class CustomModal : MonoBehaviour
     public void ShowModal()
     {
         animator.SetTrigger("Open");
-        isOpen = true;
     }
     public void Player1Interact()
     {

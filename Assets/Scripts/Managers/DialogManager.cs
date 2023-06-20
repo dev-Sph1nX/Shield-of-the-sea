@@ -1,70 +1,72 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Video;
 using TMPro;
 using System;
+
+public enum Narrator : int
+{
+    Marco = 0,
+    Polo = 1,
+    Any = 2,
+}
 public class TutorialStep
 {
     public string text;
+    public bool forcedTimed;
     public delegate void OnInvokeAction();
     public OnInvokeAction invokeAction;
+    public Narrator narrator;
 
-    public TutorialStep(string pText, OnInvokeAction pInvokeAction = null)
+    public TutorialStep(string pText, Narrator pNarrator = Narrator.Polo, OnInvokeAction pInvokeAction = null, bool pForcedTimed = false)
     {
         text = pText;
+        narrator = pNarrator;
         invokeAction = pInvokeAction;
+        forcedTimed = pForcedTimed;
+    }
+
+    override public string ToString()
+    {
+        return "text :" + text;
     }
 }
 
-public class DialogManager : MonoBehaviour
+public class DialogManager : MonoBehaviour, IDialogManager
 {
     [Header("References")]
-    [SerializeField] TextMeshProUGUI dialogText;
-    [SerializeField] TimeIndicator timeIndicator;
+    [SerializeField] DialogContentManager marco;
+    [SerializeField] DialogContentManager polo;
+    [SerializeField] BigModalPolo bigModalPolo;
     [SerializeField] PlayerInteraction player1;
     [SerializeField] PlayerInteraction player2;
     [SerializeField] TutoLearnMovement learnMovementManager;
     [SerializeField] TutoLearnInteraction learnInteractionManager;
     [SerializeField] TutoLearnWasteInteraction learnWasteInteractionManager;
     [SerializeField] WS websocket;
+    [SerializeField] Animator swordMotionAnimator;
+    [SerializeField] VideoPlayer swordMotionVideoPlayer;
 
     List<TutorialStep> tutorialSteps = new List<TutorialStep>();
 
     private int index = 0;
-    private float firstDelay = 0;
-    private Animator animator;
     private bool waitStart = true, started = false;
-    public bool hasFinish = false;
+    public bool hasFinish = false, firstRetryOnFirstCheck = true, firstRetryOnSecondCheck = true;
     // Start is called before the first frame update
     void Start()
     {
-        tutorialSteps.Add(new TutorialStep("Bienvenue dans WAKE ! Ça va secouer !"));
-        tutorialSteps.Add(new TutorialStep("Vous allez apprendre à vous déplacer."));
-        tutorialSteps.Add(new TutorialStep("Chacun doit aller se déplacer sur la cible de votre couleur.", learnMovementManager.MovetoTarget1));
-        tutorialSteps.Add(new TutorialStep("Super ! Vous pouvez continuer.", learnMovementManager.MovetoTarget2));
-        tutorialSteps.Add(new TutorialStep("Encore un petit tour de manège !", learnMovementManager.MovetoTarget3));
-        tutorialSteps.Add(new TutorialStep("Et un autre", learnMovementManager.MovetoTarget4));
-        tutorialSteps.Add(new TutorialStep("Allez juste un petit dernier", learnMovementManager.MovetoTarget5));
-        tutorialSteps.Add(new TutorialStep("Bien normalement, vous savez vous déplacer maintenant"));
-        tutorialSteps.Add(new TutorialStep("On va passer à comment on interagit avec le jeu."));
-        tutorialSteps.Add(new TutorialStep("Regarde, il suffit d'agiter ton épée comme ça. (il y aura surement une vidéo à montrer)"));
-        tutorialSteps.Add(new TutorialStep("Vas-y, essaye joueur 1 ! (Le rouge :)", StartLearningInteractionWithP1));
-        tutorialSteps.Add(new TutorialStep("Bien joué ! "));
-        tutorialSteps.Add(new TutorialStep("À ton tour, joueur 2. (Le bleu :)", StartLearningInteractionWithP2));
-        tutorialSteps.Add(new TutorialStep("Super ! "));
-        tutorialSteps.Add(new TutorialStep("On va parler du principe de base du gameplay : les déchets"));
-        tutorialSteps.Add(new TutorialStep("Ils arriveront en parabole pour le bord de l'écran et vous devrez les détruire avant qu'il ne s'enfonce trop dans le sable."));
-        tutorialSteps.Add(new TutorialStep("Place à l'exemple : on précise qu'ici le temps est un peu accéléré, ne vous inquiété pas le déchet s'enfoncera moins vite dans le sable en jeu", learnWasteInteractionManager.throwOneWaste));
-        tutorialSteps.Add(new TutorialStep("Pour éviter de perdre des points, vous devez donc les détruire. Pour ce faire, il faut vous déplacer à proximité du déchet et donner un coup d'épée comme appris précédemment."));
-        tutorialSteps.Add(new TutorialStep("Joueur 1, ça va être à votre tour. Détruit le déchet qui arrive", throwForP1));
-        tutorialSteps.Add(new TutorialStep("À toi joueur 2", throwForP2));
-        tutorialSteps.Add(new TutorialStep("Maintenant, ça va être les deux en même temps.", throwForBoth));
-        tutorialSteps.Add(new TutorialStep("Et voilà le tuto est terminé. "));
-        tutorialSteps.Add(new TutorialStep("Pour commencer le jeu, il faudra vous mettre prêt. Pour être prêt, rien de plus simple : donner un grand coup d'épée ! "));
-        tutorialSteps.Add(new TutorialStep("Que le vent vous soit favorable et bonne expérience !"));
-
-        animator = GetComponent<Animator>();
-
+        tutorialSteps.Add(new TutorialStep("Hello nous c’est Marco & Polo. On habite l’océan, cependant depuis peu on entretient une relation de voisinage toxique avec les humains qui nous polluent constamment.", Narrator.Marco));
+        tutorialSteps.Add(new TutorialStep("Aidez-nous à nous battre pour retrouver la paix et la sérénité tant attendu.", Narrator.Marco));
+        tutorialSteps.Add(new TutorialStep("", Narrator.Any, bigModalPolo.Show));
+        tutorialSteps.Add(new TutorialStep("", Narrator.Any, learnWasteInteractionManager.throwTwoWaste)); // checkpoint - 3
+        tutorialSteps.Add(new TutorialStep("Tu vois ces déchets ? Il faut que tu t'approches d'eux.", Narrator.Polo, learnWasteInteractionManager.waitingProximity));
+        tutorialSteps.Add(new TutorialStep("Bien joué !", Narrator.Polo));
+        tutorialSteps.Add(new TutorialStep("Maintenant que vous êtes à coté d'eux, vous pouvons voir qu'ils sont en surbrillance. Ca veut que vous pouvez les détruire ! Comment ? En donnant un coup d'épée comme montré à l'écran !", Narrator.Polo, showSwordMotion, true));
+        tutorialSteps.Add(new TutorialStep("Allez-y, essaye de les détruire.", Narrator.Polo, WaitingInteraction));
+        tutorialSteps.Add(new TutorialStep("Une nouvelle vague arrive ! Préparez-vous !", Narrator.Polo));// checkpoint - 8
+        tutorialSteps.Add(new TutorialStep("", Narrator.Any, learnWasteInteractionManager.throwSecondWave));
+        tutorialSteps.Add(new TutorialStep("Trop fort ! Maintenant que vous êtes prêt, vous allez pouvoir rentrez dans les choses sérieuses. Que le vent vous soit favorable et bonne expérience !", Narrator.Polo));
         if (!GameManager.Instance.passTutorial)
         {
             UpdatePlayerInteraction(false);
@@ -78,21 +80,30 @@ public class DialogManager : MonoBehaviour
         {
             if (websocket.firstSend || (GameManager.Instance.debugMode && !GameManager.Instance.passTutorial && InputSystem.Player1Interaction()))
             {
-                Debug.Log("websocket.firstSend => Start tuto");
-                waitStart = false;
-                ShowDialog();
-                firstDelay = Time.time;
+                if (GameManager.Instance.debugMode)
+                {
+                    StartDialog();
+                }
+                else
+                {
+                    Debug.Log("Wait 5s to start");
+                    Invoke("StartTuto", 5f);
+                }
             }
         }
         else
         {
-            if (Time.time > firstDelay + 2 && !started)
+            if (!started)
             {
                 started = true;
-                Debug.Log("Start now at " + Time.time + ">" + firstDelay + 2);
                 TutorialNextStep(tutorialSteps[index]);
             }
         }
+    }
+    public void StartDialog()
+    {
+        Debug.Log("Start tuto");
+        waitStart = false;
     }
 
     public void TutorialNextStep(TutorialStep step)
@@ -104,77 +115,164 @@ public class DialogManager : MonoBehaviour
         }
     }
 
-    public void ShowDialog()
-    {
-        animator.SetTrigger("Open");
-    }
-
-    public void CloseDialog()
-    {
-        animator.SetTrigger("Close");
-    }
-
     private void UpdatePlayerInteraction(bool enabled)
     {
+        Debug.Log("Update interaction on " + enabled);
         player1.enabled = enabled;
         player2.enabled = enabled;
     }
 
     private void setText(TutorialStep step)
     {
-        timeIndicator.StartTimer(step.invokeAction == null);
-        dialogText.text = step.text;
+        if (step.narrator == Narrator.Marco)
+        {
+            polo.CloseDialog();
+            StartCoroutine(SetInnerText(step, marco));
+        }
+        else if (step.narrator == Narrator.Polo)
+        {
+            marco.CloseDialog();
+            StartCoroutine(SetInnerText(step, polo));
+        }
+        else
+        {
+            polo.CloseDialog();
+            marco.CloseDialog();
+        }
+    }
+    private IEnumerator SetInnerText(TutorialStep step, DialogContentManager dialogContentManager)
+    {
+        yield return new WaitForSeconds(1f);
+        dialogContentManager.SetText(step);
     }
 
     public void OnNextStep()
     {
-        Debug.Log("OnNextStep ");
+        Debug.Log("OnNextStep index " + index);
         index++;
         if (index < tutorialSteps.Count) TutorialNextStep(tutorialSteps[index]);
         else TutorialEnd();
     }
 
+    public void RestartStep()
+    {
+        Debug.Log("RestartStep index " + index);
+        ResetEntities();
+        if (index >= 3 && index <= 8)
+        {
+            index = 3;
+            if (firstRetryOnFirstCheck)
+            {
+                firstRetryOnFirstCheck = false;
+                tutorialSteps.Insert(index, new TutorialStep("Tu sais, ça arrive à tout le monde de rater, c'est pas la fin du monde. Allez réessaye pour voir ! "));
+            }
+        }
+        else if (index > 8)
+        {
+            index = firstRetryOnFirstCheck ? 8 : 9;
+            if (firstRetryOnSecondCheck)
+            {
+                firstRetryOnSecondCheck = false;
+                tutorialSteps.Insert(index, new TutorialStep("Tu sais, ça arrive à tout le monde de rater, c'est pas la fin du monde. Allez réessaye pour voir ! "));
+            }
+        }
+        Debug.Log("insert at index " + index);
+        index--;
+        OnNextStep();
+        int inner = 0;
+        foreach (TutorialStep step in tutorialSteps)
+        {
+            Debug.Log(inner + " - " + step.ToString());
+            inner++;
+        }
+    }
+
+    public void ResetEntities()
+    {
+        swordMotionAnimator.Rebind();
+        swordMotionAnimator.Update(0f);
+        swordMotionVideoPlayer.frame = 0;
+
+        UpdatePlayerInteraction(false);
+
+        NPCInteractable[] wastes = FindObjectsOfType<NPCInteractable>();
+        foreach (NPCInteractable w in wastes)
+        {
+            WasteShadow shadowManager = w.GetComponent<WasteShadow>();
+            if (shadowManager)
+            {
+                shadowManager.DestroyShadow();
+            }
+            Destroy(w.gameObject);
+        }
+
+        TutorialTarget[] targets = FindObjectsOfType<TutorialTarget>();
+        foreach (TutorialTarget target in targets)
+        {
+            Destroy(target.gameObject);
+        }
+    }
 
     public void TutorialEnd()
     {
         Debug.Log("end of tutoriel !!!!!!");
+        marco.CloseDialog();
+        polo.CloseDialog();
         hasFinish = true;
-        CloseDialog();
         UpdatePlayerInteraction(true);
     }
 
-    public void StartLearningInteractionWithP1()
+    public void showSwordMotion()
     {
-        player1.enabled = true;
-        player2.enabled = false;
-        learnInteractionManager.InteractionWithP1();
-    }
-    public void StartLearningInteractionWithP2()
-    {
-        player1.enabled = false;
-        player2.enabled = true;
-        learnInteractionManager.InteractionWithP2();
+        swordMotionAnimator.SetTrigger("Show");
+        swordMotionVideoPlayer.Play();
+        Invoke("hideSwordMotion", 5f); // SHIT -- have to be the same of time indicator
     }
 
-    public void throwForP1()
+    void hideSwordMotion()
     {
-        player1.enabled = true;
-        player2.enabled = false;
-        learnWasteInteractionManager.throwForP1();
-    }
-    public void throwForP2()
-    {
-        player1.enabled = false;
-        player2.enabled = true;
-        learnWasteInteractionManager.throwForP2();
+        swordMotionVideoPlayer.Stop();
+        swordMotionAnimator.SetTrigger("Hide");
     }
 
-    public void throwForBoth()
+    public void WaitingInteraction()
     {
-        player1.enabled = true;
-        player2.enabled = true;
-        learnWasteInteractionManager.throwForBoth();
+        UpdatePlayerInteraction(true);
+        learnWasteInteractionManager.waitingInteraction();
     }
+
+    // public void StartLearningInteractionWithP1()
+    // {
+    //     player1.enabled = true;
+    //     player2.enabled = false;
+    //     learnInteractionManager.InteractionWithP1();
+    // }
+    // public void StartLearningInteractionWithP2()
+    // {
+    //     player1.enabled = false;
+    //     player2.enabled = true;
+    //     learnInteractionManager.InteractionWithP2();
+    // }
+
+    // public void throwForP1()
+    // {
+    //     player1.enabled = true;
+    //     player2.enabled = false;
+    //     learnWasteInteractionManager.throwForP1();
+    // }
+    // public void throwForP2()
+    // {
+    //     player1.enabled = false;
+    //     player2.enabled = true;
+    //     learnWasteInteractionManager.throwForP2();
+    // }
+
+    // public void throwForBoth()
+    // {
+    //     player1.enabled = true;
+    //     player2.enabled = true;
+    //     learnWasteInteractionManager.throwForBoth();
+    // }
 
 }
 

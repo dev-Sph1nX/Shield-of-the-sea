@@ -22,7 +22,8 @@ public class WasteSinking : MonoBehaviour
     private float baseMass, baseDrag;
     private Rigidbody rb;
     private WasteShadow shadowManager;
-
+    private NPCInteractable npcInteractable;
+    private GameObject tutoTarget;
 
     void Awake()
     {
@@ -30,6 +31,7 @@ public class WasteSinking : MonoBehaviour
         tutoLearnWasteInteraction = FindAnyObjectByType<TutoLearnWasteInteraction>();
         rb = GetComponentInChildren<Rigidbody>();
         shadowManager = GetComponent<WasteShadow>();
+        npcInteractable = GetComponent<NPCInteractable>();
 
         baseMass = rb.mass;
         baseDrag = rb.drag;
@@ -45,6 +47,13 @@ public class WasteSinking : MonoBehaviour
             rb.drag = drag;
             rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
+            if (tutoLearnWasteInteraction)
+            {
+                tutoLearnWasteInteraction.onWasteFall();
+                GameObject model = npcInteractable.typeId == SystemId.Cannette ? tutoLearnWasteInteraction.targetRedModel : tutoLearnWasteInteraction.targetBlueModel;
+                if (model) // can be delete to avoid target
+                    tutoTarget = Instantiate(model, transform.position, Quaternion.identity);
+            }
         }
     }
     void Update()
@@ -65,6 +74,9 @@ public class WasteSinking : MonoBehaviour
     void Destroy()
     {
         Destroy(gameObject);
-
+    }
+    public void DestroyTutoTarget()
+    {
+        Destroy(tutoTarget);
     }
 }

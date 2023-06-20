@@ -60,16 +60,14 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (playerId == SystemId.Player1)
             {
-                lobbyManager.OnPlayer1Interaction();
                 tutoLearnInteraction.P1Interact();
             }
             if (playerId == SystemId.Player2)
             {
                 tutoLearnInteraction.P2Interact();
-                lobbyManager.OnPlayer2Interaction();
             }
         }
-        if (sceneName == "2-Beach")
+        if (sceneName == "3-Beach")
         {
             if (playerId == SystemId.Player1)
             {

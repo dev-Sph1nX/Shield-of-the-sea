@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8929482025503371685}
   - component: {fileID: 1599720312178185479}
   m_Layer: 0
-  m_Name: Target
+  m_Name: BlueTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -111,33 +111,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15539b33cce393e439fc00b6c0fa2232, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onP1Collider:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: TutoLearnMovement, Assembly-CSharp
-        m_MethodName: onP1Collide
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onP2Collider:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: TutoLearnMovement, Assembly-CSharp
-        m_MethodName: onP2Collide
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
