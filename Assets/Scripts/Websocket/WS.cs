@@ -76,8 +76,8 @@ public class WS : MonoBehaviour
             Debug.Log("Connected to the server.");
             try
             {
-                ws = new WebSocket("ws://192.168.43.109:3000");
-                // ws = new WebSocket("ws://localhost:3000");
+                // ws = new WebSocket("ws://192.168.43.109:3000");
+                ws = new WebSocket("ws://localhost:3000");
                 stateText.text = "Connected";
 
                 // ws = new WebSocket("ws://localhost:3000");

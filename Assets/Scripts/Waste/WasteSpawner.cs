@@ -6,7 +6,7 @@ using UnityEngine;
 public class WasteSpawner : MonoBehaviour
 {
     [Header("Spawn Params")]
-    [SerializeField] float timeBetweenFire = 0.1f;
+    [SerializeField] float[] timesBetweenFire = new float[] { 2f, 1.5f, 1 };
     [SerializeField][Range(110, 165)] float minLaunchVelocity = 110f;
     [SerializeField][Range(110, 165)] float maxLaunchVelocity = 165f;
     [SerializeField][Range(0, 10)] float torquePower = 50f;
@@ -26,8 +26,18 @@ public class WasteSpawner : MonoBehaviour
     private bool isPlaying = false, pneuIsAppear = false;
     private float nextFire = 0.0f;
     private Vector3 torque;
-    private float timerPneuApparition;
+    private float timerPneuApparition, timeBetweenFire;
+    private int intensityState = 0; // index of timesBetweenFire
 
+
+    public void IncrementIntensity()
+    {
+        if (intensityState + 1 < timesBetweenFire.Length)
+        {
+            intensityState++;
+            timeBetweenFire = timesBetweenFire[intensityState];
+        }
+    }
 
     void Update()
     {
@@ -53,17 +63,19 @@ public class WasteSpawner : MonoBehaviour
             Vector3 spawnPosition = transform.position + Vector3.forward * Random.Range(minZ + securityMargin, maxZ - securityMargin) + Vector3.up * 2;
             GameObject waste = Instantiate(pneu, spawnPosition, pneuRotation);
         }
-        if (InputSystem.getButton("Fire1"))
-        {
-            pneuIsAppear = true;
-            Vector3 spawnPosition = transform.position + Vector3.forward * Random.Range(minZ + securityMargin, maxZ - securityMargin) + Vector3.up * 2;
-            GameObject waste = Instantiate(pneu, spawnPosition, pneuRotation);
-        }
+        // if (InputSystem.getButton("Fire1"))
+        // {
+        //     pneuIsAppear = true;
+        //     Vector3 spawnPosition = transform.position + Vector3.forward * Random.Range(minZ + securityMargin, maxZ - securityMargin) + Vector3.up * 2;
+        //     GameObject waste = Instantiate(pneu, spawnPosition, pneuRotation);
+        // }
         // should appear at one time random 
     }
 
     public void StartGame(float gameTime)
     {
+        timeBetweenFire = timesBetweenFire[intensityState];
+
         timerPneuApparition = Random.Range(10f, gameTime - 10f); // bc not at the end
         isPlaying = true;
     }

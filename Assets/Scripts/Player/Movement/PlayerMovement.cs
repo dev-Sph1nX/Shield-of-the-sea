@@ -29,7 +29,8 @@ public class PlayerMovement : MonoBehaviour
     private float deltaTime, velocity;
     private bool m_isGrounded;
     private List<Collider> m_collisions = new List<Collider>();
-
+    private float playerHeight = 3.225f;
+    private int layer_mask;
     private void Awake()
     {
         if (!m_animator) { gameObject.GetComponent<Animator>(); }
@@ -40,6 +41,7 @@ public class PlayerMovement : MonoBehaviour
             GetComponent<SimpleSampleCharacterControl>().enabled = true;
             this.enabled = false;
         }
+        layer_mask = LayerMask.GetMask("Default");
     }
 
     private void Update()
@@ -89,6 +91,7 @@ public class PlayerMovement : MonoBehaviour
             localPosition.x = Mathf.Lerp(localPosition.x, positionX, deltaTime * interpolation);
             localPosition.z = Mathf.Lerp(localPosition.z, positionZ, deltaTime * interpolation);
 
+
             // Direction
             float angle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg - 90;
             Quaternion angleAxis = Quaternion.AngleAxis(angle, Vector3.down);
@@ -99,6 +102,14 @@ public class PlayerMovement : MonoBehaviour
         {
             magnitude = 0;
         }
+
+        RaycastHit hit;
+        if (Physics.Raycast(new Vector3(localPosition.x, localPosition.y + 100f, localPosition.z), Vector3.down, out hit, Mathf.Infinity, layer_mask))
+        {
+            float terrainY = RoundValue(hit.point.y, 100);
+            localPosition.y = terrainY;
+        }
+
         velocity = Mathf.Lerp(velocity, magnitude, Time.deltaTime * interpolation);
         m_animator.SetFloat("MoveSpeed", velocity);
 
@@ -181,4 +192,8 @@ public class PlayerMovement : MonoBehaviour
         if (m_collisions.Count == 0) { m_isGrounded = false; }
     }
 
+    float RoundValue(float num, float precision)
+    {
+        return Mathf.Floor(num * precision + 0.5f) / precision;
+    }
 }

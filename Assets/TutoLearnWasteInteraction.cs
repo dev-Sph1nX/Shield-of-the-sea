@@ -133,11 +133,9 @@ public class TutoLearnWasteInteraction : MonoBehaviour
     public void onP1Collide()
     {
         p1isIn = !p1isIn;
-        Debug.Log("p1 in/out");
     }
     public void onP2Collide()
     {
-        Debug.Log("p2 in/out");
         p2isIn = !p2isIn;
     }
 

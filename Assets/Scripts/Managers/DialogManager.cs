@@ -67,12 +67,10 @@ public class DialogManager : MonoBehaviour, IDialogManager
         tutorialSteps.Add(new TutorialStep("Une nouvelle vague arrive ! Préparez-vous !", Narrator.Polo));// checkpoint - 8
         tutorialSteps.Add(new TutorialStep("", Narrator.Any, learnWasteInteractionManager.throwSecondWave));
         tutorialSteps.Add(new TutorialStep("Trop fort ! Maintenant que vous êtes prêt, vous allez pouvoir rentrez dans les choses sérieuses. Que le vent vous soit favorable et bonne expérience !", Narrator.Polo));
-        if (!GameManager.Instance.passTutorial)
-        {
-            UpdatePlayerInteraction(false);
-        }
-        else
+        if (GameManager.Instance.passTutorial) // GameManager.Instance.debugMode &&
             hasFinish = true;
+        else
+            UpdatePlayerInteraction(false);
     }
     void Update()
     {
@@ -117,7 +115,6 @@ public class DialogManager : MonoBehaviour, IDialogManager
 
     private void UpdatePlayerInteraction(bool enabled)
     {
-        Debug.Log("Update interaction on " + enabled);
         player1.enabled = enabled;
         player2.enabled = enabled;
     }
@@ -148,7 +145,6 @@ public class DialogManager : MonoBehaviour, IDialogManager
 
     public void OnNextStep()
     {
-        Debug.Log("OnNextStep index " + index);
         index++;
         if (index < tutorialSteps.Count) TutorialNextStep(tutorialSteps[index]);
         else TutorialEnd();
@@ -156,7 +152,6 @@ public class DialogManager : MonoBehaviour, IDialogManager
 
     public void RestartStep()
     {
-        Debug.Log("RestartStep index " + index);
         ResetEntities();
         if (index >= 3 && index <= 8)
         {
@@ -176,15 +171,8 @@ public class DialogManager : MonoBehaviour, IDialogManager
                 tutorialSteps.Insert(index, new TutorialStep("Tu sais, ça arrive à tout le monde de rater, c'est pas la fin du monde. Allez réessaye pour voir ! "));
             }
         }
-        Debug.Log("insert at index " + index);
         index--;
         OnNextStep();
-        int inner = 0;
-        foreach (TutorialStep step in tutorialSteps)
-        {
-            Debug.Log(inner + " - " + step.ToString());
-            inner++;
-        }
     }
 
     public void ResetEntities()
@@ -215,7 +203,6 @@ public class DialogManager : MonoBehaviour, IDialogManager
 
     public void TutorialEnd()
     {
-        Debug.Log("end of tutoriel !!!!!!");
         marco.CloseDialog();
         polo.CloseDialog();
         hasFinish = true;

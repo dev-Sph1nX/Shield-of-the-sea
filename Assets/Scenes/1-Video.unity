@@ -711,7 +711,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 8400000, guid: f8bf63bf2afb01c4c8ce9eb2c45f48cd, type: 2}
+  m_Texture: {fileID: 8400000, guid: dbcf2d1d8c112784a943f77f27d9c797, type: 2}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -942,7 +942,7 @@ VideoPlayer:
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 1863995541}
-  m_TargetTexture: {fileID: 8400000, guid: f8bf63bf2afb01c4c8ce9eb2c45f48cd, type: 2}
+  m_TargetTexture: {fileID: 8400000, guid: dbcf2d1d8c112784a943f77f27d9c797, type: 2}
   m_TimeReference: 0
   m_TargetMaterialRenderer: {fileID: 0}
   m_TargetMaterialProperty: <noninit>

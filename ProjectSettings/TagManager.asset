@@ -13,6 +13,7 @@ TagManager:
   - Shadow
   - Player1
   - Player2
+  - Boss
   layers:
   - Default
   - TransparentFX

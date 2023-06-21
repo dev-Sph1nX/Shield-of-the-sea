@@ -26,7 +26,10 @@ public class LevelManager : MonoBehaviour
     [SerializeField] public TextMeshProUGUI startText;
     [SerializeField] public TextMeshProUGUI timeLeftText;
     [SerializeField] public WasteSpawner wasteSpawner;
-    [SerializeField] public HealthBar healthBar;
+    [SerializeField] public TextMeshProUGUI p1ScoreText;
+    [SerializeField] public TextMeshProUGUI p2ScoreText;
+    [SerializeField] public MedailleManager medailleManager;
+    [SerializeField] public FinalBoss finalBoss;
 
     [Header("Inital modal ref")]
     [SerializeField] public CustomModal initialModal;
@@ -42,7 +45,7 @@ public class LevelManager : MonoBehaviour
     private Animator sceneAnimator = null;
     private bool isPlaying = false, endCanvasIsShow = false;
     private bool startGameTrigger = false;
-    private float startTime = 0f;
+    private float startTime = 0f, tiersOfGameTime, nextTiers = 0f, actualGameTime;
 
     void Awake()
     {
@@ -64,6 +67,9 @@ public class LevelManager : MonoBehaviour
 
     void Start()
     {
+        tiersOfGameTime = gameTime / 3;
+        nextTiers = tiersOfGameTime;
+
         sceneAnimator.SetTrigger("Enter");
         Invoke("HideMask", 1f);
         Invoke("OpenInitialModal", 1f);
@@ -92,6 +98,16 @@ public class LevelManager : MonoBehaviour
         {
             startGameTrigger = false;
             StartCoroutine(CountDownCoroutine());
+        }
+
+        if (isPlaying)
+        {
+            actualGameTime = Time.timeSinceLevelLoad - startTime;
+            if (actualGameTime > nextTiers)
+            {
+                nextTiers += tiersOfGameTime;
+                wasteSpawner.IncrementIntensity();
+            }
         }
     }
 
@@ -128,7 +144,8 @@ public class LevelManager : MonoBehaviour
     public void StartGame()
     {
         wasteSpawner.StartGame(gameTime);
-        healthBar.UpdateHealthBar(percentage);
+        medailleManager.Show(percentage);
+        // healthBar.UpdateHealthBar(percentage);
         isPlaying = true;
         startTime = Time.timeSinceLevelLoad;
         StartCoroutine("GameTimerCoroutine");
@@ -144,7 +161,6 @@ public class LevelManager : MonoBehaviour
         StopCoroutine("GameTimerCoroutine");
         GameEnded();
         isPlaying = false;
-        endCanvasIsShow = true;
     }
 
 
@@ -161,18 +177,14 @@ public class LevelManager : MonoBehaviour
         if (isPlaying && percentage - percentageLostOnWasteLost >= 0)
         {
             percentage -= percentageLostOnWasteLost;
-            healthBar.UpdateHealthBar(percentage);
+            // healthBar.UpdateHealthBar(percentage);
+            medailleManager.OnScoreUpdate(percentage);
         }
     }
 
     public void GameEnded()
     {
         timeLeftText.text = "";
-        PlayerInteraction[] players = FindObjectsOfType<PlayerInteraction>();
-        foreach (PlayerInteraction p in players)
-        {
-            p.gameObject.GetComponent<SimpleSampleCharacterControl>().GetStop();
-        }
         NPCInteractable[] wastes = FindObjectsOfType<NPCInteractable>();
         foreach (NPCInteractable w in wastes)
         {
@@ -181,16 +193,32 @@ public class LevelManager : MonoBehaviour
             {
                 shadowManager.DestroyShadow();
             }
-            Destroy(w.gameObject);
+            if (w.gameObject.tag != "Boss")
+            {
+                Destroy(w.gameObject);
+            }
         }
         wasteSpawner.StopGame();
+        finalBoss.Appear();
+    }
+
+    public void OnBossDeath()
+    {
+        endCanvasIsShow = true;
+        PlayerInteraction[] players = FindObjectsOfType<PlayerInteraction>();
+        foreach (PlayerInteraction p in players)
+        {
+            p.gameObject.GetComponent<SimpleSampleCharacterControl>().GetStop();
+        }
         finalModal.ShowModal();
     }
+
     public string getFinalPercentage()
     {
         return percentage + " %";
     }
 
+    // called after final modal is done 
     public void ChangeScene()
     {
         GameManager.Instance.ChangeScene(nextSceneName, StartAnimation);
@@ -211,6 +239,7 @@ public class LevelManager : MonoBehaviour
         if (scoring)
         {
             p1Score++;
+            p1ScoreText.text = p1Score.ToString();
         }
 
         if (!isPlaying && endCanvasIsShow)
@@ -227,6 +256,7 @@ public class LevelManager : MonoBehaviour
         if (scoring)
         {
             p2Score++;
+            p2ScoreText.text = p2Score.ToString();
         }
         if (!isPlaying && endCanvasIsShow)
         {

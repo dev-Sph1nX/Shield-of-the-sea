@@ -146,6 +146,7 @@ public class PlayerInteraction : MonoBehaviour
             return true;
         }
         if (wasteId == SystemId.Pneu) return true;
+        if (wasteId == SystemId.Boss) return true;
         return false;
     }
 }
