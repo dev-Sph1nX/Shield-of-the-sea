@@ -2492,8 +2492,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerDamage: 0
   healthPercentage: 100
+  cameraDuration: 0
+  shakeAmount: 0
   cameraShake: {fileID: 0}
-  bossTransform: {fileID: 3059894367716366789}
+  deathParticule: {fileID: 0}
+  levelManager: {fileID: 0}
   healthBarContainer: {fileID: 0}
   UIToHide:
   - {fileID: 0}

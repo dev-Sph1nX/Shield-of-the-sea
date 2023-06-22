@@ -47,6 +47,9 @@ public class DialogManager : MonoBehaviour, IDialogManager
     [SerializeField] WS websocket;
     [SerializeField] Animator swordMotionAnimator;
     [SerializeField] VideoPlayer swordMotionVideoPlayer;
+    [SerializeField] PlayerNameApparition player1NameApparition;
+    [SerializeField] PlayerNameApparition player2NameApparition;
+
 
     List<TutorialStep> tutorialSteps = new List<TutorialStep>();
 
@@ -63,7 +66,7 @@ public class DialogManager : MonoBehaviour, IDialogManager
         tutorialSteps.Add(new TutorialStep("Tu vois ces déchets ? Il faut que tu t'approches d'eux.", Narrator.Polo, learnWasteInteractionManager.waitingProximity));
         tutorialSteps.Add(new TutorialStep("Bien joué !", Narrator.Polo));
         tutorialSteps.Add(new TutorialStep("Maintenant que vous êtes à coté d'eux, vous pouvons voir qu'ils sont en surbrillance. Ca veut que vous pouvez les détruire ! Comment ? En donnant un coup d'épée comme montré à l'écran !", Narrator.Polo, showSwordMotion, true));
-        tutorialSteps.Add(new TutorialStep("Allez-y, essaye de les détruire.", Narrator.Polo, WaitingInteraction));
+        tutorialSteps.Add(new TutorialStep("Allez-y, essayez de les détruire.", Narrator.Polo, WaitingInteraction));
         tutorialSteps.Add(new TutorialStep("Une nouvelle vague arrive ! Préparez-vous !", Narrator.Polo));// checkpoint - 8
         tutorialSteps.Add(new TutorialStep("", Narrator.Any, learnWasteInteractionManager.throwSecondWave));
         tutorialSteps.Add(new TutorialStep("Trop fort ! Maintenant que vous êtes prêt, vous allez pouvoir rentrez dans les choses sérieuses. Que le vent vous soit favorable et bonne expérience !", Narrator.Polo));
@@ -81,11 +84,16 @@ public class DialogManager : MonoBehaviour, IDialogManager
                 if (GameManager.Instance.debugMode)
                 {
                     StartDialog();
+
+                    player1NameApparition.Appear();
+                    player2NameApparition.Appear();
                 }
                 else
                 {
                     Debug.Log("Wait 5s to start");
                     Invoke("StartTuto", 5f);
+                    player1NameApparition.Appear();
+                    player2NameApparition.Appear();
                 }
             }
         }
@@ -170,6 +178,7 @@ public class DialogManager : MonoBehaviour, IDialogManager
                 firstRetryOnSecondCheck = false;
                 tutorialSteps.Insert(index, new TutorialStep("Tu sais, ça arrive à tout le monde de rater, c'est pas la fin du monde. Allez réessaye pour voir ! "));
             }
+            UpdatePlayerInteraction(true);
         }
         index--;
         OnNextStep();

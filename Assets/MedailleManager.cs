@@ -7,61 +7,73 @@ using TMPro;
 class Medaille
 {
     public int score;
-    public string text;
-    public Color color;
+    public Image image;
 
-    public Medaille(string pText, Color pColor, int pScore)
+    public Medaille(Image pImage, int pScore)
     {
-        text = pText;
-        color = pColor;
+        image = pImage;
         score = pScore;
     }
 }
 
 public class MedailleManager : MonoBehaviour
 {
-    [SerializeField] Image background;
-    [SerializeField] TextMeshProUGUI text;
+    [Header("Medailles assets")]
+    [SerializeField] Image goldMedaille;
+    [SerializeField] Image silverMedaille;
+    [SerializeField] Image bronzeMedaille;
+    [SerializeField] Image chocolateMedaille;
+    [Header("Reference")]
+    [SerializeField] CanvasGroup canvasGroup;
+    [SerializeField] HealthBar healthBar;
 
     List<Medaille> medailles = new List<Medaille>();
     int index = 0;
 
     void Awake()
     {
-        background.gameObject.SetActive(false);
+        canvasGroup.alpha = 0;
     }
 
     void Start()
     {
-        medailles.Add(new Medaille("OR", Color.yellow, 100));
-        medailles.Add(new Medaille("ARGENT", Color.grey, 80));
-        medailles.Add(new Medaille("BRONZE", new Color32(205, 127, 50, 255), 50));
-        medailles.Add(new Medaille("CHOCOLAT", new Color32(210, 105, 30, 255), 0));
+        medailles.Add(new Medaille(goldMedaille, 100));
+        medailles.Add(new Medaille(silverMedaille, 80));
+        medailles.Add(new Medaille(bronzeMedaille, 50));
+        medailles.Add(new Medaille(chocolateMedaille, 0));
     }
 
 
     public void Show(float score)
     {
-        background.gameObject.SetActive(true);
-        UIUpdate();
+        canvasGroup.alpha = 1;
     }
 
     public void OnScoreUpdate(float score)
     {
-        Debug.Log(score + " < " + medailles[index].score);
+        healthBar.UpdateHealthBar(score);
+        // Debug.Log(score + " < " + medailles[index].score);
         if (score < medailles[index].score)
         { // s'il est plus petit que la medaille actuel
             if (index + 1 < medailles.Count) // et qu'il reste des medailles en dessous
             {
+                Debug.Log("launch anim");
+                medailles[index].image.gameObject.GetComponent<Animator>().SetTrigger("Swap");
                 index++;
-                UIUpdate();
             }
         }
     }
-    void UIUpdate()
-    {
-        Medaille currentMedaille = medailles[index];
-        text.text = currentMedaille.text;
-        background.color = currentMedaille.color;
-    }
+
+    // void UpdateMedaille()
+    // {
+    //     Debug.Log("update medailel");
+
+    //     Medaille currentMedaille = medailles[index];
+    //     medailleContainer.sprite = currentMedaille.sprite;
+
+    //     Medaille behindMedaille = medailles[index + 1];
+    //     medailleBehindContainer.sprite = behindMedaille.sprite;
+    // }
+
+
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using MyBox;
-
+using System.Linq;
 
 public class PlayerInteraction : MonoBehaviour
 {
@@ -12,7 +12,12 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] float interactRange = 3f;
     [Header("Animation")]
     [SerializeField] string pickupTriggerName = "Pickup";
+    [Header("Camera shake on interaction")]
+    [SerializeField] public float cameraDuration;
+    [SerializeField] public float shakeAmount;
     [Header("Reference")]
+    [SerializeField] public CameraShake cameraShake;
+
 
     Animator animator = null;
     public string objectId = NULL;
@@ -51,6 +56,7 @@ public class PlayerInteraction : MonoBehaviour
             interact = false;
             OnUserInteract();
         }
+        GetInteractableObject();
     }
 
     public void OnUserInteract()
@@ -78,12 +84,15 @@ public class PlayerInteraction : MonoBehaviour
                 levelManager.OnPlayer2Interaction(interactable != null);
             }
         }
+        animator.SetTrigger(pickupTriggerName);
         if (interactable != null)
         {
-            animator.SetTrigger(pickupTriggerName);
+            cameraShake.shakeAmount = shakeAmount;
+            cameraShake.shakeDuration = cameraDuration;
             interactable.Interact(playerId);
         }
     }
+
 
     public void GetInteractionFromWS()
     {
@@ -129,6 +138,7 @@ public class PlayerInteraction : MonoBehaviour
             }
         }
 
+        objectId = closestInteractable?.getId() ?? null;
         // Else - Les objects par terre
         return closestInteractable;
     }

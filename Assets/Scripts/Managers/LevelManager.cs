@@ -23,6 +23,8 @@ public class LevelManager : MonoBehaviour
 
     [Header("Reference")]
     [SerializeField] public GameObject canvas = null;
+    [SerializeField] public Animator cameraAnimator;
+
     [SerializeField] public TextMeshProUGUI startText;
     [SerializeField] public TextMeshProUGUI timeLeftText;
     [SerializeField] public WasteSpawner wasteSpawner;
@@ -36,9 +38,12 @@ public class LevelManager : MonoBehaviour
 
     [Header("Final modal ref")]
     [SerializeField] public CustomModal finalModal;
-    [Header("Player Stat")]
-    [SerializeField][ReadOnly] public int p1Score = 0;
-    [SerializeField][ReadOnly] public int p2Score = 0;
+
+    [Header("Player name ref")]
+    [SerializeField] PlayerNameApparition player1NameApparition;
+    [SerializeField] PlayerNameApparition player2NameApparition;
+    private int p1Score = 0;
+    private int p2Score = 0;
 
 
     private Image mask = null;
@@ -71,8 +76,9 @@ public class LevelManager : MonoBehaviour
         nextTiers = tiersOfGameTime;
 
         sceneAnimator.SetTrigger("Enter");
+        cameraAnimator.SetTrigger("Enter");
         Invoke("HideMask", 1f);
-        Invoke("OpenInitialModal", 1f);
+        Invoke("OpenInitialModal", 2f);
 
         // if (GameManager.Instance.debugMode)
         // {
@@ -115,6 +121,9 @@ public class LevelManager : MonoBehaviour
     public void onOpeningModalClose()
     {
         startGameTrigger = true;
+
+        player1NameApparition.Appear();
+        player2NameApparition.Appear();
     }
 
     private System.Collections.IEnumerator CountDownCoroutine()
@@ -148,6 +157,7 @@ public class LevelManager : MonoBehaviour
         // healthBar.UpdateHealthBar(percentage);
         isPlaying = true;
         startTime = Time.timeSinceLevelLoad;
+
         StartCoroutine("GameTimerCoroutine");
     }
     private System.Collections.IEnumerator GameTimerCoroutine()
@@ -184,7 +194,6 @@ public class LevelManager : MonoBehaviour
 
     public void GameEnded()
     {
-        timeLeftText.text = "";
         NPCInteractable[] wastes = FindObjectsOfType<NPCInteractable>();
         foreach (NPCInteractable w in wastes)
         {
@@ -220,6 +229,12 @@ public class LevelManager : MonoBehaviour
 
     // called after final modal is done 
     public void ChangeScene()
+    {
+        cameraAnimator.SetTrigger("Exit");
+        Invoke("GameManagerChangeScene", 1f);
+    }
+
+    void GameManagerChangeScene()
     {
         GameManager.Instance.ChangeScene(nextSceneName, StartAnimation);
     }

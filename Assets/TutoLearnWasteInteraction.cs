@@ -34,7 +34,7 @@ public class TutoLearnWasteInteraction : MonoBehaviour
 
     void Update()
     {
-        // if (InputSystem.getButton("Fire1")) throwTwoWaste();
+        if (InputSystem.getButton("Fire1")) throwTwoWaste();
         if (waitingPlayersProximity && p1isIn && p2isIn)
         {
             // these 2 in ! -> so let's reset
@@ -161,6 +161,11 @@ public class TutoLearnWasteInteraction : MonoBehaviour
         throwWaste(cannette, spawn2.transform.position, maxLaunchVelocity);
         throwPneu();
         waitingAllDestroy = true;
+
+        cannetteTrigger = false;
+        glassTrigger = false;
+        pneuTrigger = false;
+
     }
 
     public void throwPneu()

@@ -11,20 +11,36 @@ public class NPCInteractable : MonoBehaviour, IInteractable
     [Header("References")]
 
     [SerializeField] private ParticleSystem hitPs;
+    [SerializeField][ReadOnly] private string id;
 
     private SystemId? ownerId = null;
     private MeshRenderer child;
     private bool isInteracted = false;
-    private TutoLearnWasteInteraction tutoLearnWasteInteraction;
 
+    private TutoLearnWasteInteraction tutoLearnWasteInteraction;
     private void Awake()
     {
+        id = Helpers.generateId();
         child = GetComponentInChildren<MeshRenderer>();
         tutoLearnWasteInteraction = FindAnyObjectByType<TutoLearnWasteInteraction>();
     }
 
-    private void Update()
+    void Update()
     {
+
+        // PlayerInteraction[] players = FindObjectsOfType<PlayerInteraction>();
+        // foreach (PlayerInteraction p in players)
+        // {
+        //     if (p.objectId == id)
+        //     {
+        //         ActiveOutline();
+        //     }
+        //     else
+        //     {
+        //         DisableOutline();
+        //     }
+        // }
+
     }
 
     public void Interact(SystemId id)
@@ -56,5 +72,10 @@ public class NPCInteractable : MonoBehaviour, IInteractable
     public bool isInteractable()
     {
         return !isInteracted;
+    }
+
+    public string getId()
+    {
+        return id;
     }
 }

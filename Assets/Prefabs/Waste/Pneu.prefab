@@ -151,6 +151,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeId: 4
   hitPs: {fileID: 4277841077015729856}
+  outlineEffect: {fileID: 0}
+  id: 
 --- !u!1001 &5480756575035893822
 PrefabInstance:
   m_ObjectHideFlags: 0

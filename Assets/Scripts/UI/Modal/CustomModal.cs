@@ -27,8 +27,12 @@ public class CustomModal : MonoBehaviour
         {
             localIsDone = true;
             animator.SetTrigger("Close");
-            onDone.Invoke();
+            Invoke("localOnDone", .5f);
         }
+    }
+    void localOnDone()
+    {
+        onDone.Invoke();
     }
 
     public void ShowModal()

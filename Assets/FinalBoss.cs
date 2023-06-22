@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using MyBox;
 
 public class FinalBoss : MonoBehaviour, IInteractable
 {
     [Header("Gameplay")]
     [SerializeField] int playerDamage;
     [SerializeField] int healthPercentage = 100;
+
+    [Header("Camera shake")]
+    [SerializeField] public float cameraDuration;
+    [SerializeField] public float shakeAmount;
 
     [Header("Reference")]
     [SerializeField] CameraShake cameraShake;
@@ -18,10 +23,17 @@ public class FinalBoss : MonoBehaviour, IInteractable
     [Header("UI Reference")]
     [SerializeField] GameObject healthBarContainer;
     [SerializeField] GameObject[] UIToHide;
+    [SerializeField][ReadOnly] private string id;
+
     // private ParticleSystem ps;
     private HealthBar healthBar;
     private bool p1trigger = false, p2trigger = false;
     private bool _isShow = false;
+
+    void Awake()
+    {
+        id = Helpers.generateId();
+    }
 
     void Start()
     {
@@ -32,12 +44,28 @@ public class FinalBoss : MonoBehaviour, IInteractable
     void Update()
     {
         // if (InputSystem.getButton("Fire1")) Appear();
+
+        // PlayerInteraction[] players = FindObjectsOfType<PlayerInteraction>();
+        // foreach (PlayerInteraction p in players)
+        // {
+        //     if (p.objectId == id)
+        //     {
+        //         ActiveOutline();
+        //     }
+        //     else
+        //     {
+        //         DisableOutline();
+        //     }
+        // }
+
     }
 
     public void Appear()
     {
         _isShow = true;
-        cameraShake.shakeDuration = 2;
+        Debug.Log(shakeAmount + " // " + cameraDuration);
+        cameraShake.shakeAmount = shakeAmount;
+        cameraShake.shakeDuration = cameraDuration;
         // ps.Play();
         transform.DOMoveY(0, 2);
 
@@ -60,7 +88,8 @@ public class FinalBoss : MonoBehaviour, IInteractable
     {
         healthBarContainer.SetActive(false);
         _isShow = false;
-        cameraShake.shakeDuration = 2;
+        cameraShake.shakeAmount = shakeAmount;
+        cameraShake.shakeDuration = cameraDuration;
         transform.DOMoveY(-3, 2);
         Invoke("CallLevelManager", 2f);
     }
@@ -97,5 +126,10 @@ public class FinalBoss : MonoBehaviour, IInteractable
     public bool isInteractable()
     {
         return _isShow;
+    }
+
+    public string getId()
+    {
+        return id;
     }
 }
