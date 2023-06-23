@@ -117,7 +117,7 @@ public class SimpleSampleCharacterControl : MonoBehaviour
 
     private void FixedUpdate()
     {
-        m_animator.SetBool("Grounded", m_isGrounded);
+        // m_animator.SetBool("Grounded", m_isGrounded);
 
         switch (m_controlMode)
         {
@@ -219,15 +219,15 @@ public class SimpleSampleCharacterControl : MonoBehaviour
             m_rigidBody.AddForce(Vector3.up * m_jumpForce, ForceMode.Impulse);
         }
 
-        if (!m_wasGrounded && m_isGrounded)
-        {
-            m_animator.SetTrigger("Land");
-        }
+        // if (!m_wasGrounded && m_isGrounded)
+        // {
+        //     m_animator.SetTrigger("Land");
+        // }
 
-        if (!m_isGrounded && m_wasGrounded)
-        {
-            m_animator.SetTrigger("Jump");
-        }
+        // if (!m_isGrounded && m_wasGrounded)
+        // {
+        //     m_animator.SetTrigger("Jump");
+        // }
     }
 
     public void GetStop()

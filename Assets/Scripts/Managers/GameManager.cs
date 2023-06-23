@@ -31,10 +31,6 @@ public class GameManager : MonoBehaviour
             instance = this;
         }
         DontDestroyOnLoad(this.gameObject);
-        if (StaticClass.CrossSceneDebugMode)
-        {
-            debugMode = StaticClass.CrossSceneDebugMode;
-        }
     }
 
     public void ChangeScene(string newSceneName, Action startAnimationMethod)

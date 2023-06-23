@@ -286,7 +286,7 @@ namespace TravisGameAssets
             newColor.a = cameraRotating ? 1f : 0.33f;
             rotationIcon.color = newColor;
 
-            rotationIcon.GetComponent<OutlineEffect>().enabled = cameraRotating;
+            rotationIcon.GetComponent<QuickOutlineEffect>().enabled = cameraRotating;
             rotationIcon.GetComponent<Shadow>().enabled = cameraRotating;
         }
 
@@ -300,7 +300,7 @@ namespace TravisGameAssets
             newColor.a = floorVisible ? 1f : 0.33f;
             floorIcon.color = newColor;
 
-            floorIcon.GetComponent<OutlineEffect>().enabled = floorVisible;
+            floorIcon.GetComponent<QuickOutlineEffect>().enabled = floorVisible;
             floorIcon.GetComponent<Shadow>().enabled = floorVisible;
         }
 
@@ -320,7 +320,7 @@ namespace TravisGameAssets
             newColor.a = slowMotion ? 1f : 0.33f;
             slowMotionIcon.color = newColor;
 
-            slowMotionIcon.GetComponent<OutlineEffect>().enabled = slowMotion;
+            slowMotionIcon.GetComponent<QuickOutlineEffect>().enabled = slowMotion;
             slowMotionIcon.GetComponent<Shadow>().enabled = slowMotion;
         }
 
@@ -333,7 +333,7 @@ namespace TravisGameAssets
             newColor.a = lighting ? 1f : 0.33f;
             lightingIcon.color = newColor;
 
-            lightingIcon.GetComponent<OutlineEffect>().enabled = lighting;
+            lightingIcon.GetComponent<QuickOutlineEffect>().enabled = lighting;
             lightingIcon.GetComponent<Shadow>().enabled = lighting;
         }
 

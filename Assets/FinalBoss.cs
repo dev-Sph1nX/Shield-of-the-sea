@@ -27,7 +27,6 @@ public class FinalBoss : MonoBehaviour, IInteractable
 
     // private ParticleSystem ps;
     private HealthBar healthBar;
-    private bool p1trigger = false, p2trigger = false;
     private bool _isShow = false;
 
     void Awake()
@@ -112,7 +111,6 @@ public class FinalBoss : MonoBehaviour, IInteractable
         }
 
     }
-
 
     public Transform GetTransform()
     {

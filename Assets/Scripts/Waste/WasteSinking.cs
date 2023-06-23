@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Events;
 public class WasteSinking : MonoBehaviour
 {
     [Header("After ground collision")]
@@ -16,6 +16,7 @@ public class WasteSinking : MonoBehaviour
     [SerializeField] private ParticleSystem deathPs;
     [SerializeField] private ParticleSystem groundPs;
     [SerializeField] private PinApparition pinApparition;
+    [SerializeField] private Transform meshTransform;
 
     private LevelManager lvlManager;
     private TutoLearnWasteInteraction tutoLearnWasteInteraction;
@@ -26,6 +27,7 @@ public class WasteSinking : MonoBehaviour
     private WasteShadow shadowManager;
     private NPCInteractable npcInteractable;
     private GameObject tutoTarget;
+
 
     void Awake()
     {
@@ -38,8 +40,7 @@ public class WasteSinking : MonoBehaviour
         baseMass = rb.mass;
         baseDrag = rb.drag;
     }
-
-    void OnCollisionEnter(Collision collision)
+    public void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.tag == "SinkingGround")
         {

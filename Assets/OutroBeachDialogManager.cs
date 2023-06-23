@@ -46,7 +46,6 @@ public class OutroBeachDialogManager : MonoBehaviour, IDialogManager
 
     public void OnNextStep()
     {
-        Debug.Log("OnNextStep index " + index);
         index++;
         if (index < tutorialSteps.Count) DiscoursNextStep(tutorialSteps[index]);
         else DiscoursEnd();
@@ -54,7 +53,6 @@ public class OutroBeachDialogManager : MonoBehaviour, IDialogManager
 
     public void DiscoursEnd()
     {
-        Debug.Log("end of discours");
         marco.CloseDialog();
         Invoke("NextScene", 1f);
     }

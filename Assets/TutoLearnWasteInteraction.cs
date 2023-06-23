@@ -173,4 +173,15 @@ public class TutoLearnWasteInteraction : MonoBehaviour
         GameObject waste = Instantiate(pneu, spawnPneu.transform.position, pneuRotation);
         waste.GetComponent<PneuMovement>().applyXVelocity = tutoPneuVelocity;
     }
+
+    public void onWasteDestroyByPlayer1()
+    {
+        onWasteDestroyByPlayer(SystemId.Cannette);
+    }
+
+    public void onWasteDestroyByPlayer2()
+    {
+        onWasteDestroyByPlayer(SystemId.Glass);
+
+    }
 }

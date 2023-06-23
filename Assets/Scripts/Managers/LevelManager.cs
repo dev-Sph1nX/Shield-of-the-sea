@@ -61,10 +61,6 @@ public class LevelManager : MonoBehaviour
             if (child.gameObject.tag == "TransitionImage")
                 mask = child.gameObject.GetComponent<Image>();
         }
-        if (StaticClass.CrossSceneGameTime > 0)
-        {
-            gameTime = StaticClass.CrossSceneGameTime;
-        }
 
         GameManager.Instance.FindNewPlayers();
         GameManager.Instance.FindLevelManager();

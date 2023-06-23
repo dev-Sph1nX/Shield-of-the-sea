@@ -24,14 +24,14 @@ public class PlayerInteraction : MonoBehaviour
     const string NULL = "null";
     private string sceneName;
     private LobbyManager lobbyManager;
-    private TutoLearnInteraction tutoLearnInteraction;
+    private TutoLearnWasteInteraction tutoLearnWasteInteraction;
     public LevelManager levelManager;
     private bool interact = false;
     private void Awake()
     {
         animator = GetComponent<Animator>();
         lobbyManager = FindObjectOfType<LobbyManager>();
-        tutoLearnInteraction = FindObjectOfType<TutoLearnInteraction>();
+        tutoLearnWasteInteraction = FindObjectOfType<TutoLearnWasteInteraction>();
         levelManager = FindObjectOfType<LevelManager>();
         sceneName = SceneManager.GetActiveScene().name;
     }
@@ -66,11 +66,11 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (playerId == SystemId.Player1)
             {
-                tutoLearnInteraction.P1Interact();
+                tutoLearnWasteInteraction.onWasteDestroyByPlayer1();
             }
             if (playerId == SystemId.Player2)
             {
-                tutoLearnInteraction.P2Interact();
+                tutoLearnWasteInteraction.onWasteDestroyByPlayer2();
             }
         }
         if (sceneName == "3-Beach")

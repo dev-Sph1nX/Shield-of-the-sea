@@ -211,7 +211,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2737573348144772469
 Transform:
   m_ObjectHideFlags: 0
@@ -409,6 +409,7 @@ MonoBehaviour:
   deathPs: {fileID: 8411657329904572942}
   groundPs: {fileID: 126362649775361421}
   pinApparition: {fileID: 476232627564919583}
+  meshTransform: {fileID: 0}
 --- !u!114 &8806866367720409000
 MonoBehaviour:
   m_ObjectHideFlags: 0

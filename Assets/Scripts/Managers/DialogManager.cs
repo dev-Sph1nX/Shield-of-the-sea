@@ -41,8 +41,6 @@ public class DialogManager : MonoBehaviour, IDialogManager
     [SerializeField] BigModalPolo bigModalPolo;
     [SerializeField] PlayerInteraction player1;
     [SerializeField] PlayerInteraction player2;
-    [SerializeField] TutoLearnMovement learnMovementManager;
-    [SerializeField] TutoLearnInteraction learnInteractionManager;
     [SerializeField] TutoLearnWasteInteraction learnWasteInteractionManager;
     [SerializeField] WS websocket;
     [SerializeField] Animator swordMotionAnimator;
@@ -91,7 +89,7 @@ public class DialogManager : MonoBehaviour, IDialogManager
                 else
                 {
                     Debug.Log("Wait 5s to start");
-                    Invoke("StartTuto", 5f);
+                    Invoke("StartDialog", 5f);
                     player1NameApparition.Appear();
                     player2NameApparition.Appear();
                 }
@@ -236,39 +234,5 @@ public class DialogManager : MonoBehaviour, IDialogManager
         UpdatePlayerInteraction(true);
         learnWasteInteractionManager.waitingInteraction();
     }
-
-    // public void StartLearningInteractionWithP1()
-    // {
-    //     player1.enabled = true;
-    //     player2.enabled = false;
-    //     learnInteractionManager.InteractionWithP1();
-    // }
-    // public void StartLearningInteractionWithP2()
-    // {
-    //     player1.enabled = false;
-    //     player2.enabled = true;
-    //     learnInteractionManager.InteractionWithP2();
-    // }
-
-    // public void throwForP1()
-    // {
-    //     player1.enabled = true;
-    //     player2.enabled = false;
-    //     learnWasteInteractionManager.throwForP1();
-    // }
-    // public void throwForP2()
-    // {
-    //     player1.enabled = false;
-    //     player2.enabled = true;
-    //     learnWasteInteractionManager.throwForP2();
-    // }
-
-    // public void throwForBoth()
-    // {
-    //     player1.enabled = true;
-    //     player2.enabled = true;
-    //     learnWasteInteractionManager.throwForBoth();
-    // }
-
 }
 
