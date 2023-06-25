@@ -15,8 +15,8 @@ public class WasteSinking : MonoBehaviour
     [SerializeField] Collider colliderObj;
     [SerializeField] private ParticleSystem deathPs;
     [SerializeField] private ParticleSystem groundPs;
+    [SerializeField] private AudioSource groundSound;
     [SerializeField] private PinApparition pinApparition;
-    [SerializeField] private Transform meshTransform;
 
     private LevelManager lvlManager;
     private TutoLearnWasteInteraction tutoLearnWasteInteraction;
@@ -51,6 +51,7 @@ public class WasteSinking : MonoBehaviour
             rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
             groundPs.Play();
+            groundSound.Play();
             pinApparition.Appear();
             if (tutoLearnWasteInteraction)
             {
@@ -71,7 +72,7 @@ public class WasteSinking : MonoBehaviour
             isLost = true;
             deathPs.Play();
             if (lvlManager) lvlManager.OnWasteLost();
-            pinApparition.Disappear();
+            pinApparition.DestroyPin();
             Invoke("Destroy", 1f);
         }
     }

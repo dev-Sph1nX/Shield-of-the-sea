@@ -12,10 +12,10 @@ public class HealthBar : MonoBehaviour
         healthBarImage = GetComponent<Image>();
     }
 
-    public void UpdateHealthBar(float percentage)
+    public void UpdateHealthBar(float percentage, float? forcedDuraction = null)
     {
         float duration = 0.75f * (percentage / 100);
-        healthBarImage.DOFillAmount(percentage / 100, duration);
+        healthBarImage.DOFillAmount(percentage / 100, forcedDuraction ?? duration);
     }
 
 }

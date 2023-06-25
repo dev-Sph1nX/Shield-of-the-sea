@@ -38,6 +38,7 @@ public class CustomModal : MonoBehaviour
     public void ShowModal()
     {
         animator.SetTrigger("Open");
+        innerModalScript.isShow();
     }
     public void Player1Interact()
     {

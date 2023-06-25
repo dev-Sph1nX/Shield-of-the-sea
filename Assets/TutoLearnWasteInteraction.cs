@@ -114,13 +114,22 @@ public class TutoLearnWasteInteraction : MonoBehaviour
 
             if (p1hasInteract && p2hasInteract)
             {
+                Debug.Log("waitingBothDestroy next");
                 dialogManager.OnNextStep();
                 waitingBothDestroy = false;
+                cannetteTrigger = false;
+                glassTrigger = false;
+                pneuTrigger = false;
             }
         }
         if (waitingAllDestroy && cannetteTrigger && glassTrigger && pneuTrigger)
         {
+            Debug.Log("waitingAllDestroy next");
             dialogManager.OnNextStep();
+            waitingAllDestroy = false;
+            cannetteTrigger = false;
+            glassTrigger = false;
+            pneuTrigger = false;
         }
     }
 

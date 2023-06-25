@@ -26,7 +26,8 @@ public class PlayerMovement : MonoBehaviour
     private float positionX, positionY, positionZ;
     private Vector3 localPosition, direction;
     private Quaternion localRotation, tempRotation;
-    private float deltaTime, velocity;
+    private float deltaTime;
+    public float velocity;
     private List<Collider> m_collisions = new List<Collider>();
     private int layer_mask;
     private void Awake()
@@ -39,7 +40,7 @@ public class PlayerMovement : MonoBehaviour
             GetComponent<SimpleSampleCharacterControl>().enabled = true;
             this.enabled = false;
         }
-        layer_mask = LayerMask.GetMask("Default");
+        layer_mask = LayerMask.GetMask("Boss");
     }
 
     private void Update()
@@ -188,5 +189,12 @@ public class PlayerMovement : MonoBehaviour
     float RoundValue(float num, float precision)
     {
         return Mathf.Floor(num * precision + 0.5f) / precision;
+    }
+
+    public void GetStop()
+    {
+        velocity = 0;
+        m_animator.SetFloat("MoveSpeed", 0);
+        this.enabled = false;
     }
 }

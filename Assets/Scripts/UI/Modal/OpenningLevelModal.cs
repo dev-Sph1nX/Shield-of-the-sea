@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class OpenningLevelModal : MonoBehaviour, InnerModalScript
 {
-    [SerializeField] TextMeshProUGUI p1text;
-    [SerializeField] TextMeshProUGUI p2text;
+    [SerializeField] Image p1;
+    [SerializeField] Image p2;
 
     private bool _isDone = false, _isShow = true, p1interact = false, p2interact = false;
 
@@ -16,11 +17,11 @@ public class OpenningLevelModal : MonoBehaviour, InnerModalScript
         {
             if (p1interact)
             {
-                p1text.enabled = true;
+                p1.enabled = true;
             }
             if (p2interact)
             {
-                p2text.enabled = true;
+                p2.enabled = true;
             }
 
             if (p1interact && p2interact)

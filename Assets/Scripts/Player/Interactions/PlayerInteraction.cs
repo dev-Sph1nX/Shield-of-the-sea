@@ -17,6 +17,7 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] public float shakeAmount;
     [Header("Reference")]
     [SerializeField] public CameraShake cameraShake;
+    [SerializeField] public AudioSource swordSound;
 
 
     Animator animator = null;
@@ -26,7 +27,7 @@ public class PlayerInteraction : MonoBehaviour
     private LobbyManager lobbyManager;
     private TutoLearnWasteInteraction tutoLearnWasteInteraction;
     public LevelManager levelManager;
-    private bool interact = false;
+    private bool interact = false, canInteract = true;
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -54,9 +55,10 @@ public class PlayerInteraction : MonoBehaviour
         if (interact || (GameManager.Instance.debugMode && Interaction()))
         {
             interact = false;
-            OnUserInteract();
+            if (canInteract)
+                OnUserInteract();
         }
-        GetInteractableObject();
+        GetInteractableObject(); // here for real time interact indicator
     }
 
     public void OnUserInteract()
@@ -85,6 +87,7 @@ public class PlayerInteraction : MonoBehaviour
             }
         }
         animator.SetTrigger(pickupTriggerName);
+        swordSound.Play();
         if (interactable != null)
         {
             cameraShake.shakeAmount = shakeAmount;
@@ -158,5 +161,10 @@ public class PlayerInteraction : MonoBehaviour
         if (wasteId == SystemId.Pneu) return true;
         if (wasteId == SystemId.Boss) return true;
         return false;
+    }
+
+    public void SetCanInteract(bool can)
+    {
+        canInteract = can;
     }
 }

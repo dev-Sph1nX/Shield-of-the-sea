@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Video;
-using TMPro;
+using DG.Tweening;
 using System;
 
 public enum Narrator : int
@@ -43,31 +43,31 @@ public class DialogManager : MonoBehaviour, IDialogManager
     [SerializeField] PlayerInteraction player2;
     [SerializeField] TutoLearnWasteInteraction learnWasteInteractionManager;
     [SerializeField] WS websocket;
-    [SerializeField] Animator swordMotionAnimator;
-    [SerializeField] VideoPlayer swordMotionVideoPlayer;
+    [SerializeField] CanvasGroup swordMotionCanvas;
     [SerializeField] PlayerNameApparition player1NameApparition;
     [SerializeField] PlayerNameApparition player2NameApparition;
+    [SerializeField] AudioSource tutorialMusic;
 
 
     List<TutorialStep> tutorialSteps = new List<TutorialStep>();
 
     private int index = 0;
-    private bool waitStart = true, started = false;
+    private bool waitStart = true, started = false, called = false;
     public bool hasFinish = false, firstRetryOnFirstCheck = true, firstRetryOnSecondCheck = true;
     // Start is called before the first frame update
     void Start()
     {
-        tutorialSteps.Add(new TutorialStep("Hello nous c’est Marco & Polo. On habite l’océan, cependant depuis peu on entretient une relation de voisinage toxique avec les humains qui nous polluent constamment.", Narrator.Marco));
-        tutorialSteps.Add(new TutorialStep("Aidez-nous à nous battre pour retrouver la paix et la sérénité tant attendu.", Narrator.Marco));
+        tutorialSteps.Add(new TutorialStep("Hello nous c’est Marco & Polo. On habite l’ocean, cependant depuis peu on entretient une relation de voisinage toxique avec les humains qui nous polluent constamment.", Narrator.Marco));
+        tutorialSteps.Add(new TutorialStep("Aidez-nous a nous battre pour retrouver la paix et la serenite tant attendu.", Narrator.Marco));
         tutorialSteps.Add(new TutorialStep("", Narrator.Any, bigModalPolo.Show));
         tutorialSteps.Add(new TutorialStep("", Narrator.Any, learnWasteInteractionManager.throwTwoWaste)); // checkpoint - 3
-        tutorialSteps.Add(new TutorialStep("Tu vois ces déchets ? Il faut que tu t'approches d'eux.", Narrator.Polo, learnWasteInteractionManager.waitingProximity));
-        tutorialSteps.Add(new TutorialStep("Bien joué !", Narrator.Polo));
-        tutorialSteps.Add(new TutorialStep("Maintenant que vous êtes à coté d'eux, vous pouvons voir qu'ils sont en surbrillance. Ca veut que vous pouvez les détruire ! Comment ? En donnant un coup d'épée comme montré à l'écran !", Narrator.Polo, showSwordMotion, true));
-        tutorialSteps.Add(new TutorialStep("Allez-y, essayez de les détruire.", Narrator.Polo, WaitingInteraction));
-        tutorialSteps.Add(new TutorialStep("Une nouvelle vague arrive ! Préparez-vous !", Narrator.Polo));// checkpoint - 8
+        tutorialSteps.Add(new TutorialStep("Tu vois ces dechets ? Il faut que tu t'approches d'eux.", Narrator.Polo, learnWasteInteractionManager.waitingProximity));
+        tutorialSteps.Add(new TutorialStep("Bien joue !", Narrator.Polo));
+        tutorialSteps.Add(new TutorialStep("Vous pouvez maintenant voir un petit indicateur au dessus des dechet. Ca veut dire que vous pouvez les detruire ! Comment ? En donnant un coup d'epee comme montre a l'ecran !", Narrator.Polo, showSwordMotion, true));
+        tutorialSteps.Add(new TutorialStep("Allez-y, essayez de les detruire.", Narrator.Polo, WaitingInteraction));
+        tutorialSteps.Add(new TutorialStep("Super ! Une nouvelle vague arrive ! Preparez-vous !", Narrator.Polo));// checkpoint - 8
         tutorialSteps.Add(new TutorialStep("", Narrator.Any, learnWasteInteractionManager.throwSecondWave));
-        tutorialSteps.Add(new TutorialStep("Trop fort ! Maintenant que vous êtes prêt, vous allez pouvoir rentrez dans les choses sérieuses. Que le vent vous soit favorable et bonne expérience !", Narrator.Polo));
+        tutorialSteps.Add(new TutorialStep("Trop fort ! Maintenant que vous etes pret, vous allez pouvoir rentrez dans les choses serieuses. Que le vent vous soit favorable et bonne experience !", Narrator.Polo));
         if (GameManager.Instance.passTutorial) // GameManager.Instance.debugMode &&
             hasFinish = true;
         else
@@ -85,13 +85,20 @@ public class DialogManager : MonoBehaviour, IDialogManager
 
                     player1NameApparition.Appear();
                     player2NameApparition.Appear();
+
+                    tutorialMusic.Play();
+                    tutorialMusic.DOFade(tutorialMusic.volume, 4);
                 }
                 else
                 {
-                    Debug.Log("Wait 5s to start");
-                    Invoke("StartDialog", 5f);
-                    player1NameApparition.Appear();
-                    player2NameApparition.Appear();
+                    if (!called)
+                    {
+                        called = true;
+                        Debug.Log("Wait 5s to start");
+                        Invoke("StartDialog", 5f);
+                        player1NameApparition.Appear();
+                        player2NameApparition.Appear();
+                    }
                 }
             }
         }
@@ -165,7 +172,7 @@ public class DialogManager : MonoBehaviour, IDialogManager
             if (firstRetryOnFirstCheck)
             {
                 firstRetryOnFirstCheck = false;
-                tutorialSteps.Insert(index, new TutorialStep("Tu sais, ça arrive à tout le monde de rater, c'est pas la fin du monde. Allez réessaye pour voir ! "));
+                tutorialSteps.Insert(index, new TutorialStep("Tu sais, ca arrive a tout le monde de rater, c'est pas la fin du monde. Allez reessaye pour voir ! "));
             }
         }
         else if (index > 8)
@@ -174,7 +181,7 @@ public class DialogManager : MonoBehaviour, IDialogManager
             if (firstRetryOnSecondCheck)
             {
                 firstRetryOnSecondCheck = false;
-                tutorialSteps.Insert(index, new TutorialStep("Tu sais, ça arrive à tout le monde de rater, c'est pas la fin du monde. Allez réessaye pour voir ! "));
+                tutorialSteps.Insert(index, new TutorialStep("Tu sais, ca arrive a tout le monde de rater, c'est pas la fin du monde. Allez reessaye pour voir ! "));
             }
             UpdatePlayerInteraction(true);
         }
@@ -184,9 +191,7 @@ public class DialogManager : MonoBehaviour, IDialogManager
 
     public void ResetEntities()
     {
-        swordMotionAnimator.Rebind();
-        swordMotionAnimator.Update(0f);
-        swordMotionVideoPlayer.frame = 0;
+        swordMotionCanvas.DOFade(0, 1);
 
         UpdatePlayerInteraction(false);
 
@@ -214,25 +219,34 @@ public class DialogManager : MonoBehaviour, IDialogManager
         polo.CloseDialog();
         hasFinish = true;
         UpdatePlayerInteraction(true);
+        tutorialMusic.DOFade(0, 1);
     }
 
     public void showSwordMotion()
     {
-        swordMotionAnimator.SetTrigger("Show");
-        swordMotionVideoPlayer.Play();
-        Invoke("hideSwordMotion", 5f); // SHIT -- have to be the same of time indicator
-    }
+        swordMotionCanvas.DOFade(1, 1);
 
-    void hideSwordMotion()
-    {
-        swordMotionVideoPlayer.Stop();
-        swordMotionAnimator.SetTrigger("Hide");
+        UpdatePlayerInteraction(true);
+
+        // for the indicator
+        player1.SetCanInteract(false);
+        player2.SetCanInteract(false);
+
     }
 
     public void WaitingInteraction()
     {
-        UpdatePlayerInteraction(true);
+        hideSwordMotion();
+
+        player1.SetCanInteract(true);
+        player2.SetCanInteract(true);
+
         learnWasteInteractionManager.waitingInteraction();
+    }
+
+    void hideSwordMotion()
+    {
+        swordMotionCanvas.DOFade(0, 1);
     }
 }
 

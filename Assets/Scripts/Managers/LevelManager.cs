@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using MyBox;
+using DG.Tweening;
 
 public class LevelManager : MonoBehaviour
 {
@@ -32,6 +32,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] public TextMeshProUGUI p2ScoreText;
     [SerializeField] public MedailleManager medailleManager;
     [SerializeField] public FinalBoss finalBoss;
+    [SerializeField] public AudioSource levelMusic;
 
     [Header("Inital modal ref")]
     [SerializeField] public CustomModal initialModal;
@@ -153,6 +154,9 @@ public class LevelManager : MonoBehaviour
         // healthBar.UpdateHealthBar(percentage);
         isPlaying = true;
         startTime = Time.timeSinceLevelLoad;
+        levelMusic.Play();
+        levelMusic.DOFade(levelMusic.volume, 4);
+
 
         StartCoroutine("GameTimerCoroutine");
     }
@@ -190,6 +194,8 @@ public class LevelManager : MonoBehaviour
 
     public void GameEnded()
     {
+        levelMusic.DOFade(0, 1);
+
         NPCInteractable[] wastes = FindObjectsOfType<NPCInteractable>();
         foreach (NPCInteractable w in wastes)
         {
@@ -214,13 +220,22 @@ public class LevelManager : MonoBehaviour
         foreach (PlayerInteraction p in players)
         {
             p.gameObject.GetComponent<SimpleSampleCharacterControl>().GetStop();
+            p.gameObject.GetComponent<PlayerMovement>().GetStop();
         }
         finalModal.ShowModal();
     }
 
-    public string getFinalPercentage()
+    public float getFinalPercentage()
     {
-        return percentage + " %";
+        return percentage;
+    }
+    public float getFinalP1Score()
+    {
+        return p1Score;
+    }
+    public float getFinalP2Score()
+    {
+        return p2Score;
     }
 
     // called after final modal is done 

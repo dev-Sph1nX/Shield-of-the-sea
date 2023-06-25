@@ -18,7 +18,14 @@ public class FinalBoss : MonoBehaviour, IInteractable
     [Header("Reference")]
     [SerializeField] CameraShake cameraShake;
     [SerializeField] ParticleSystem deathParticule;
+    [SerializeField] AudioSource spawnSound;
+    [SerializeField] AudioSource bossMusic;
     [SerializeField] LevelManager levelManager;
+    [SerializeField] Animator annoucementAnimator;
+    [SerializeField] PlayerInteraction player1;
+    [SerializeField] PlayerInteraction player2;
+    [SerializeField] PinApparition pinPlayer1Animator;
+    [SerializeField] PinApparition pinPlayer2Animator;
 
     [Header("UI Reference")]
     [SerializeField] GameObject healthBarContainer;
@@ -42,6 +49,26 @@ public class FinalBoss : MonoBehaviour, IInteractable
 
     void Update()
     {
+
+        if (player1.objectId == id)
+        {
+            pinPlayer1Animator.Appear();
+        }
+        else
+        {
+            pinPlayer1Animator.Disappear();
+
+        }
+
+        if (player2.objectId == id)
+        {
+            pinPlayer2Animator.Appear();
+        }
+        else
+        {
+            pinPlayer2Animator.Disappear();
+        }
+
         // if (InputSystem.getButton("Fire1")) Appear();
 
         // PlayerInteraction[] players = FindObjectsOfType<PlayerInteraction>();
@@ -62,11 +89,11 @@ public class FinalBoss : MonoBehaviour, IInteractable
     public void Appear()
     {
         _isShow = true;
-        Debug.Log(shakeAmount + " // " + cameraDuration);
         cameraShake.shakeAmount = shakeAmount;
         cameraShake.shakeDuration = cameraDuration;
         // ps.Play();
         transform.DOMoveY(0, 2);
+        spawnSound.Play();
 
         foreach (GameObject ui in UIToHide)
         {
@@ -79,17 +106,24 @@ public class FinalBoss : MonoBehaviour, IInteractable
     void UpdateUI()
     {
         healthBarContainer.SetActive(true);
-
-        // dispaly "ATTACK !" with animate
+        annoucementAnimator.gameObject.SetActive(true);
+        annoucementAnimator.SetTrigger("Show");
+        bossMusic.Play();
+        bossMusic.DOFade(bossMusic.volume, 1);
     }
 
     void BossDeath()
     {
+        bossMusic.DOFade(0, 1);
+
         healthBarContainer.SetActive(false);
+        annoucementAnimator.SetTrigger("Hide");
+
         _isShow = false;
         cameraShake.shakeAmount = shakeAmount;
         cameraShake.shakeDuration = cameraDuration;
         transform.DOMoveY(-3, 2);
+        spawnSound.Play();
         Invoke("CallLevelManager", 2f);
     }
 

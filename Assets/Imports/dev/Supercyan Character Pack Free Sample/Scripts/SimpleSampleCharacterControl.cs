@@ -44,6 +44,7 @@ public class SimpleSampleCharacterControl : MonoBehaviour
     private List<Collider> m_collisions = new List<Collider>();
     private SystemId playerId;
     private bool isLock = false;
+    public float velocity;
 
     private void Awake()
     {
@@ -202,7 +203,7 @@ public class SimpleSampleCharacterControl : MonoBehaviour
 
             transform.rotation = Quaternion.LookRotation(m_currentDirection);
             transform.position += m_currentDirection * m_moveSpeed * Time.deltaTime;
-
+            velocity = direction.magnitude;
             m_animator.SetFloat("MoveSpeed", direction.magnitude);
         }
 
@@ -232,6 +233,7 @@ public class SimpleSampleCharacterControl : MonoBehaviour
 
     public void GetStop()
     {
+        velocity = 0;
         m_animator.SetFloat("MoveSpeed", 0);
         this.enabled = false;
     }
