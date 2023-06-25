@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using MyBox;
+using DG.Tweening;
 
 public class LevelManager : MonoBehaviour
 {
@@ -23,26 +23,35 @@ public class LevelManager : MonoBehaviour
 
     [Header("Reference")]
     [SerializeField] public GameObject canvas = null;
+    [SerializeField] public Animator cameraAnimator;
+
     [SerializeField] public TextMeshProUGUI startText;
     [SerializeField] public TextMeshProUGUI timeLeftText;
     [SerializeField] public WasteSpawner wasteSpawner;
-    [SerializeField] public HealthBar healthBar;
+    [SerializeField] public TextMeshProUGUI p1ScoreText;
+    [SerializeField] public TextMeshProUGUI p2ScoreText;
+    [SerializeField] public MedailleManager medailleManager;
+    [SerializeField] public FinalBoss finalBoss;
+    [SerializeField] public AudioSource levelMusic;
 
     [Header("Inital modal ref")]
     [SerializeField] public CustomModal initialModal;
 
     [Header("Final modal ref")]
     [SerializeField] public CustomModal finalModal;
-    [Header("Player Stat")]
-    [SerializeField][ReadOnly] public int p1Score = 0;
-    [SerializeField][ReadOnly] public int p2Score = 0;
+
+    [Header("Player name ref")]
+    [SerializeField] PlayerNameApparition player1NameApparition;
+    [SerializeField] PlayerNameApparition player2NameApparition;
+    private int p1Score = 0;
+    private int p2Score = 0;
 
 
     private Image mask = null;
     private Animator sceneAnimator = null;
     private bool isPlaying = false, endCanvasIsShow = false;
     private bool startGameTrigger = false;
-    private float startTime = 0f;
+    private float startTime = 0f, tiersOfGameTime, nextTiers = 0f, actualGameTime;
 
     void Awake()
     {
@@ -53,10 +62,6 @@ public class LevelManager : MonoBehaviour
             if (child.gameObject.tag == "TransitionImage")
                 mask = child.gameObject.GetComponent<Image>();
         }
-        if (StaticClass.CrossSceneGameTime > 0)
-        {
-            gameTime = StaticClass.CrossSceneGameTime;
-        }
 
         GameManager.Instance.FindNewPlayers();
         GameManager.Instance.FindLevelManager();
@@ -64,9 +69,13 @@ public class LevelManager : MonoBehaviour
 
     void Start()
     {
+        tiersOfGameTime = gameTime / 3;
+        nextTiers = tiersOfGameTime;
+
         sceneAnimator.SetTrigger("Enter");
+        cameraAnimator.SetTrigger("Enter");
         Invoke("HideMask", 1f);
-        Invoke("OpenInitialModal", 1f);
+        Invoke("OpenInitialModal", 2f);
 
         // if (GameManager.Instance.debugMode)
         // {
@@ -93,12 +102,25 @@ public class LevelManager : MonoBehaviour
             startGameTrigger = false;
             StartCoroutine(CountDownCoroutine());
         }
+
+        if (isPlaying)
+        {
+            actualGameTime = Time.timeSinceLevelLoad - startTime;
+            if (actualGameTime > nextTiers)
+            {
+                nextTiers += tiersOfGameTime;
+                wasteSpawner.IncrementIntensity();
+            }
+        }
     }
 
 
     public void onOpeningModalClose()
     {
         startGameTrigger = true;
+
+        player1NameApparition.Appear();
+        player2NameApparition.Appear();
     }
 
     private System.Collections.IEnumerator CountDownCoroutine()
@@ -128,9 +150,14 @@ public class LevelManager : MonoBehaviour
     public void StartGame()
     {
         wasteSpawner.StartGame(gameTime);
-        healthBar.UpdateHealthBar(percentage);
+        medailleManager.Show(percentage);
+        // healthBar.UpdateHealthBar(percentage);
         isPlaying = true;
         startTime = Time.timeSinceLevelLoad;
+        levelMusic.Play();
+        levelMusic.DOFade(levelMusic.volume, 4);
+
+
         StartCoroutine("GameTimerCoroutine");
     }
     private System.Collections.IEnumerator GameTimerCoroutine()
@@ -144,7 +171,6 @@ public class LevelManager : MonoBehaviour
         StopCoroutine("GameTimerCoroutine");
         GameEnded();
         isPlaying = false;
-        endCanvasIsShow = true;
     }
 
 
@@ -161,18 +187,15 @@ public class LevelManager : MonoBehaviour
         if (isPlaying && percentage - percentageLostOnWasteLost >= 0)
         {
             percentage -= percentageLostOnWasteLost;
-            healthBar.UpdateHealthBar(percentage);
+            // healthBar.UpdateHealthBar(percentage);
+            medailleManager.OnScoreUpdate(percentage);
         }
     }
 
     public void GameEnded()
     {
-        timeLeftText.text = "";
-        PlayerInteraction[] players = FindObjectsOfType<PlayerInteraction>();
-        foreach (PlayerInteraction p in players)
-        {
-            p.gameObject.GetComponent<SimpleSampleCharacterControl>().GetStop();
-        }
+        levelMusic.DOFade(0, 1);
+
         NPCInteractable[] wastes = FindObjectsOfType<NPCInteractable>();
         foreach (NPCInteractable w in wastes)
         {
@@ -181,17 +204,48 @@ public class LevelManager : MonoBehaviour
             {
                 shadowManager.DestroyShadow();
             }
-            Destroy(w.gameObject);
+            if (w.gameObject.tag != "Boss")
+            {
+                Destroy(w.gameObject);
+            }
         }
         wasteSpawner.StopGame();
-        finalModal.ShowModal();
-    }
-    public string getFinalPercentage()
-    {
-        return percentage + " %";
+        finalBoss.Appear();
     }
 
+    public void OnBossDeath()
+    {
+        endCanvasIsShow = true;
+        PlayerInteraction[] players = FindObjectsOfType<PlayerInteraction>();
+        foreach (PlayerInteraction p in players)
+        {
+            p.gameObject.GetComponent<SimpleSampleCharacterControl>().GetStop();
+            p.gameObject.GetComponent<PlayerMovement>().GetStop();
+        }
+        finalModal.ShowModal();
+    }
+
+    public float getFinalPercentage()
+    {
+        return percentage;
+    }
+    public float getFinalP1Score()
+    {
+        return p1Score;
+    }
+    public float getFinalP2Score()
+    {
+        return p2Score;
+    }
+
+    // called after final modal is done 
     public void ChangeScene()
+    {
+        cameraAnimator.SetTrigger("Exit");
+        Invoke("GameManagerChangeScene", 1f);
+    }
+
+    void GameManagerChangeScene()
     {
         GameManager.Instance.ChangeScene(nextSceneName, StartAnimation);
     }
@@ -211,6 +265,7 @@ public class LevelManager : MonoBehaviour
         if (scoring)
         {
             p1Score++;
+            p1ScoreText.text = p1Score.ToString();
         }
 
         if (!isPlaying && endCanvasIsShow)
@@ -227,6 +282,7 @@ public class LevelManager : MonoBehaviour
         if (scoring)
         {
             p2Score++;
+            p2ScoreText.text = p2Score.ToString();
         }
         if (!isPlaying && endCanvasIsShow)
         {

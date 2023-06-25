@@ -18,9 +18,10 @@ public class PneuMovement : MonoBehaviour
     private Quaternion initialRotation;
     private bool isLost = false;
     private LevelManager lvlManager;
-
+    private TutoLearnWasteInteraction tutoLearnWasteInteraction;
     void Start()
     {
+        tutoLearnWasteInteraction = FindAnyObjectByType<TutoLearnWasteInteraction>();
         rb = gameObject.GetComponent<Rigidbody>();
         initialRotation = transform.rotation;
         lvlManager = FindAnyObjectByType<LevelManager>();
@@ -50,11 +51,19 @@ public class PneuMovement : MonoBehaviour
     void LostInTheSea()
     {
         deathParticule.Play();
-        lvlManager.OnWasteLost();
+        if (lvlManager)
+        {
+            lvlManager.OnWasteLost();
+        }
+
         Invoke("Destroy", animationTime);
     }
     void Destroy()
     {
+        if (tutoLearnWasteInteraction)
+        {
+            tutoLearnWasteInteraction.onWasteLost();
+        }
         Destroy(gameObject);
     }
 }

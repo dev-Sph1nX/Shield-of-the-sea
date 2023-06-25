@@ -23,8 +23,8 @@ public class TimeIndicator : MonoBehaviour
                 // Stop the countdown timer              
                 updateTime = false;
                 currentTime = 0.0f;
-                if (dialogContentManager)
-                    dialogContentManager.OnLocalNextStep();
+                // if (dialogContentManager)
+                //     dialogContentManager.OnLocalNextStep();
             }
             float normalizedValue = Mathf.Clamp(currentTime / timeBetweenText, 0.0f, 1.0f);
             image.fillAmount = normalizedValue;

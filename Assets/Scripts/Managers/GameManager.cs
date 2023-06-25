@@ -11,8 +11,8 @@ public class GameManager : MonoBehaviour
 {
     [Header("Debug Mode")]
     [SerializeField] public bool debugMode = true;
-    [ConditionalField("debugMode")] public string overrideSceneName = null;
-    [ConditionalField("debugMode")] public bool passTutorial = false;
+    public string overrideSceneName = null;
+    public bool passTutorial = false;
 
 
     private static GameManager instance = null;
@@ -31,10 +31,6 @@ public class GameManager : MonoBehaviour
             instance = this;
         }
         DontDestroyOnLoad(this.gameObject);
-        if (StaticClass.CrossSceneDebugMode)
-        {
-            debugMode = StaticClass.CrossSceneDebugMode;
-        }
     }
 
     public void ChangeScene(string newSceneName, Action startAnimationMethod)
@@ -43,7 +39,7 @@ public class GameManager : MonoBehaviour
         {
             startAnimationMethod();
             isTransitioning = true;
-            StartCoroutine(LoadSceneAfterDelay((debugMode && overrideSceneName != null && overrideSceneName != "") ? overrideSceneName : newSceneName)); // 
+            StartCoroutine(LoadSceneAfterDelay((overrideSceneName != null && overrideSceneName != "") ? overrideSceneName : newSceneName)); // 
         }
     }
 

@@ -19,6 +19,7 @@ public class PlayerCollision : MonoBehaviour
 
     private void Awake()
     {
+        stunParticle.Stop();
         animator = gameObject.transform.parent.gameObject.GetComponent<Animator>();
         playerMovement = gameObject.transform.parent.gameObject.GetComponent<PlayerMovement>();
         simpleSampleCharacter = gameObject.transform.parent.gameObject.GetComponent<SimpleSampleCharacterControl>();

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using MyBox;
-
+using System.Linq;
 
 public class PlayerInteraction : MonoBehaviour
 {
@@ -12,21 +12,27 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] float interactRange = 3f;
     [Header("Animation")]
     [SerializeField] string pickupTriggerName = "Pickup";
+    [Header("Camera shake on interaction")]
+    [SerializeField] public float cameraDuration;
+    [SerializeField] public float shakeAmount;
     [Header("Reference")]
+    [SerializeField] public CameraShake cameraShake;
+    [SerializeField] public AudioSource swordSound;
+
 
     Animator animator = null;
     public string objectId = NULL;
     const string NULL = "null";
     private string sceneName;
     private LobbyManager lobbyManager;
-    private TutoLearnInteraction tutoLearnInteraction;
+    private TutoLearnWasteInteraction tutoLearnWasteInteraction;
     public LevelManager levelManager;
-    private bool interact = false;
+    private bool interact = false, canInteract = true;
     private void Awake()
     {
         animator = GetComponent<Animator>();
         lobbyManager = FindObjectOfType<LobbyManager>();
-        tutoLearnInteraction = FindObjectOfType<TutoLearnInteraction>();
+        tutoLearnWasteInteraction = FindObjectOfType<TutoLearnWasteInteraction>();
         levelManager = FindObjectOfType<LevelManager>();
         sceneName = SceneManager.GetActiveScene().name;
     }
@@ -49,8 +55,10 @@ public class PlayerInteraction : MonoBehaviour
         if (interact || (GameManager.Instance.debugMode && Interaction()))
         {
             interact = false;
-            OnUserInteract();
+            if (canInteract)
+                OnUserInteract();
         }
+        GetInteractableObject(); // here for real time interact indicator
     }
 
     public void OnUserInteract()
@@ -60,11 +68,11 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (playerId == SystemId.Player1)
             {
-                tutoLearnInteraction.P1Interact();
+                tutoLearnWasteInteraction.onWasteDestroyByPlayer1();
             }
             if (playerId == SystemId.Player2)
             {
-                tutoLearnInteraction.P2Interact();
+                tutoLearnWasteInteraction.onWasteDestroyByPlayer2();
             }
         }
         if (sceneName == "3-Beach")
@@ -78,12 +86,16 @@ public class PlayerInteraction : MonoBehaviour
                 levelManager.OnPlayer2Interaction(interactable != null);
             }
         }
+        animator.SetTrigger(pickupTriggerName);
+        swordSound.Play();
         if (interactable != null)
         {
-            animator.SetTrigger(pickupTriggerName);
+            cameraShake.shakeAmount = shakeAmount;
+            cameraShake.shakeDuration = cameraDuration;
             interactable.Interact(playerId);
         }
     }
+
 
     public void GetInteractionFromWS()
     {
@@ -129,6 +141,7 @@ public class PlayerInteraction : MonoBehaviour
             }
         }
 
+        objectId = closestInteractable?.getId() ?? null;
         // Else - Les objects par terre
         return closestInteractable;
     }
@@ -146,6 +159,12 @@ public class PlayerInteraction : MonoBehaviour
             return true;
         }
         if (wasteId == SystemId.Pneu) return true;
+        if (wasteId == SystemId.Boss) return true;
         return false;
+    }
+
+    public void SetCanInteract(bool can)
+    {
+        canInteract = can;
     }
 }

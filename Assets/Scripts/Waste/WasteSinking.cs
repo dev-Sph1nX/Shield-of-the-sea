@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Events;
 public class WasteSinking : MonoBehaviour
 {
     [Header("After ground collision")]
@@ -14,6 +14,9 @@ public class WasteSinking : MonoBehaviour
     [Header("Reference")]
     [SerializeField] Collider colliderObj;
     [SerializeField] private ParticleSystem deathPs;
+    [SerializeField] private ParticleSystem groundPs;
+    [SerializeField] private AudioSource groundSound;
+    [SerializeField] private PinApparition pinApparition;
 
     private LevelManager lvlManager;
     private TutoLearnWasteInteraction tutoLearnWasteInteraction;
@@ -24,6 +27,7 @@ public class WasteSinking : MonoBehaviour
     private WasteShadow shadowManager;
     private NPCInteractable npcInteractable;
     private GameObject tutoTarget;
+
 
     void Awake()
     {
@@ -36,8 +40,7 @@ public class WasteSinking : MonoBehaviour
         baseMass = rb.mass;
         baseDrag = rb.drag;
     }
-
-    void OnCollisionEnter(Collision collision)
+    public void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.tag == "SinkingGround")
         {
@@ -47,6 +50,9 @@ public class WasteSinking : MonoBehaviour
             rb.drag = drag;
             rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
+            groundPs.Play();
+            groundSound.Play();
+            pinApparition.Appear();
             if (tutoLearnWasteInteraction)
             {
                 tutoLearnWasteInteraction.onWasteFall();
@@ -66,13 +72,14 @@ public class WasteSinking : MonoBehaviour
             isLost = true;
             deathPs.Play();
             if (lvlManager) lvlManager.OnWasteLost();
-            if (tutoLearnWasteInteraction) tutoLearnWasteInteraction.onWasteLost();
+            pinApparition.DestroyPin();
             Invoke("Destroy", 1f);
         }
     }
 
     void Destroy()
     {
+        if (tutoLearnWasteInteraction) tutoLearnWasteInteraction.onWasteLost();
         Destroy(gameObject);
     }
     public void DestroyTutoTarget()

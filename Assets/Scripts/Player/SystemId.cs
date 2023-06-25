@@ -9,4 +9,5 @@ public enum SystemId : int
     Cannette = 2,
     Glass = 3,
     Pneu = 4,
+    Boss = 5,
 }

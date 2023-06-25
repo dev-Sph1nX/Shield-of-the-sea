@@ -34,7 +34,7 @@ public class TutoLearnWasteInteraction : MonoBehaviour
 
     void Update()
     {
-        // if (InputSystem.getButton("Fire1")) throwTwoWaste();
+        if (InputSystem.getButton("Fire1")) throwTwoWaste();
         if (waitingPlayersProximity && p1isIn && p2isIn)
         {
             // these 2 in ! -> so let's reset
@@ -114,13 +114,22 @@ public class TutoLearnWasteInteraction : MonoBehaviour
 
             if (p1hasInteract && p2hasInteract)
             {
+                Debug.Log("waitingBothDestroy next");
                 dialogManager.OnNextStep();
                 waitingBothDestroy = false;
+                cannetteTrigger = false;
+                glassTrigger = false;
+                pneuTrigger = false;
             }
         }
         if (waitingAllDestroy && cannetteTrigger && glassTrigger && pneuTrigger)
         {
+            Debug.Log("waitingAllDestroy next");
             dialogManager.OnNextStep();
+            waitingAllDestroy = false;
+            cannetteTrigger = false;
+            glassTrigger = false;
+            pneuTrigger = false;
         }
     }
 
@@ -133,11 +142,9 @@ public class TutoLearnWasteInteraction : MonoBehaviour
     public void onP1Collide()
     {
         p1isIn = !p1isIn;
-        Debug.Log("p1 in/out");
     }
     public void onP2Collide()
     {
-        Debug.Log("p2 in/out");
         p2isIn = !p2isIn;
     }
 
@@ -163,11 +170,27 @@ public class TutoLearnWasteInteraction : MonoBehaviour
         throwWaste(cannette, spawn2.transform.position, maxLaunchVelocity);
         throwPneu();
         waitingAllDestroy = true;
+
+        cannetteTrigger = false;
+        glassTrigger = false;
+        pneuTrigger = false;
+
     }
 
     public void throwPneu()
     {
         GameObject waste = Instantiate(pneu, spawnPneu.transform.position, pneuRotation);
         waste.GetComponent<PneuMovement>().applyXVelocity = tutoPneuVelocity;
+    }
+
+    public void onWasteDestroyByPlayer1()
+    {
+        onWasteDestroyByPlayer(SystemId.Cannette);
+    }
+
+    public void onWasteDestroyByPlayer2()
+    {
+        onWasteDestroyByPlayer(SystemId.Glass);
+
     }
 }

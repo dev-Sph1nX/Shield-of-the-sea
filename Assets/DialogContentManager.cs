@@ -6,12 +6,22 @@ using TMPro;
 public class DialogContentManager : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI dialogText;
-    [SerializeField] TimeIndicator timeIndicator;
     [SerializeField] GameObject dialogGameObject;
-    private IDialogManager dialogManager;
+    public AudioClip typingClip;
+    public AudioSourceGroup audioSourceGroup;
 
+    private IDialogManager dialogManager;
+    private DialogueVertexAnimator dialogueVertexAnimator;
     private bool _isShow = false;
     private Animator animator;
+    private Coroutine typeRoutine = null;
+
+
+    void Awake()
+    {
+        dialogueVertexAnimator = new DialogueVertexAnimator(dialogText, audioSourceGroup);
+
+    }
 
     void Start()
     {
@@ -35,16 +45,24 @@ public class DialogContentManager : MonoBehaviour
         }
         else
         {
-            timeIndicator.StartTimer(step.forcedTimed ? true : step.invokeAction == null);
-            dialogText.text = step.text;
+            PlayDialogue(step.text, step.forcedTimed ? true : step.invokeAction == null);
+            // dialogText.text = step.text;
         }
     }
 
     IEnumerator UpdateData(TutorialStep step)
     {
         yield return new WaitForSeconds(1f);
-        timeIndicator.StartTimer(step.forcedTimed ? true : step.invokeAction == null);
-        dialogText.text = step.text;
+        PlayDialogue(step.text, step.forcedTimed ? true : step.invokeAction == null);
+        // dialogText.text = step.text;
+    }
+
+    void PlayDialogue(string message, bool timed)
+    {
+        this.EnsureCoroutineStopped(ref typeRoutine);
+        dialogueVertexAnimator.textAnimating = false;
+        List<DialogueCommand> commands = DialogueUtility.ProcessInputString(message, out string totalTextMessage);
+        typeRoutine = StartCoroutine(dialogueVertexAnimator.AnimateTextIn(commands, totalTextMessage, typingClip, timed ? OnLocalNextStep : null));
     }
 
 
