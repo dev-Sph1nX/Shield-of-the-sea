@@ -28,6 +28,7 @@ public class PlayerInteraction : MonoBehaviour
     private TutoLearnWasteInteraction tutoLearnWasteInteraction;
     public LevelManager levelManager;
     private bool interact = false, canInteract = true;
+    IInteractable interactable;
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -52,27 +53,26 @@ public class PlayerInteraction : MonoBehaviour
 
     private void Update()
     {
-        if (interact || (GameManager.Instance.debugMode && Interaction()))
+        if (interact || (Interaction())) // GameManager.Instance.debugMode &&
         {
             interact = false;
             if (canInteract)
                 OnUserInteract();
         }
-        GetInteractableObject(); // here for real time interact indicator
+        interactable = GetInteractableObject();
     }
 
     public void OnUserInteract()
     {
-        IInteractable interactable = GetInteractableObject();
         if (sceneName == "0-Lobby")
         {
             if (playerId == SystemId.Player1)
             {
-                tutoLearnWasteInteraction.onWasteDestroyByPlayer1();
+                tutoLearnWasteInteraction.onWasteDestroyByPlayer1(interactable != null);
             }
             if (playerId == SystemId.Player2)
             {
-                tutoLearnWasteInteraction.onWasteDestroyByPlayer2();
+                tutoLearnWasteInteraction.onWasteDestroyByPlayer2(interactable != null);
             }
         }
         if (sceneName == "3-Beach")
@@ -111,14 +111,33 @@ public class PlayerInteraction : MonoBehaviour
     {
 
         List<IInteractable> interactableList = new List<IInteractable>();
-        Collider[] colliderArray = Physics.OverlapSphere(transform.position, interactRange);
-        foreach (Collider collider in colliderArray)
+        GameObject[] wastes = GameObject.FindGameObjectsWithTag("Waste");
+        GameObject[] boss = GameObject.FindGameObjectsWithTag("Boss");
+        foreach (GameObject waste in wastes)
         {
-            if (collider.TryGetComponent(out IInteractable interactable))
+            // in range
+            if (NPCInteractable.CheckRange(transform.position.x, waste.transform.position.x - 2, waste.transform.position.x + 2) && NPCInteractable.CheckRange(transform.position.z, waste.transform.position.z - 2, waste.transform.position.z + 2))
             {
-                if (interactable.isInteractable() && isAllowedToInteract(interactable))
+                if (waste.TryGetComponent(out IInteractable interactable))
                 {
-                    interactableList.Add(interactable);
+                    if (interactable.isInteractable() && isAllowedToInteract(interactable))
+                    {
+                        interactableList.Add(interactable);
+                    }
+                }
+            }
+        }
+        foreach (GameObject b in boss)
+        {
+            // in range
+            if (NPCInteractable.CheckRange(transform.position.x, b.transform.position.x - 4, b.transform.position.x + 4) && NPCInteractable.CheckRange(transform.position.z, b.transform.position.z - 4, b.transform.position.z + 4))
+            {
+                if (b.TryGetComponent(out IInteractable interactable))
+                {
+                    if (interactable.isInteractable() && isAllowedToInteract(interactable))
+                    {
+                        interactableList.Add(interactable);
+                    }
                 }
             }
         }
@@ -142,9 +161,52 @@ public class PlayerInteraction : MonoBehaviour
         }
 
         objectId = closestInteractable?.getId() ?? null;
+
         // Else - Les objects par terre
         return closestInteractable;
     }
+    // public IInteractable GetInteractableObject()
+    // {
+
+    //     List<IInteractable> interactableList = new List<IInteractable>();
+    //     Collider[] colliderArray = Physics.OverlapSphere(transform.position, interactRange);
+    //     foreach (Collider collider in colliderArray)
+    //     {
+    //         if (collider.TryGetComponent(out IInteractable interactable))
+    //         {
+    //             if (interactable.isInteractable() && isAllowedToInteract(interactable))
+    //             {
+    //                 interactableList.Add(interactable);
+    //             }
+    //         }
+    //     }
+
+    //     IInteractable closestInteractable = null;
+    //     foreach (IInteractable interactable in interactableList)
+    //     {
+    //         if (closestInteractable == null)
+    //         {
+    //             closestInteractable = interactable;
+    //         }
+    //         else
+    //         {
+    //             if (Vector3.Distance(transform.position, interactable.GetTransform().position) <
+    //                 Vector3.Distance(transform.position, closestInteractable.GetTransform().position))
+    //             {
+    //                 // Closer
+    //                 closestInteractable = interactable;
+    //             }
+    //         }
+    //     }
+
+    //     objectId = closestInteractable?.getId() ?? null;
+    //     if (SystemId.Player1 == playerId)
+    //     {
+    //         Debug.Log("objectID " + objectId);
+    //     }
+    //     // Else - Les objects par terre
+    //     return closestInteractable;
+    // }
 
 
     public bool isAllowedToInteract(IInteractable interactable)

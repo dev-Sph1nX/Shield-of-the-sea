@@ -76,12 +76,12 @@ public class WS : MonoBehaviour
             Debug.Log("Connected to the server.");
             try
             {
-                // ws = new WebSocket("ws://192.168.43.109:3000");
-                ws = new WebSocket("ws://localhost:3000");
-                // // ws = new WebSocket("ws://172.20.10.13:3000");
-                stateText.text = "Connected";
+                // ws = new WebSocket("ws://172.20.10.13:3000");
+
+                ws = new WebSocket("ws://192.168.43.109:3000");
 
                 // ws = new WebSocket("ws://localhost:3000");
+                stateText.text = "Connected";
 
                 ws.OnMessage += OnMessage;
 
@@ -89,8 +89,9 @@ public class WS : MonoBehaviour
 
                 ws.Send(jsonString);
             }
-            catch
+            catch (Exception e)
             {
+                Debug.Log("error / " + e.ToString());
                 stateText.text = "Not connected";
             }
         }

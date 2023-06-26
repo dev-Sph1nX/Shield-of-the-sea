@@ -21,36 +21,40 @@ public class NPCInteractable : MonoBehaviour, IInteractable
 
     private TutoLearnWasteInteraction tutoLearnWasteInteraction;
     private PinApparition pinApparition;
+    GameObject player1;
+    PlayerInteraction player1Interact;
+    GameObject player2;
+    PlayerInteraction player2Interact;
+    LevelManager levelManager;
     private void Awake()
     {
         id = Helpers.generateId();
         child = GetComponentInChildren<MeshRenderer>();
         tutoLearnWasteInteraction = FindAnyObjectByType<TutoLearnWasteInteraction>();
+        levelManager = FindAnyObjectByType<LevelManager>();
         pinApparition = GetComponent<PinApparition>();
+
+        player1 = GameObject.FindWithTag("Player1");
+        // if (player1 != null)
+        // {
+        //     player1Interact = player1.GetComponent<PlayerInteraction>();
+        // }
+
+        player2 = GameObject.FindWithTag("Player2");
+        // if (player2 != null)
+        // {
+        //     player2Interact = player2.GetComponent<PlayerInteraction>();
+        // }
     }
 
     void Update()
     {
-        if (pinApparition)
+        if (pinApparition && typeId != SystemId.Boss)
         {
-            bool alreadySet = false;
-            PlayerInteraction[] players = FindObjectsOfType<PlayerInteraction>();
-            players.Reverse();
-            foreach (PlayerInteraction p in players)
-            {
-                if (!alreadySet)
-                {
-                    if (p.objectId == id)
-                    {
-                        alreadySet = true;
-                        pinApparition.Appear();
-                    }
-                    else
-                    {
-                        pinApparition.Disappear();
-                    }
-                }
-            }
+            if (isInRangeOfAction())
+                pinApparition.Appear();
+            else
+                pinApparition.Disappear();
         }
     }
 
@@ -59,6 +63,7 @@ public class NPCInteractable : MonoBehaviour, IInteractable
         if (SystemId.Pneu == typeId)
         {
             Debug.Log("Interacted with pneu");
+            if (levelManager) levelManager.onPneuHit();
         }
 
         if (!isInteracted)
@@ -100,5 +105,31 @@ public class NPCInteractable : MonoBehaviour, IInteractable
     public string getId()
     {
         return id;
+    }
+
+
+    bool isInRangeOfAction()
+    {
+        if (typeId == SystemId.Cannette)
+        {
+            if (CheckRange(transform.position.x, player1.transform.position.x - 2, player1.transform.position.x + 2) && CheckRange(transform.position.z, player1.transform.position.z - 2, player1.transform.position.z + 2))
+            {
+                return true;
+            }
+
+        }
+        if (typeId == SystemId.Glass)
+        {
+            if (CheckRange(transform.position.x, player2.transform.position.x - 2, player2.transform.position.x + 2) && CheckRange(transform.position.z, player2.transform.position.z - 2, player2.transform.position.z + 2))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    static public bool CheckRange(float num, float min, float max)
+    {
+        return num > min && num < max;
     }
 }

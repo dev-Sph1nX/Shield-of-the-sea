@@ -34,7 +34,7 @@ public class TutoLearnWasteInteraction : MonoBehaviour
 
     void Update()
     {
-        if (InputSystem.getButton("Fire1")) throwTwoWaste();
+        // if (InputSystem.getButton("Fire1")) throwTwoWaste();
         if (waitingPlayersProximity && p1isIn && p2isIn)
         {
             // these 2 in ! -> so let's reset
@@ -189,14 +189,16 @@ public class TutoLearnWasteInteraction : MonoBehaviour
         waste.GetComponent<PneuMovement>().applyXVelocity = tutoPneuVelocity;
     }
 
-    public void onWasteDestroyByPlayer1()
+    public void onWasteDestroyByPlayer1(bool canAttack)
     {
-        onWasteDestroyByPlayer(SystemId.Cannette);
+        if (canAttack)
+            onWasteDestroyByPlayer(SystemId.Cannette);
     }
 
-    public void onWasteDestroyByPlayer2()
+    public void onWasteDestroyByPlayer2(bool canAttack)
     {
-        onWasteDestroyByPlayer(SystemId.Glass);
+        if (canAttack)
+            onWasteDestroyByPlayer(SystemId.Glass);
 
     }
 }

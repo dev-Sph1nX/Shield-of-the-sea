@@ -29,7 +29,6 @@ public class PinApparition : MonoBehaviour
         {
             if (!pin.activeInHierarchy)
             {
-                Debug.Log("pin active :" + pin.name);
                 pin.SetActive(true);
             }
         }
@@ -41,7 +40,6 @@ public class PinApparition : MonoBehaviour
         {
             if (pin.activeInHierarchy)
             {
-                Debug.Log("pin desactive :" + pin.name);
                 pin.SetActive(false);
             }
         }
@@ -51,7 +49,6 @@ public class PinApparition : MonoBehaviour
         destroy = true;
         if (pin)
         {
-            Debug.Log("destroy pin : " + pin.name);
             Destroy(pin);
         }
     }

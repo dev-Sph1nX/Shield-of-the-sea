@@ -15,7 +15,7 @@ public class IntroBeachDialogManager : MonoBehaviour, IDialogManager
     void Awake()
     {
         tutorialSteps.Add(new TutorialStep("Vous avez vu ?! Je vous raconte pas des salades hein !", Narrator.Marco));
-        tutorialSteps.Add(new TutorialStep("C’est un vrai danger toutes les paulettes mangent des déchets il faut intervenir battons nous !", Narrator.Marco));
+        tutorialSteps.Add(new TutorialStep("C’est un vrai danger, toutes les paulettes mangent des dechets, il faut intervenir battons nous !", Narrator.Marco));
     }
 
     public void StartDialog()

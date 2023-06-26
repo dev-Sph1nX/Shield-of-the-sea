@@ -58,7 +58,7 @@ public class DialogManager : MonoBehaviour, IDialogManager
     // Start is called before the first frame update
     void Start()
     {
-        tutorialSteps.Add(new TutorialStep("Hello nous c’est Marco & Polo. On habite l’ocean, cependant depuis peu on entretient une relation de voisinage toxique avec les humains qui nous polluent constamment.", Narrator.Marco, pForcedTimed: true));
+        tutorialSteps.Add(new TutorialStep("Hello nous, c’est Marco & Polo. On habite l’ocean, cependant depuis peu, on entretient une relation de voisinage toxique avec les humains qui nous polluent constamment.", Narrator.Marco, pForcedTimed: true));
         tutorialSteps.Add(new TutorialStep("Aidez-nous a nous battre pour retrouver la paix et la serenite tant attendu.", Narrator.Marco, pForcedTimed: true));
         tutorialSteps.Add(new TutorialStep("", Narrator.Any, bigModalPolo.Show));
         tutorialSteps.Add(new TutorialStep("", Narrator.Any, learnWasteInteractionManager.throwTwoWaste)); // checkpoint - 3
@@ -68,7 +68,7 @@ public class DialogManager : MonoBehaviour, IDialogManager
         tutorialSteps.Add(new TutorialStep("Allez-y, essayez de les detruire.", Narrator.Polo, WaitingInteraction));
         tutorialSteps.Add(new TutorialStep("Super ! Une nouvelle vague arrive ! Preparez-vous !", Narrator.Polo, hideSwordMotion, pForcedTimed: true));// checkpoint - 8
         tutorialSteps.Add(new TutorialStep("", Narrator.Any, learnWasteInteractionManager.throwSecondWave));
-        tutorialSteps.Add(new TutorialStep("Trop fort ! Maintenant que vous etes pret, vous allez pouvoir rentrez dans les choses serieuses. Que le vent vous soit favorable et bonne experience !", Narrator.Polo, pForcedTimed: true));
+        tutorialSteps.Add(new TutorialStep("Trop fort ! Maintenant que vous etes pret, vous allez pouvoir rentrer dans les choses serieuses. Que le vent vous soit favorable et bonne experience !", Narrator.Polo, pForcedTimed: true));
         if (GameManager.Instance.passTutorial) // GameManager.Instance.debugMode &&
             hasFinish = true;
         else
@@ -87,6 +87,8 @@ public class DialogManager : MonoBehaviour, IDialogManager
                     player1NameApparition.Appear();
                     player2NameApparition.Appear();
 
+                    Debug.Log("cbziab");
+
                     tutorialMusic.Play();
                     tutorialMusic.DOFade(tutorialMusic.volume, 4);
                 }
@@ -98,6 +100,9 @@ public class DialogManager : MonoBehaviour, IDialogManager
                         Invoke("StartDialog", 5f);
                         player1NameApparition.Appear();
                         player2NameApparition.Appear();
+
+                        tutorialMusic.Play();
+                        tutorialMusic.DOFade(tutorialMusic.volume, 4);
                     }
                 }
             }

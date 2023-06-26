@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class CinematiqueSceneManager : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class CinematiqueSceneManager : MonoBehaviour
     [SerializeField] private Animator travelingAnimator = null;
     [SerializeField] public GameObject cinematiqueGameObject;
     [SerializeField] public IntroBeachDialogManager introBeachDialog;
+    [SerializeField] private AudioSource[] audios;
+    [SerializeField] private bool stayHere = false;
 
     private IDialogManager cinematiqueDialogManager;
 
@@ -20,6 +23,10 @@ public class CinematiqueSceneManager : MonoBehaviour
 
     void Awake()
     {
+        foreach (AudioSource audio in audios)
+        {
+            audio.Play();
+        }
         cinematiqueDialogManager = cinematiqueGameObject.GetComponent<IDialogManager>();
 
 
@@ -46,7 +53,12 @@ public class CinematiqueSceneManager : MonoBehaviour
     }
     public void NextScene()
     {
-        GameManager.Instance.ChangeScene(nextSceneName, StartAnimation);
+        foreach (AudioSource audio in audios)
+        {
+            audio.DOFade(0, 2);
+        }
+        if (!stayHere)
+            GameManager.Instance.ChangeScene(nextSceneName, StartAnimation);
     }
 
     public void StartAnimation()

@@ -45,6 +45,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] PlayerNameApparition player2NameApparition;
     private int p1Score = 0;
     private int p2Score = 0;
+    private int pneuScore = 0;
 
 
     private Image mask = null;
@@ -222,12 +223,7 @@ public class LevelManager : MonoBehaviour
     public void OnBossDeath()
     {
         endCanvasIsShow = true;
-        PlayerInteraction[] players = FindObjectsOfType<PlayerInteraction>();
-        foreach (PlayerInteraction p in players)
-        {
-            p.gameObject.GetComponent<SimpleSampleCharacterControl>().GetStop();
-            p.gameObject.GetComponent<PlayerMovement>().GetStop();
-        }
+
         finalModal.ShowModal();
     }
 
@@ -242,6 +238,10 @@ public class LevelManager : MonoBehaviour
     public float getFinalP2Score()
     {
         return p2Score;
+    }
+    public float getFinalPneuScore()
+    {
+        return pneuScore;
     }
 
     // called after final modal is done 
@@ -295,5 +295,10 @@ public class LevelManager : MonoBehaviour
             finalModal.Player2Interact();
         }
 
+    }
+
+    public void onPneuHit()
+    {
+        pneuScore++;
     }
 }

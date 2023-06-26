@@ -23,12 +23,15 @@ public class WasteSpawner : MonoBehaviour
     [SerializeField] GameObject[] wastes;
     [SerializeField] GameObject pneu;
 
-    private bool isPlaying = false, pneuIsAppear = false;
+    private bool isPlaying = false, pneu1IsAppear = false, pneu2IsAppear = false, pneu3IsAppear = false;
     private float nextFire = 0.0f;
     private Vector3 torque;
-    private float timerPneuApparition, timeBetweenFire;
+    private float timeBetweenFire;
     private int intensityState = 0; // index of timesBetweenFire
-
+    private float startTime;
+    float pneuApparition1;
+    float pneuApparition2;
+    float pneuApparition3;
 
     public void IncrementIntensity()
     {
@@ -57,9 +60,21 @@ public class WasteSpawner : MonoBehaviour
             waste.GetComponentInChildren<Rigidbody>().AddRelativeTorque(torque);
             waste.GetComponentInChildren<Rigidbody>().AddRelativeForce(new Vector3(-launchVelocity, launchVelocity * 2, 0));
         }
-        if (Time.time > timerPneuApparition && !pneuIsAppear && isPlaying)
+        if (Time.time > pneuApparition1 && !pneu1IsAppear && isPlaying)
         {
-            pneuIsAppear = true;
+            pneu1IsAppear = true;
+            Vector3 spawnPosition = transform.position + Vector3.forward * Random.Range(minZ + securityMargin, maxZ - securityMargin) + Vector3.up * 2;
+            GameObject waste = Instantiate(pneu, spawnPosition, pneuRotation);
+        }
+        if (Time.time > pneuApparition2 && !pneu2IsAppear && isPlaying)
+        {
+            pneu2IsAppear = true;
+            Vector3 spawnPosition = transform.position + Vector3.forward * Random.Range(minZ + securityMargin, maxZ - securityMargin) + Vector3.up * 2;
+            GameObject waste = Instantiate(pneu, spawnPosition, pneuRotation);
+        }
+        if (Time.time > pneuApparition3 && !pneu3IsAppear && isPlaying)
+        {
+            pneu3IsAppear = true;
             Vector3 spawnPosition = transform.position + Vector3.forward * Random.Range(minZ + securityMargin, maxZ - securityMargin) + Vector3.up * 2;
             GameObject waste = Instantiate(pneu, spawnPosition, pneuRotation);
         }
@@ -75,8 +90,14 @@ public class WasteSpawner : MonoBehaviour
     public void StartGame(float gameTime)
     {
         timeBetweenFire = timesBetweenFire[intensityState];
+        startTime = Time.time;
 
-        timerPneuApparition = Random.Range(10f, gameTime - 10f); // bc not at the end
+        pneuApparition1 = Random.Range(startTime, startTime + gameTime - 10); // bc not at the end
+        pneuApparition2 = Random.Range(startTime, startTime + gameTime - 10); // bc not at the end
+        pneuApparition3 = Random.Range(startTime, startTime + gameTime - 10); // bc not at the end
+
+        Debug.Log("pneu ap : " + pneuApparition1 + " / " + pneuApparition2 + " / " + pneuApparition3);
+        Debug.Log("startTime " + startTime + " // gameTime " + gameTime);
         isPlaying = true;
     }
 

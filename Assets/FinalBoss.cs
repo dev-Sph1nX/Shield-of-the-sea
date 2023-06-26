@@ -10,6 +10,7 @@ public class FinalBoss : MonoBehaviour, IInteractable
     [Header("Gameplay")]
     [SerializeField] int playerDamage;
     [SerializeField] int healthPercentage = 100;
+    [SerializeField] int interactRange = 4;
 
     [Header("Camera shake")]
     [SerializeField] public float cameraDuration;
@@ -45,29 +46,24 @@ public class FinalBoss : MonoBehaviour, IInteractable
     {
         healthBar = healthBarContainer.GetComponentInChildren<HealthBar>();
         // ps = GetComponentInChildren<ParticleSystem>();
+
     }
 
     void Update()
     {
+        if (_isShow)
+        {
+            if (isPlayer1InRangeOfAction())
+                pinPlayer1Animator.Appear();
+            else
+                pinPlayer1Animator.Disappear();
 
-        if (player1.objectId == id)
-        {
-            pinPlayer1Animator.Appear();
-        }
-        else
-        {
-            pinPlayer1Animator.Disappear();
-
+            if (isPlayer2InRangeOfAction())
+                pinPlayer2Animator.Appear();
+            else
+                pinPlayer2Animator.Disappear();
         }
 
-        if (player2.objectId == id)
-        {
-            pinPlayer2Animator.Appear();
-        }
-        else
-        {
-            pinPlayer2Animator.Disappear();
-        }
 
         // if (InputSystem.getButton("Fire1")) Appear();
 
@@ -88,7 +84,6 @@ public class FinalBoss : MonoBehaviour, IInteractable
 
     public void Appear()
     {
-        _isShow = true;
         cameraShake.shakeAmount = shakeAmount;
         cameraShake.shakeDuration = cameraDuration;
         // ps.Play();
@@ -105,6 +100,8 @@ public class FinalBoss : MonoBehaviour, IInteractable
 
     void UpdateUI()
     {
+        _isShow = true;
+
         healthBarContainer.SetActive(true);
         annoucementAnimator.gameObject.SetActive(true);
         annoucementAnimator.SetTrigger("Show");
@@ -124,8 +121,16 @@ public class FinalBoss : MonoBehaviour, IInteractable
         cameraShake.shakeDuration = cameraDuration;
         transform.DOMoveY(-3, 2);
         spawnSound.Play();
+
+        pinPlayer1Animator.DestroyPin();
+        pinPlayer2Animator.DestroyPin();
+
+        player1.gameObject.GetComponent<PlayerMovement>().GetStop();
+        player2.gameObject.GetComponent<PlayerMovement>().GetStop();
+
         Invoke("CallLevelManager", 2f);
     }
+
 
     void CallLevelManager()
     {
@@ -163,5 +168,29 @@ public class FinalBoss : MonoBehaviour, IInteractable
     public string getId()
     {
         return id;
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, interactRange);
+    }
+
+
+    bool isPlayer1InRangeOfAction()
+    {
+        if (NPCInteractable.CheckRange(transform.position.x, player1.transform.position.x - interactRange, player1.transform.position.x + interactRange) && NPCInteractable.CheckRange(transform.position.z, player1.transform.position.z - interactRange, player1.transform.position.z + interactRange))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    bool isPlayer2InRangeOfAction()
+    {
+        if (NPCInteractable.CheckRange(transform.position.x, player2.transform.position.x - interactRange, player2.transform.position.x + interactRange) && NPCInteractable.CheckRange(transform.position.z, player2.transform.position.z - interactRange, player2.transform.position.z + interactRange))
+        {
+            return true;
+        }
+        return false;
     }
 }

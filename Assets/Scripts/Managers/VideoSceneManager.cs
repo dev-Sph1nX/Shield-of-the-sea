@@ -10,10 +10,18 @@ public class VideoSceneManager : MonoBehaviour
     [Header("Scene Transition")]
     [SerializeField] private Animator sceneAnimator = null;
     [SerializeField] private string triggerName;
+    [SerializeField] private AudioSource[] audios;
 
     private bool isTransitioningOut = false;
 
-    // Update is called once per frame
+    void Start()
+    {
+        foreach (AudioSource audio in audios)
+        {
+            audio.Play();
+        }
+    }
+
     void Update()
     {
         if (!isTransitioningOut && InputSystem.Player1Interaction())

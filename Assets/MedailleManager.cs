@@ -56,7 +56,6 @@ public class MedailleManager : MonoBehaviour
     public void OnScoreUpdate(float score)
     {
         healthBar.UpdateHealthBar(score);
-        Debug.Log(score + " < " + medailles[index].score);
         if (score < medailles[index].score)
         { // s'il est plus petit que la medaille actuel
             if (index + 1 < medailles.Count) // et qu'il reste des medailles en dessous

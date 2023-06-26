@@ -11,6 +11,7 @@ public class FinalLevelModal : MonoBehaviour, InnerModalScript
     [SerializeField] public TextMeshProUGUI finalPercentageText2;
     [SerializeField] public TextMeshProUGUI nbBottle;
     [SerializeField] public TextMeshProUGUI nbPaper;
+    [SerializeField] public TextMeshProUGUI nbPneu;
     [SerializeField] public Image pointer;
     [SerializeField] public Image medaille;
     [SerializeField] public Sprite goldSprite;
@@ -28,25 +29,6 @@ public class FinalLevelModal : MonoBehaviour, InnerModalScript
 
     int maxPointer = 405;
     int minPointer = -439;
-    void Update()
-    {
-        if (_isShow)
-        {
-            // if (p1interact)
-            // {
-            //     p1text.enabled = true;
-            // }
-            // if (p2interact)
-            // {
-            //     p2text.enabled = true;
-            // }
-
-            if (p1interact && p2interact)
-            {
-                _isDone = true;
-            }
-        }
-    }
 
     public bool isDone()
     {
@@ -64,6 +46,8 @@ public class FinalLevelModal : MonoBehaviour, InnerModalScript
 
         nbBottle.text = "x" + levelManager.getFinalP1Score();
         nbPaper.text = "x" + levelManager.getFinalP2Score();
+        nbPneu.text = "x" + levelManager.getFinalPneuScore();
+
 
         finalPercentageText1.text = percentage + "%";
         finalPercentageText2.text = percentage + "%";
