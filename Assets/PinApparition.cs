@@ -7,7 +7,6 @@ public class PinApparition : MonoBehaviour
     [SerializeField] GameObject model;
     [SerializeField] float height;
     [SerializeField] float x = 0;
-    // [SerializeField] Animator pinAnimator;
 
     private GameObject pin;
     bool destroy = false;
@@ -30,10 +29,10 @@ public class PinApparition : MonoBehaviour
         {
             if (!pin.activeInHierarchy)
             {
+                Debug.Log("pin active :" + pin.name);
                 pin.SetActive(true);
             }
         }
-        // pinAnimator.SetTrigger("Appear");
     }
 
     public void Disappear()
@@ -42,14 +41,18 @@ public class PinApparition : MonoBehaviour
         {
             if (pin.activeInHierarchy)
             {
+                Debug.Log("pin desactive :" + pin.name);
                 pin.SetActive(false);
             }
         }
-        // pinAnimator.SetTrigger("Disappear");
     }
     public void DestroyPin()
     {
         destroy = true;
-        Destroy(pin);
+        if (pin)
+        {
+            Debug.Log("destroy pin : " + pin.name);
+            Destroy(pin);
+        }
     }
 }

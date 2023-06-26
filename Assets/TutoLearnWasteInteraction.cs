@@ -120,6 +120,9 @@ public class TutoLearnWasteInteraction : MonoBehaviour
                 cannetteTrigger = false;
                 glassTrigger = false;
                 pneuTrigger = false;
+                p1trigger = false;
+                p2trigger = false;
+
             }
         }
         if (waitingAllDestroy && cannetteTrigger && glassTrigger && pneuTrigger)
@@ -130,6 +133,9 @@ public class TutoLearnWasteInteraction : MonoBehaviour
             cannetteTrigger = false;
             glassTrigger = false;
             pneuTrigger = false;
+            p1trigger = false;
+            p2trigger = false;
+
         }
     }
 

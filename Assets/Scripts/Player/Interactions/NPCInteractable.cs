@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MyBox;
+using System.Linq;
 
 public class NPCInteractable : MonoBehaviour, IInteractable
 {
@@ -34,6 +35,7 @@ public class NPCInteractable : MonoBehaviour, IInteractable
         {
             bool alreadySet = false;
             PlayerInteraction[] players = FindObjectsOfType<PlayerInteraction>();
+            players.Reverse();
             foreach (PlayerInteraction p in players)
             {
                 if (!alreadySet)

@@ -52,7 +52,6 @@ public class WasteSinking : MonoBehaviour
             rb.angularVelocity = Vector3.zero;
             groundPs.Play();
             groundSound.Play();
-            pinApparition.Appear();
             if (tutoLearnWasteInteraction)
             {
                 tutoLearnWasteInteraction.onWasteFall();

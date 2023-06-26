@@ -18,6 +18,8 @@ public class FinalLevelModal : MonoBehaviour, InnerModalScript
     [SerializeField] public Sprite bronzeSprite;
     [SerializeField] public Sprite chocoSprite;
     [SerializeField] HealthBar healthBar;
+    [SerializeField] TimeIndicator timeIndicator;
+    [SerializeField] GameObject[] UITHide;
 
     [SerializeField] LevelManager levelManager;
 
@@ -52,6 +54,10 @@ public class FinalLevelModal : MonoBehaviour, InnerModalScript
     }
     public void isShow()
     {
+
+        Invoke("HideUI", 1f);
+
+
         _isShow = true;
         percentage = levelManager.getFinalPercentage();
         Debug.Log("percentage" + percentage);
@@ -66,9 +72,29 @@ public class FinalLevelModal : MonoBehaviour, InnerModalScript
 
         float delta = (maxPointer - minPointer) * (percentage / 100);
         Vector3 endPosition = new Vector3(minPointer + delta, pointer.transform.position.y, pointer.transform.position.z);
-        pointer.transform.DOMove(endPosition, 5);
+        pointer.transform.DOMove(endPosition, 4);
 
-        healthBar.UpdateHealthBar(percentage, 5);
+        healthBar.UpdateHealthBar(percentage, 4);
+
+        timeIndicator.StartTimer(true);
+        Invoke("CloseModal", 10);
+    }
+
+    void HideUI()
+    {
+        foreach (GameObject obj in UITHide)
+        {
+            obj.SetActive(false);
+        }
+    }
+
+    void CloseModal()
+    {
+        foreach (GameObject obj in UITHide)
+        {
+            obj.SetActive(true);
+        }
+        _isDone = true;
     }
 
 

@@ -41,7 +41,6 @@ public class CinematiqueSceneManager : MonoBehaviour
     }
     private void StartTraveling()
     {
-        Debug.Log("StartTraveling");
         travelingAnimator.SetTrigger("Traveling");
         introBeachDialog.StartDialog();
     }

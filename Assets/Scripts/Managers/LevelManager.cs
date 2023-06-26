@@ -50,7 +50,7 @@ public class LevelManager : MonoBehaviour
     private Image mask = null;
     private Animator sceneAnimator = null;
     private bool isPlaying = false, endCanvasIsShow = false;
-    private bool startGameTrigger = false;
+    private bool startGameTrigger = false, bossAppear = false;
     private float startTime = 0f, tiersOfGameTime, nextTiers = 0f, actualGameTime;
 
     void Awake()
@@ -206,11 +206,17 @@ public class LevelManager : MonoBehaviour
             }
             if (w.gameObject.tag != "Boss")
             {
+                PinApparition pinApparition = w.GetComponent<PinApparition>();
+                if (pinApparition)
+                {
+                    pinApparition.DestroyPin();
+                }
                 Destroy(w.gameObject);
             }
         }
         wasteSpawner.StopGame();
         finalBoss.Appear();
+        bossAppear = true;
     }
 
     public void OnBossDeath()
@@ -262,7 +268,7 @@ public class LevelManager : MonoBehaviour
             initialModal.Player1Interact();
         }
 
-        if (scoring)
+        if (scoring && !bossAppear)
         {
             p1Score++;
             p1ScoreText.text = p1Score.ToString();
@@ -279,7 +285,7 @@ public class LevelManager : MonoBehaviour
         {
             initialModal.Player2Interact();
         }
-        if (scoring)
+        if (scoring && !bossAppear)
         {
             p2Score++;
             p2ScoreText.text = p2Score.ToString();
