@@ -45,12 +45,13 @@ public class LevelManager : MonoBehaviour
     [SerializeField] PlayerNameApparition player2NameApparition;
     private int p1Score = 0;
     private int p2Score = 0;
+    private int pneuScore = 0;
 
 
     private Image mask = null;
     private Animator sceneAnimator = null;
     private bool isPlaying = false, endCanvasIsShow = false;
-    private bool startGameTrigger = false;
+    private bool startGameTrigger = false, bossAppear = false;
     private float startTime = 0f, tiersOfGameTime, nextTiers = 0f, actualGameTime;
 
     void Awake()
@@ -206,22 +207,23 @@ public class LevelManager : MonoBehaviour
             }
             if (w.gameObject.tag != "Boss")
             {
+                PinApparition pinApparition = w.GetComponent<PinApparition>();
+                if (pinApparition)
+                {
+                    pinApparition.DestroyPin();
+                }
                 Destroy(w.gameObject);
             }
         }
         wasteSpawner.StopGame();
         finalBoss.Appear();
+        bossAppear = true;
     }
 
     public void OnBossDeath()
     {
         endCanvasIsShow = true;
-        PlayerInteraction[] players = FindObjectsOfType<PlayerInteraction>();
-        foreach (PlayerInteraction p in players)
-        {
-            p.gameObject.GetComponent<SimpleSampleCharacterControl>().GetStop();
-            p.gameObject.GetComponent<PlayerMovement>().GetStop();
-        }
+
         finalModal.ShowModal();
     }
 
@@ -236,6 +238,10 @@ public class LevelManager : MonoBehaviour
     public float getFinalP2Score()
     {
         return p2Score;
+    }
+    public float getFinalPneuScore()
+    {
+        return pneuScore;
     }
 
     // called after final modal is done 
@@ -262,7 +268,7 @@ public class LevelManager : MonoBehaviour
             initialModal.Player1Interact();
         }
 
-        if (scoring)
+        if (scoring && !bossAppear)
         {
             p1Score++;
             p1ScoreText.text = p1Score.ToString();
@@ -279,7 +285,7 @@ public class LevelManager : MonoBehaviour
         {
             initialModal.Player2Interact();
         }
-        if (scoring)
+        if (scoring && !bossAppear)
         {
             p2Score++;
             p2ScoreText.text = p2Score.ToString();
@@ -289,5 +295,10 @@ public class LevelManager : MonoBehaviour
             finalModal.Player2Interact();
         }
 
+    }
+
+    public void onPneuHit()
+    {
+        pneuScore++;
     }
 }

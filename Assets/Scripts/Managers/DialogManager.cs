@@ -35,6 +35,8 @@ public class TutorialStep
 
 public class DialogManager : MonoBehaviour, IDialogManager
 {
+    [SerializeField] float timeAfterText = 4f;
+
     [Header("References")]
     [SerializeField] DialogContentManager marco;
     [SerializeField] DialogContentManager polo;
@@ -48,7 +50,6 @@ public class DialogManager : MonoBehaviour, IDialogManager
     [SerializeField] PlayerNameApparition player2NameApparition;
     [SerializeField] AudioSource tutorialMusic;
 
-
     List<TutorialStep> tutorialSteps = new List<TutorialStep>();
 
     private int index = 0;
@@ -57,17 +58,17 @@ public class DialogManager : MonoBehaviour, IDialogManager
     // Start is called before the first frame update
     void Start()
     {
-        tutorialSteps.Add(new TutorialStep("Hello nous c’est Marco & Polo. On habite l’ocean, cependant depuis peu on entretient une relation de voisinage toxique avec les humains qui nous polluent constamment.", Narrator.Marco));
-        tutorialSteps.Add(new TutorialStep("Aidez-nous a nous battre pour retrouver la paix et la serenite tant attendu.", Narrator.Marco));
+        tutorialSteps.Add(new TutorialStep("Hello nous, c’est Marco & Polo. On habite l’ocean, cependant depuis peu, on entretient une relation de voisinage toxique avec les humains qui nous polluent constamment.", Narrator.Marco, pForcedTimed: true));
+        tutorialSteps.Add(new TutorialStep("Aidez-nous a nous battre pour retrouver la paix et la serenite tant attendu.", Narrator.Marco, pForcedTimed: true));
         tutorialSteps.Add(new TutorialStep("", Narrator.Any, bigModalPolo.Show));
         tutorialSteps.Add(new TutorialStep("", Narrator.Any, learnWasteInteractionManager.throwTwoWaste)); // checkpoint - 3
         tutorialSteps.Add(new TutorialStep("Tu vois ces dechets ? Il faut que tu t'approches d'eux.", Narrator.Polo, learnWasteInteractionManager.waitingProximity));
-        tutorialSteps.Add(new TutorialStep("Bien joue !", Narrator.Polo));
-        tutorialSteps.Add(new TutorialStep("Vous pouvez maintenant voir un petit indicateur au dessus des dechet. Ca veut dire que vous pouvez les detruire ! Comment ? En donnant un coup d'epee comme montre a l'ecran !", Narrator.Polo, showSwordMotion, true));
+        tutorialSteps.Add(new TutorialStep("Bien joue !", Narrator.Polo, pForcedTimed: true));
+        tutorialSteps.Add(new TutorialStep("Vous pouvez maintenant voir un petit indicateur au dessus des dechet. Ca veut dire que vous pouvez les detruire ! Comment ? En donnant un coup d'epee comme montre a l'ecran !", Narrator.Polo, showSwordMotion, pForcedTimed: true));
         tutorialSteps.Add(new TutorialStep("Allez-y, essayez de les detruire.", Narrator.Polo, WaitingInteraction));
-        tutorialSteps.Add(new TutorialStep("Super ! Une nouvelle vague arrive ! Preparez-vous !", Narrator.Polo));// checkpoint - 8
+        tutorialSteps.Add(new TutorialStep("Super ! Une nouvelle vague arrive ! Preparez-vous !", Narrator.Polo, hideSwordMotion, pForcedTimed: true));// checkpoint - 8
         tutorialSteps.Add(new TutorialStep("", Narrator.Any, learnWasteInteractionManager.throwSecondWave));
-        tutorialSteps.Add(new TutorialStep("Trop fort ! Maintenant que vous etes pret, vous allez pouvoir rentrez dans les choses serieuses. Que le vent vous soit favorable et bonne experience !", Narrator.Polo));
+        tutorialSteps.Add(new TutorialStep("Trop fort ! Maintenant que vous etes pret, vous allez pouvoir rentrer dans les choses serieuses. Que le vent vous soit favorable et bonne experience !", Narrator.Polo, pForcedTimed: true));
         if (GameManager.Instance.passTutorial) // GameManager.Instance.debugMode &&
             hasFinish = true;
         else
@@ -86,6 +87,8 @@ public class DialogManager : MonoBehaviour, IDialogManager
                     player1NameApparition.Appear();
                     player2NameApparition.Appear();
 
+                    Debug.Log("cbziab");
+
                     tutorialMusic.Play();
                     tutorialMusic.DOFade(tutorialMusic.volume, 4);
                 }
@@ -94,10 +97,12 @@ public class DialogManager : MonoBehaviour, IDialogManager
                     if (!called)
                     {
                         called = true;
-                        Debug.Log("Wait 5s to start");
                         Invoke("StartDialog", 5f);
                         player1NameApparition.Appear();
                         player2NameApparition.Appear();
+
+                        tutorialMusic.Play();
+                        tutorialMusic.DOFade(tutorialMusic.volume, 4);
                     }
                 }
             }
@@ -113,7 +118,6 @@ public class DialogManager : MonoBehaviour, IDialogManager
     }
     public void StartDialog()
     {
-        Debug.Log("Start tuto");
         waitStart = false;
     }
 
@@ -158,6 +162,13 @@ public class DialogManager : MonoBehaviour, IDialogManager
 
     public void OnNextStep()
     {
+        StartCoroutine(InnerOnNextStep());
+    }
+    IEnumerator InnerOnNextStep()
+    {
+
+        yield return new WaitForSeconds(tutorialSteps[index].forcedTimed ? timeAfterText : 0f);
+
         index++;
         if (index < tutorialSteps.Count) TutorialNextStep(tutorialSteps[index]);
         else TutorialEnd();
@@ -203,6 +214,11 @@ public class DialogManager : MonoBehaviour, IDialogManager
             {
                 shadowManager.DestroyShadow();
             }
+            PinApparition pinApparition = w.GetComponent<PinApparition>();
+            if (pinApparition)
+            {
+                pinApparition.DestroyPin();
+            }
             Destroy(w.gameObject);
         }
 
@@ -217,9 +233,16 @@ public class DialogManager : MonoBehaviour, IDialogManager
     {
         marco.CloseDialog();
         polo.CloseDialog();
-        hasFinish = true;
         UpdatePlayerInteraction(true);
         tutorialMusic.DOFade(0, 1);
+        Invoke("SetHasFinish", 1f);
+    }
+
+    void SetHasFinish()
+    {
+
+        hasFinish = true;
+
     }
 
     public void showSwordMotion()
@@ -236,8 +259,6 @@ public class DialogManager : MonoBehaviour, IDialogManager
 
     public void WaitingInteraction()
     {
-        hideSwordMotion();
-
         player1.SetCanInteract(true);
         player2.SetCanInteract(true);
 

@@ -11,6 +11,7 @@ public class FinalLevelModal : MonoBehaviour, InnerModalScript
     [SerializeField] public TextMeshProUGUI finalPercentageText2;
     [SerializeField] public TextMeshProUGUI nbBottle;
     [SerializeField] public TextMeshProUGUI nbPaper;
+    [SerializeField] public TextMeshProUGUI nbPneu;
     [SerializeField] public Image pointer;
     [SerializeField] public Image medaille;
     [SerializeField] public Sprite goldSprite;
@@ -18,6 +19,8 @@ public class FinalLevelModal : MonoBehaviour, InnerModalScript
     [SerializeField] public Sprite bronzeSprite;
     [SerializeField] public Sprite chocoSprite;
     [SerializeField] HealthBar healthBar;
+    [SerializeField] TimeIndicator timeIndicator;
+    [SerializeField] GameObject[] UITHide;
 
     [SerializeField] LevelManager levelManager;
 
@@ -26,25 +29,6 @@ public class FinalLevelModal : MonoBehaviour, InnerModalScript
 
     int maxPointer = 405;
     int minPointer = -439;
-    void Update()
-    {
-        if (_isShow)
-        {
-            // if (p1interact)
-            // {
-            //     p1text.enabled = true;
-            // }
-            // if (p2interact)
-            // {
-            //     p2text.enabled = true;
-            // }
-
-            if (p1interact && p2interact)
-            {
-                _isDone = true;
-            }
-        }
-    }
 
     public bool isDone()
     {
@@ -52,12 +36,18 @@ public class FinalLevelModal : MonoBehaviour, InnerModalScript
     }
     public void isShow()
     {
+
+        Invoke("HideUI", 1f);
+
+
         _isShow = true;
         percentage = levelManager.getFinalPercentage();
         Debug.Log("percentage" + percentage);
 
         nbBottle.text = "x" + levelManager.getFinalP1Score();
         nbPaper.text = "x" + levelManager.getFinalP2Score();
+        nbPneu.text = "x" + levelManager.getFinalPneuScore();
+
 
         finalPercentageText1.text = percentage + "%";
         finalPercentageText2.text = percentage + "%";
@@ -66,9 +56,29 @@ public class FinalLevelModal : MonoBehaviour, InnerModalScript
 
         float delta = (maxPointer - minPointer) * (percentage / 100);
         Vector3 endPosition = new Vector3(minPointer + delta, pointer.transform.position.y, pointer.transform.position.z);
-        pointer.transform.DOMove(endPosition, 5);
+        pointer.transform.DOMove(endPosition, 4);
 
-        healthBar.UpdateHealthBar(percentage, 5);
+        healthBar.UpdateHealthBar(percentage, 4);
+
+        timeIndicator.StartTimer(true);
+        Invoke("CloseModal", 10);
+    }
+
+    void HideUI()
+    {
+        foreach (GameObject obj in UITHide)
+        {
+            obj.SetActive(false);
+        }
+    }
+
+    void CloseModal()
+    {
+        foreach (GameObject obj in UITHide)
+        {
+            obj.SetActive(true);
+        }
+        _isDone = true;
     }
 
 

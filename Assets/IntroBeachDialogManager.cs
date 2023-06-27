@@ -7,6 +7,7 @@ public class IntroBeachDialogManager : MonoBehaviour, IDialogManager
     [Header("References")]
     [SerializeField] DialogContentManager marco;
     [SerializeField] CinematiqueSceneManager cinematiqueSceneManager;
+    [SerializeField] float timeAfterText = 4f;
 
 
     List<TutorialStep> tutorialSteps = new List<TutorialStep>();
@@ -14,12 +15,11 @@ public class IntroBeachDialogManager : MonoBehaviour, IDialogManager
     void Awake()
     {
         tutorialSteps.Add(new TutorialStep("Vous avez vu ?! Je vous raconte pas des salades hein !", Narrator.Marco));
-        tutorialSteps.Add(new TutorialStep("C’est un vrai danger toutes les paulettes mangent des déchets il faut intervenir battons nous !", Narrator.Marco));
+        tutorialSteps.Add(new TutorialStep("C’est un vrai danger, toutes les paulettes mangent des dechets, il faut intervenir battons nous !", Narrator.Marco));
     }
 
     public void StartDialog()
     {
-        Debug.Log(tutorialSteps.Count);
         DiscoursNextStep(tutorialSteps[index]);
     }
 
@@ -43,15 +43,20 @@ public class IntroBeachDialogManager : MonoBehaviour, IDialogManager
 
     public void OnNextStep()
     {
-        Debug.Log("OnNextStep index " + index);
+        StartCoroutine(InnerOnNextStep());
+    }
+
+    IEnumerator InnerOnNextStep()
+    {
+        yield return new WaitForSeconds(timeAfterText);
         index++;
         if (index < tutorialSteps.Count) DiscoursNextStep(tutorialSteps[index]);
         else DiscoursEnd();
     }
 
+
     public void DiscoursEnd()
     {
-        Debug.Log("end of discours");
         marco.CloseDialog();
         Invoke("NextScene", 1f);
     }

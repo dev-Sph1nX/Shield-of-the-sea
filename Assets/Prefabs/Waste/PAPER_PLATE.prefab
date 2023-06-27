@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1158491270262092632}
   - component: {fileID: 706039043881930256}
   - component: {fileID: 464847205225565620}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,7 +100,7 @@ GameObject:
   - component: {fileID: 7147417621629514030}
   - component: {fileID: 192556435882241283}
   - component: {fileID: 681894584936520611}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PAPER_PLATE
   m_TagString: Waste
   m_Icon: {fileID: 0}
@@ -238,7 +238,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: f8984a67ac6b66e419362fc3b87f18af, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.3
+  m_Volume: 0.6
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -334,7 +334,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: b647c54195cf6cf43982e103b25f8eac, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.3
+  m_Volume: 0.6
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -425,6 +425,31 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2827255808358646891}
     m_Modifications:
+    - target: {fileID: 459196343332685019, guid: 2871c97b6201a6a468338704c9c5669e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3841047741076919939, guid: 2871c97b6201a6a468338704c9c5669e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6424013713051126556, guid: 2871c97b6201a6a468338704c9c5669e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598074114112830792, guid: 2871c97b6201a6a468338704c9c5669e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598074115416834616, guid: 2871c97b6201a6a468338704c9c5669e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598074115426778816, guid: 2871c97b6201a6a468338704c9c5669e,
         type: 3}
       propertyPath: m_RootOrder
@@ -500,6 +525,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: HitParticule
       objectReference: {fileID: 0}
+    - target: {fileID: 8598074115426778879, guid: 2871c97b6201a6a468338704c9c5669e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2871c97b6201a6a468338704c9c5669e, type: 3}
 --- !u!198 &7532342352472389149 stripped
@@ -529,7 +559,7 @@ PrefabInstance:
     - target: {fileID: 3765135941450134168, guid: 73d42846234fda544a1334854d4c2d84,
         type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8613084062156826603, guid: 73d42846234fda544a1334854d4c2d84,
         type: 3}
@@ -610,6 +640,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 83cd9cc9f9c88824ba18dc59b05ae328, type: 3}
       propertyPath: m_Name
       value: CFX3_Hit_SmokePuff
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 83cd9cc9f9c88824ba18dc59b05ae328, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 83cd9cc9f9c88824ba18dc59b05ae328, type: 3}
       propertyPath: m_RootOrder

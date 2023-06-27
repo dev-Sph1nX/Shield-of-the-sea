@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField][Range(0, 1f)] float mouvementSensibility;
     [SerializeField] bool inverseZ;
     [SerializeField] bool inverseX;
+    [SerializeField] float debugIncrement = 1f;
 
     [Header("Reference")]
     [SerializeField] private Animator m_animator = null;
@@ -29,18 +30,19 @@ public class PlayerMovement : MonoBehaviour
     private float deltaTime;
     public float velocity;
     private List<Collider> m_collisions = new List<Collider>();
-    private int layer_mask;
+    private int layerBoss;
+    private bool isStopped = false;
     private void Awake()
     {
         if (!m_animator) { gameObject.GetComponent<Animator>(); }
         localPosition = transform.position;
         localRotation = new Quaternion(0, 0, 0, 0);
-        if (GameManager.Instance.debugMode)
-        {
-            GetComponent<SimpleSampleCharacterControl>().enabled = true;
-            this.enabled = false;
-        }
-        layer_mask = LayerMask.GetMask("Boss");
+        // if (GameManager.Instance.debugMode)
+        // {
+        //     GetComponent<SimpleSampleCharacterControl>().enabled = true;
+        //     this.enabled = false;
+        // }
+        layerBoss = LayerMask.GetMask("Boss");
     }
 
     private void Update()
@@ -57,10 +59,19 @@ public class PlayerMovement : MonoBehaviour
         deltaTime = Time.deltaTime;
 
         PlayerUpdate();
+
+        if (GameManager.Instance.debugMode)
+        {
+            DebugPlayerUpdate();
+        }
     }
 
     public void sendData(Coord coord)
     {
+        if (isStopped)
+        {
+            return;
+        }
         // Récupération des coordonnées
         Vector2 percentage = new Vector2((coord.x / 100), (coord.y / 100));
 
@@ -102,15 +113,44 @@ public class PlayerMovement : MonoBehaviour
         }
 
         RaycastHit hit;
-        if (Physics.Raycast(new Vector3(localPosition.x, localPosition.y + 100f, localPosition.z), Vector3.down, out hit, Mathf.Infinity, layer_mask))
+        if (Physics.Raycast(new Vector3(localPosition.x, localPosition.y + 100f, localPosition.z), Vector3.down, out hit, Mathf.Infinity, layerBoss))
         {
             float terrainY = RoundValue(hit.point.y, 100);
+            if (terrainY <= 0)
+            {
+                terrainY = 0;
+            }
             localPosition.y = terrainY;
         }
 
         velocity = Mathf.Lerp(velocity, magnitude, Time.deltaTime * interpolation);
         m_animator.SetFloat("MoveSpeed", velocity);
 
+    }
+
+    private void DebugPlayerUpdate()
+    {
+        if (isStopped)
+        {
+            return;
+        }
+
+        float v = Input.GetAxis(playerId == SystemId.Player1 ? "DP1 - Vertical" : "DP2 - Vertical");
+        float h = Input.GetAxis(playerId == SystemId.Player1 ? "DP1 - Horizontal" : "DP2 - Horizontal");
+
+
+        float newPositionZ = localPosition.z + debugIncrement * v;
+        float newPositionX = localPosition.x + debugIncrement * h;
+
+        direction = new Vector3(newPositionX, localPosition.y, newPositionZ) - localPosition;
+        Debug.DrawRay(localPosition, direction, Color.green, 1);
+
+        if (direction.magnitude > mouvementSensibility)
+        {
+            // Position
+            positionX = newPositionX;
+            positionZ = newPositionZ;
+        }
     }
 
     // private void debugPlayerMovement(PlayerId id)
@@ -193,8 +233,6 @@ public class PlayerMovement : MonoBehaviour
 
     public void GetStop()
     {
-        velocity = 0;
-        m_animator.SetFloat("MoveSpeed", 0);
-        this.enabled = false;
+        isStopped = true;
     }
 }

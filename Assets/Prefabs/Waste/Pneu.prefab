@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 7516874056275373441}
   - component: {fileID: -7163323318854140584}
   - component: {fileID: 4046539489184218130}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pneu
   m_TagString: Waste
   m_Icon: {fileID: 0}
@@ -257,6 +257,31 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6572618330588529235}
     m_Modifications:
+    - target: {fileID: 459196343332685019, guid: 2871c97b6201a6a468338704c9c5669e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3841047741076919939, guid: 2871c97b6201a6a468338704c9c5669e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6424013713051126556, guid: 2871c97b6201a6a468338704c9c5669e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598074114112830792, guid: 2871c97b6201a6a468338704c9c5669e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598074115416834616, guid: 2871c97b6201a6a468338704c9c5669e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8598074115426778816, guid: 2871c97b6201a6a468338704c9c5669e,
         type: 3}
       propertyPath: m_RootOrder
@@ -317,6 +342,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: HitParticule
       objectReference: {fileID: 0}
+    - target: {fileID: 8598074115426778879, guid: 2871c97b6201a6a468338704c9c5669e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2871c97b6201a6a468338704c9c5669e, type: 3}
 --- !u!198 &4277841077015729856 stripped
@@ -346,7 +376,7 @@ PrefabInstance:
     - target: {fileID: 3765135941450134168, guid: 73d42846234fda544a1334854d4c2d84,
         type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3985692193368707562, guid: 73d42846234fda544a1334854d4c2d84,
         type: 3}
@@ -458,6 +488,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TIRE
+      objectReference: {fileID: 0}
+    - target: {fileID: 6775426195723078977, guid: ba0a0720c7d9d774d969881ca44adc53,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7427668890750456899, guid: ba0a0720c7d9d774d969881ca44adc53,
         type: 3}

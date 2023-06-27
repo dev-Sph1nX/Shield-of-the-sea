@@ -7,17 +7,18 @@ public class OutroBeachDialogManager : MonoBehaviour, IDialogManager
     [Header("References")]
     [SerializeField] DialogContentManager marco;
     [SerializeField] CinematiqueSceneManager cinematiqueSceneManager;
+    [SerializeField] float timeAfterText = 4f;
 
 
     List<TutorialStep> tutorialSteps = new List<TutorialStep>();
     int index = 0;
     void Awake()
     {
-        tutorialSteps.Add(new TutorialStep("Bon c’était pas si mal mais vous avez vu, des problématiques on en a des tas !", Narrator.Marco));
-        tutorialSteps.Add(new TutorialStep("Notre salon est envahis de plastiques des pneus et des hameçon que vous n’avez pas réussis à attraper.", Narrator.Marco));
-        tutorialSteps.Add(new TutorialStep("Notre sous sol est envahis de déchets et trop souvent remuer par les raclement de fond marin.", Narrator.Marco));
-        tutorialSteps.Add(new TutorialStep("Renseigner vous, on vous a fait plein de belle affiches avec toutes les infos !", Narrator.Marco));
-        tutorialSteps.Add(new TutorialStep("Aider nous à lutter !", Narrator.Marco));
+        tutorialSteps.Add(new TutorialStep("Bon c’etait pas si mal, mais vous avez vu, des problematiques, on en a des tas !", Narrator.Marco));
+        tutorialSteps.Add(new TutorialStep("Notre salon est envahi de plastiques et des pneus que vous n’avez pas reussis a attraper.", Narrator.Marco));
+        tutorialSteps.Add(new TutorialStep("Notre sous-sol est envahi de dechets et trop souvent remuer par les raclements de fond marin.", Narrator.Marco));
+        tutorialSteps.Add(new TutorialStep("Renseignez-vous, on vous a fait plein de belle affiches avec toutes les infos !", Narrator.Marco));
+        tutorialSteps.Add(new TutorialStep("Aidez-nous a lutter !", Narrator.Marco));
     }
 
     public void StartDialog()
@@ -46,10 +47,17 @@ public class OutroBeachDialogManager : MonoBehaviour, IDialogManager
 
     public void OnNextStep()
     {
+        StartCoroutine(InnerOnNextStep());
+    }
+
+    IEnumerator InnerOnNextStep()
+    {
+        yield return new WaitForSeconds(timeAfterText);
         index++;
         if (index < tutorialSteps.Count) DiscoursNextStep(tutorialSteps[index]);
         else DiscoursEnd();
     }
+
 
     public void DiscoursEnd()
     {

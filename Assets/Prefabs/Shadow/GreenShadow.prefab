@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1101977594714010867}
   - component: {fileID: 5914267161426742675}
   m_Layer: 0
-  m_Name: Red Shadow
+  m_Name: GreenShadow
   m_TagString: Shadow
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f8ff3f8cc8ead5249b015592fa160f81, type: 2}
+  - {fileID: 2100000, guid: d942ee588a53b4842ac32426e050413c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
