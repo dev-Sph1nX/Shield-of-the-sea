@@ -156,9 +156,7 @@ MonoBehaviour:
   nextSceneName: 2-IntroBeach
   sceneAnimator: {fileID: 342288685}
   triggerName: Exit
-  audios:
-  - {fileID: 0}
-  - {fileID: 36213657}
+  audios: []
 --- !u!4 &36213655
 Transform:
   m_ObjectHideFlags: 0
@@ -181,10 +179,10 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 36213653}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 120f8c1bf41678b49980d0dbe5ea2c17, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 38dad013565397e428a4cfe0e45b6a2a, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.1
   m_Pitch: 1
@@ -1038,7 +1036,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2026496937}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: f97172300582315498524cdbd579d1c7, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: f58dc133a1e6f244ba32ba1c3b6bc763, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 1863995541}
@@ -1054,7 +1052,7 @@ VideoPlayer:
   m_TargetAudioSources:
   - {fileID: 0}
   m_DirectAudioVolumes:
-  - 1
+  - 0.5
   m_Url: 
   m_EnabledAudioTracks: 01
   m_DirectAudioMutes: 00

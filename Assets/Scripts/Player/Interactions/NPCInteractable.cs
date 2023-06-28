@@ -8,24 +8,27 @@ public class NPCInteractable : MonoBehaviour, IInteractable
 {
     [Header("Type")]
     [SerializeField] public SystemId typeId;
+    [SerializeField] public int interactRange = 2;
 
     [Header("References")]
 
     [SerializeField] private ParticleSystem hitPs;
     [SerializeField] private AudioSource hitSound;
+    [SerializeField] public bool interactable = false;
     [SerializeField][ReadOnly] private string id;
 
     private SystemId? ownerId = null;
     private MeshRenderer child;
-    private bool isInteracted = false;
 
     private TutoLearnWasteInteraction tutoLearnWasteInteraction;
     private PinApparition pinApparition;
+    PinPneuManager pinPneuManager;
     GameObject player1;
     PlayerInteraction player1Interact;
     GameObject player2;
     PlayerInteraction player2Interact;
     LevelManager levelManager;
+    private WasteShadow shadowManager;
     private void Awake()
     {
         id = Helpers.generateId();
@@ -33,23 +36,15 @@ public class NPCInteractable : MonoBehaviour, IInteractable
         tutoLearnWasteInteraction = FindAnyObjectByType<TutoLearnWasteInteraction>();
         levelManager = FindAnyObjectByType<LevelManager>();
         pinApparition = GetComponent<PinApparition>();
-
+        shadowManager = GetComponent<WasteShadow>();
+        pinPneuManager = GetComponent<PinPneuManager>();
         player1 = GameObject.FindWithTag("Player1");
-        // if (player1 != null)
-        // {
-        //     player1Interact = player1.GetComponent<PlayerInteraction>();
-        // }
-
         player2 = GameObject.FindWithTag("Player2");
-        // if (player2 != null)
-        // {
-        //     player2Interact = player2.GetComponent<PlayerInteraction>();
-        // }
     }
 
     void Update()
     {
-        if (pinApparition && typeId != SystemId.Boss)
+        if (interactable && pinApparition && typeId != SystemId.Boss && typeId != SystemId.Pneu) // bc boss and pneu pin's are manage by an other script
         {
             if (isInRangeOfAction())
                 pinApparition.Appear();
@@ -62,13 +57,16 @@ public class NPCInteractable : MonoBehaviour, IInteractable
     {
         if (SystemId.Pneu == typeId)
         {
-            Debug.Log("Interacted with pneu");
             if (levelManager) levelManager.onPneuHit();
         }
 
-        if (!isInteracted)
+        if (interactable)
         {
-            isInteracted = true;
+            if (shadowManager)
+                shadowManager.DestroyShadow();
+            if (pinPneuManager)
+                pinPneuManager.DestroyPin();
+            interactable = false;
             hitPs.Play();
             if (hitSound)
                 hitSound.Play();
@@ -79,12 +77,13 @@ public class NPCInteractable : MonoBehaviour, IInteractable
         }
     }
 
+    public void TouchGround()
+    {
+        interactable = true;
+    }
+
     void Destroy()
     {
-        if (SystemId.Pneu == typeId)
-        {
-            Debug.Log("Destroy pneu");
-        }
         Destroy(gameObject);
     }
 
@@ -99,12 +98,17 @@ public class NPCInteractable : MonoBehaviour, IInteractable
 
     public bool isInteractable()
     {
-        return !isInteracted;
+        return interactable;
     }
 
     public string getId()
     {
         return id;
+    }
+    void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, interactRange);
+
     }
 
 
@@ -112,7 +116,7 @@ public class NPCInteractable : MonoBehaviour, IInteractable
     {
         if (typeId == SystemId.Cannette)
         {
-            if (CheckRange(transform.position.x, player1.transform.position.x - 2, player1.transform.position.x + 2) && CheckRange(transform.position.z, player1.transform.position.z - 2, player1.transform.position.z + 2))
+            if (CheckRange(transform.position.x, player1.transform.position.x - interactRange, player1.transform.position.x + interactRange) && CheckRange(transform.position.z, player1.transform.position.z - interactRange, player1.transform.position.z + interactRange))
             {
                 return true;
             }
@@ -120,7 +124,7 @@ public class NPCInteractable : MonoBehaviour, IInteractable
         }
         if (typeId == SystemId.Glass)
         {
-            if (CheckRange(transform.position.x, player2.transform.position.x - 2, player2.transform.position.x + 2) && CheckRange(transform.position.z, player2.transform.position.z - 2, player2.transform.position.z + 2))
+            if (CheckRange(transform.position.x, player2.transform.position.x - interactRange, player2.transform.position.x + interactRange) && CheckRange(transform.position.z, player2.transform.position.z - interactRange, player2.transform.position.z + interactRange))
             {
                 return true;
             }
@@ -131,5 +135,10 @@ public class NPCInteractable : MonoBehaviour, IInteractable
     static public bool CheckRange(float num, float min, float max)
     {
         return num > min && num < max;
+    }
+
+    public int getRange()
+    {
+        return interactRange;
     }
 }

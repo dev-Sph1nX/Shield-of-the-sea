@@ -193,4 +193,9 @@ public class FinalBoss : MonoBehaviour, IInteractable
         }
         return false;
     }
+
+    public int getRange()
+    {
+        return interactRange;
+    }
 }

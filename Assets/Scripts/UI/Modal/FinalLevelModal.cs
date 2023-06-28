@@ -12,7 +12,6 @@ public class FinalLevelModal : MonoBehaviour, InnerModalScript
     [SerializeField] public TextMeshProUGUI nbBottle;
     [SerializeField] public TextMeshProUGUI nbPaper;
     [SerializeField] public TextMeshProUGUI nbPneu;
-    [SerializeField] public Image pointer;
     [SerializeField] public Image medaille;
     [SerializeField] public Sprite goldSprite;
     [SerializeField] public Sprite silverSprite;
@@ -24,8 +23,8 @@ public class FinalLevelModal : MonoBehaviour, InnerModalScript
 
     [SerializeField] LevelManager levelManager;
 
-    private bool _isDone = false, _isShow = true, p1interact = false, p2interact = false;
-    float percentage;
+    private bool _isDone = false;
+    float percentage, tweenValue = 0;
 
     int maxPointer = 405;
     int minPointer = -439;
@@ -39,8 +38,6 @@ public class FinalLevelModal : MonoBehaviour, InnerModalScript
 
         Invoke("HideUI", 1f);
 
-
-        _isShow = true;
         percentage = levelManager.getFinalPercentage();
         Debug.Log("percentage" + percentage);
 
@@ -48,24 +45,20 @@ public class FinalLevelModal : MonoBehaviour, InnerModalScript
         nbPaper.text = "x" + levelManager.getFinalP2Score();
         nbPneu.text = "x" + levelManager.getFinalPneuScore();
 
-
-        finalPercentageText1.text = percentage + "%";
-        finalPercentageText2.text = percentage + "%";
-
-        medaille.sprite = getMedailleSprite(percentage);
-
-        float delta = (maxPointer - minPointer) * (percentage / 100);
-        Vector3 endPosition = new Vector3(minPointer + delta, pointer.transform.position.y, pointer.transform.position.z);
-        pointer.transform.DOMove(endPosition, 4);
-
-        healthBar.UpdateHealthBar(percentage, 4);
-
         timeIndicator.StartTimer(true);
         Invoke("CloseModal", 10);
     }
 
     void HideUI()
     {
+        DOTween.To(() => tweenValue, x => tweenValue = x, percentage, 3).SetEase(Ease.OutCubic).OnUpdate(() =>
+        {
+            medaille.sprite = getMedailleSprite(tweenValue);
+            finalPercentageText1.text = (int)tweenValue + "%";
+            finalPercentageText2.text = (int)tweenValue + "%";
+        });
+
+        healthBar.UpdateHealthBar(percentage, 3);
         foreach (GameObject obj in UITHide)
         {
             obj.SetActive(false);
@@ -84,11 +77,9 @@ public class FinalLevelModal : MonoBehaviour, InnerModalScript
 
     public void OnPlayer1Interact()
     {
-        p1interact = true;
     }
     public void OnPlayer2Interact()
     {
-        p2interact = true;
     }
 
     Sprite getMedailleSprite(float score)

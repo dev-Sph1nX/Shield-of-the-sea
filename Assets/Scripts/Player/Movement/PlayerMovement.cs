@@ -36,6 +36,10 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!m_animator) { gameObject.GetComponent<Animator>(); }
         localPosition = transform.position;
+
+        positionX = localPosition.x;
+        positionZ = localPosition.z;
+
         localRotation = new Quaternion(0, 0, 0, 0);
         // if (GameManager.Instance.debugMode)
         // {
@@ -138,9 +142,9 @@ public class PlayerMovement : MonoBehaviour
         float v = Input.GetAxis(playerId == SystemId.Player1 ? "DP1 - Vertical" : "DP2 - Vertical");
         float h = Input.GetAxis(playerId == SystemId.Player1 ? "DP1 - Horizontal" : "DP2 - Horizontal");
 
-
         float newPositionZ = localPosition.z + debugIncrement * v;
         float newPositionX = localPosition.x + debugIncrement * h;
+
 
         direction = new Vector3(newPositionX, localPosition.y, newPositionZ) - localPosition;
         Debug.DrawRay(localPosition, direction, Color.green, 1);

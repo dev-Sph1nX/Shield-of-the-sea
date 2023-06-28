@@ -8245,15 +8245,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30bcdd185b263404f9fef3a9f65dad73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextSceneName: 0-Lobby
+  nextSceneName: 5-ExpoLobby
   sceneAnimator: {fileID: 1246539164}
   travelingAnimator: {fileID: 1240205602}
   cinematiqueGameObject: {fileID: 1109180193}
-  introBeachDialog: {fileID: 0}
   audios:
   - {fileID: 1330998612}
   - {fileID: 1330998611}
-  stayHere: 1
+  stayHere: 0
 --- !u!4 &1330998610
 Transform:
   m_ObjectHideFlags: 0

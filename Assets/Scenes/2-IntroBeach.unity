@@ -5627,7 +5627,6 @@ MonoBehaviour:
   sceneAnimator: {fileID: 1246539164}
   travelingAnimator: {fileID: 931979288}
   cinematiqueGameObject: {fileID: 1109180193}
-  introBeachDialog: {fileID: 1109180195}
   audios:
   - {fileID: 1330998611}
   - {fileID: 1330998612}

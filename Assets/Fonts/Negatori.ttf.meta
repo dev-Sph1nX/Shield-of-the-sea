@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 6e8ea911b15eefb4aa0606a132cac99c
+guid: 34ba2f080ff952e45893b4c3e04715ee
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -10,7 +10,8 @@ TrueTypeFontImporter:
   includeFontData: 1
   fontNames:
   - Negatori
-  fallbackFontReferences: []
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 6e8ea911b15eefb4aa0606a132cac99c, type: 3}
   customCharacters: 
   fontRenderingMode: 0
   ascentCalculationMode: 1

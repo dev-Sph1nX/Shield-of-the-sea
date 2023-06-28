@@ -40,6 +40,7 @@ public class DialogContentManager : MonoBehaviour
     {
         if (!_isShow) // if hidden, let time to appear 
         {
+            dialogText.text = "";
             ShowDialog();
             StartCoroutine(UpdateData(step));
         }
@@ -75,7 +76,6 @@ public class DialogContentManager : MonoBehaviour
     {
         _isShow = true;
         animator.SetTrigger("Open");
-
     }
 
     public void CloseDialog()

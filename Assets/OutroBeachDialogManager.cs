@@ -14,11 +14,11 @@ public class OutroBeachDialogManager : MonoBehaviour, IDialogManager
     int index = 0;
     void Awake()
     {
-        tutorialSteps.Add(new TutorialStep("Bon c’etait pas si mal, mais vous avez vu, des problematiques, on en a des tas !", Narrator.Marco));
-        tutorialSteps.Add(new TutorialStep("Notre salon est envahi de plastiques et des pneus que vous n’avez pas reussis a attraper.", Narrator.Marco));
-        tutorialSteps.Add(new TutorialStep("Notre sous-sol est envahi de dechets et trop souvent remuer par les raclements de fond marin.", Narrator.Marco));
-        tutorialSteps.Add(new TutorialStep("Renseignez-vous, on vous a fait plein de belle affiches avec toutes les infos !", Narrator.Marco));
-        tutorialSteps.Add(new TutorialStep("Aidez-nous a lutter !", Narrator.Marco));
+        tutorialSteps.Add(new TutorialStep("Bon ce n'était pas si mal, mais vous avez vu, des problématiques, on en a des tas !", Narrator.Marco));
+        tutorialSteps.Add(new TutorialStep("Notre salon est envahi de plastiques et des pneus que vous n'avez pas réussi à attraper.", Narrator.Marco));
+        tutorialSteps.Add(new TutorialStep("Notre sous-sol est envahi de déchets et trop souvent remuer par les raclements de fond marin.", Narrator.Marco));
+        tutorialSteps.Add(new TutorialStep("Renseignez-vous, on vous a fait plein de belles affiches avec toutes les infos !", Narrator.Marco));
+        tutorialSteps.Add(new TutorialStep("Aidez-nous à lutter !", Narrator.Marco));
     }
 
     public void StartDialog()

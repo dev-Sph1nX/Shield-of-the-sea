@@ -116,9 +116,10 @@ public class PlayerInteraction : MonoBehaviour
         foreach (GameObject waste in wastes)
         {
             // in range
-            if (NPCInteractable.CheckRange(transform.position.x, waste.transform.position.x - 2, waste.transform.position.x + 2) && NPCInteractable.CheckRange(transform.position.z, waste.transform.position.z - 2, waste.transform.position.z + 2))
+            if (waste.TryGetComponent(out IInteractable interactable))
             {
-                if (waste.TryGetComponent(out IInteractable interactable))
+                int range = interactable.getRange();
+                if (NPCInteractable.CheckRange(transform.position.x, waste.transform.position.x - range, waste.transform.position.x + range) && NPCInteractable.CheckRange(transform.position.z, waste.transform.position.z - range, waste.transform.position.z + range))
                 {
                     if (interactable.isInteractable() && isAllowedToInteract(interactable))
                     {
@@ -130,9 +131,10 @@ public class PlayerInteraction : MonoBehaviour
         foreach (GameObject b in boss)
         {
             // in range
-            if (NPCInteractable.CheckRange(transform.position.x, b.transform.position.x - 4, b.transform.position.x + 4) && NPCInteractable.CheckRange(transform.position.z, b.transform.position.z - 4, b.transform.position.z + 4))
+            if (b.TryGetComponent(out IInteractable interactable))
             {
-                if (b.TryGetComponent(out IInteractable interactable))
+                int range = interactable.getRange();
+                if (NPCInteractable.CheckRange(transform.position.x, b.transform.position.x - range, b.transform.position.x + range) && NPCInteractable.CheckRange(transform.position.z, b.transform.position.z - range, b.transform.position.z + range))
                 {
                     if (interactable.isInteractable() && isAllowedToInteract(interactable))
                     {
@@ -141,7 +143,6 @@ public class PlayerInteraction : MonoBehaviour
                 }
             }
         }
-
         IInteractable closestInteractable = null;
         foreach (IInteractable interactable in interactableList)
         {

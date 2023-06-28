@@ -9,6 +9,7 @@ public interface IInteractable
     Transform GetTransform();
     bool isInteractable();
     string getId();
+    int getRange();
 
 }
 

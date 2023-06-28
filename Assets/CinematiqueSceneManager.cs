@@ -12,7 +12,6 @@ public class CinematiqueSceneManager : MonoBehaviour
     [SerializeField] private Animator sceneAnimator = null;
     [SerializeField] private Animator travelingAnimator = null;
     [SerializeField] public GameObject cinematiqueGameObject;
-    [SerializeField] public IntroBeachDialogManager introBeachDialog;
     [SerializeField] private AudioSource[] audios;
     [SerializeField] private bool stayHere = false;
 
@@ -49,7 +48,6 @@ public class CinematiqueSceneManager : MonoBehaviour
     private void StartTraveling()
     {
         travelingAnimator.SetTrigger("Traveling");
-        introBeachDialog.StartDialog();
     }
     public void NextScene()
     {

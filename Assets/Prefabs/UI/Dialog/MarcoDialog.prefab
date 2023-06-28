@@ -66,10 +66,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: "\xE9puisette"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 98122703a0209ea4f8dacb7e4ccb20f1, type: 2}
-  m_sharedMaterial: {fileID: 7739602469514044225, guid: 98122703a0209ea4f8dacb7e4ccb20f1,
+  m_fontAsset: {fileID: 11400000, guid: 1bd58ffc76998514297745dac2872418, type: 2}
+  m_sharedMaterial: {fileID: 5458900131251480568, guid: 1bd58ffc76998514297745dac2872418,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -410,7 +410,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9015609335304584826}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0

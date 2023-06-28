@@ -44,6 +44,7 @@ public class WasteSinking : MonoBehaviour
     {
         if (collision.collider.tag == "SinkingGround")
         {
+            npcInteractable.TouchGround();
             shadowManager.DestroyShadow();
             colliderObj.isTrigger = true;
             rb.mass = mass;
@@ -67,7 +68,7 @@ public class WasteSinking : MonoBehaviour
         {
             transform.rotation = new Quaternion(0, 0, 0, 0);
             transform.position = new Vector3(transform.position.x, -0.4f, transform.position.z);
-
+            npcInteractable.interactable = false;
             isLost = true;
             deathPs.Play();
             if (lvlManager) lvlManager.OnWasteLost();

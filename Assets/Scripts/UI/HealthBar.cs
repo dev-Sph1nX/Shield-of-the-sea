@@ -15,7 +15,7 @@ public class HealthBar : MonoBehaviour
     public void UpdateHealthBar(float percentage, float? forcedDuraction = null)
     {
         float duration = 0.75f * (percentage / 100);
-        healthBarImage.DOFillAmount(percentage / 100, forcedDuraction ?? duration);
+        healthBarImage.DOFillAmount(percentage / 100, forcedDuraction ?? duration).SetEase(Ease.OutQuart);
     }
 
 }

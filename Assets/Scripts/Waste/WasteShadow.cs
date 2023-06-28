@@ -54,6 +54,7 @@ public class WasteShadow : MonoBehaviour
     public void DestroyShadow()
     {
         isDestroy = true;
-        Destroy(shadow);
+        if (shadow)
+            Destroy(shadow);
     }
 }

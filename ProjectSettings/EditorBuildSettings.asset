@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/4-OutroBeach.unity
     guid: f77022585b20c994db0e159bc56b2222
+  - enabled: 1
+    path: Assets/Scenes/5-ExpoLobby.unity
+    guid: 9a1fe4ed5a5829d418fce3f1b5a93c4f
   m_configObjects: {}
